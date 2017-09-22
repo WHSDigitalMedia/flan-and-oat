@@ -29,6 +29,7 @@
 if !instance_exists(gui_camera) instance_create(x, y, gui_camera);
 if !instance_exists(controller_depth) instance_create(x, y, controller_depth);
 if !instance_exists(controller_pause) instance_create(x, y, controller_pause);
+if !instance_exists(data_inventory) instance_create(x, y, data_inventory);
 </string>
           </argument>
         </arguments>

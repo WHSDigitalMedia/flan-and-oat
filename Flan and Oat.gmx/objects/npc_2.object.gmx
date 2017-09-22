@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>class_nonGUI</parentName>
+  <parentName>class_npc</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,38 +25,13 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle movement speed. Current speed: " + string(class_player.move_speed_max) + "#[1] halve speed#[2] double speed#[3] reset speed"
-a1 = scr_text1;
-a2 = scr_text2;
-a3 = scr_text3;
-b1 = noone;
-b2 = noone;
+            <string>msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Nope."
+a1 = inventory_add;
+a2 = inventory_add;
+a3 = scr_null;
+b1 = "Stone Sword";
+b2 = "Health Pot";
 b3 = noone;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="3" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if distance_to_object(class_player) &lt; 64 &amp;&amp; keyboard_check_pressed(ord("E")) &amp;&amp; !instance_exists(class_textBox) {
-    script_execute(create_textbox_main, msg, a1, a2, a3, b1, b2, b3);
-}
 </string>
           </argument>
         </arguments>
