@@ -1,3 +1,1 @@
-if file_exists("save.ini") {
-    file_delete("save.ini");
-} 
+if file_exists("save.txt") file_delete("save.txt");

@@ -59,11 +59,17 @@
         <script>scripts\scr_pause_return.gml</script>
       </scripts>
     </scripts>
+    <scripts name="Saving and Loading">
+      <script>scripts\load_player_loc.gml</script>
+      <script>scripts\save_player_loc.gml</script>
+    </scripts>
     <scripts name="Textbox">
       <script>scripts\create_textbox_main.gml</script>
-      <scripts name="Actions">
-        <script>scripts\scr_null.gml</script>
+      <script>scripts\scr_null.gml</script>
+      <scripts name="Doors">
         <script>scripts\scr_unlock.gml</script>
+      </scripts>
+      <scripts name="NPC 1">
         <script>scripts\scr_text1.gml</script>
         <script>scripts\scr_text2.gml</script>
         <script>scripts\scr_text3.gml</script>
@@ -75,15 +81,26 @@
   </fonts>
   <objects name="objects">
     <object>objects\debug_mouse</object>
-    <object>objects\controller_depth</object>
     <object>objects\class_nonGUI</object>
-    <objects name="Player">
+    <objects name="Controllers">
+      <object>objects\controller_main_menu</object>
+      <object>objects\controller_depth</object>
+      <object>objects\controller_pause</object>
+      <object>objects\controller_save</object>
+    </objects>
+    <objects name="Items">
       <object>objects\obj_healthPot</object>
       <object>objects\obj_sword</object>
+      <objects name="Inventory">
+        <object>objects\data_inventory</object>
+      </objects>
+    </objects>
+    <objects name="Player">
       <object>objects\class_player</object>
     </objects>
     <objects name="NPCs">
       <object>objects\class_npc</object>
+      <object>objects\npc_1</object>
       <object>objects\npc_2</object>
     </objects>
     <objects name="Environment">
@@ -99,18 +116,15 @@
         </objects>
       </objects>
     </objects>
+    <objects name="Map">
+      <object>objects\class_fast_area</object>
+      <object>objects\fast_area1</object>
+      <object>objects\fast_area2</object>
+    </objects>
     <objects name="GUI">
-      <objects name="Map">
-        <object>objects\fast_level1</object>
-        <object>objects\fast_level3</object>
-      </objects>
-      <object>objects\data_inventory</object>
-      <object>objects\class_button</object>
-      <object>objects\controller_pause</object>
-      <object>objects\controller_save</object>
       <object>objects\class_textBox</object>
+      <object>objects\class_button</object>
       <object>objects\gui_camera</object>
-      <object>objects\controller_main_menu</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -118,9 +132,13 @@
     <room>rooms\rm_main_menu</room>
     <room>rooms\rm_pause_menu</room>
     <room>rooms\rm_map</room>
-    <room>rooms\rm_level_1</room>
-    <room>rooms\rm_level_2</room>
-    <room>rooms\rm_level_3</room>
+    <rooms name="Area 1">
+      <room>rooms\rm_level_1</room>
+      <room>rooms\rm_level_2</room>
+    </rooms>
+    <rooms name="Area 2">
+      <room>rooms\rm_level_3</room>
+    </rooms>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

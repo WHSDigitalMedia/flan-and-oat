@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Init vars
-name = "Level 1";
+name = "Area 1";
 prev = rm_level_1;
 xx = 288;
 yy = 320;
@@ -51,7 +51,7 @@ yy = 320;
           <argument>
             <kind>1</kind>
             <string>///Player loc
-if global.roomPrev == prev {
+if global.roomPrev == prev || global.roomPrev == rm_level_2 {
     with (class_player) {
         x = other.x;
         y = other.y;
@@ -185,7 +185,7 @@ if global.roomPrev == prev {
             <kind>1</kind>
             <string>draw_self();
 draw_set_halign(fa_center);
-if isOver(self, 0, 0, 0, 0) draw_text_transformed(room_width/2, room_height - 32, name, global.textScale, global.textScale, image_angle);
+if isOver(self, 0, 0, 0, 0) draw_text_transformed(room_width/2, room_height - 48, name, global.textScale, global.textScale, image_angle);
 </string>
           </argument>
         </arguments>

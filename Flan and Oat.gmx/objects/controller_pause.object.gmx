@@ -54,8 +54,9 @@ map = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (/*os_is_paused() || */keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_tab)) &amp;&amp; !instance_exists(class_textBox) {
+            <string>if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_tab)) &amp;&amp; !instance_exists(class_textBox) {
     if !map {
+        //so only tab opens the map, but both tab and esc will close it
         if keyboard_check_pressed(vk_tab) map = true;
     } else map = false;
     
