@@ -54,6 +54,7 @@
         <script>scripts\scr_main_menu_play.gml</script>
         <script>scripts\scr_main_menu_quit.gml</script>
         <script>scripts\scr_main_menu_delete.gml</script>
+        <script>scripts\scr_main_menu_switch.gml</script>
       </scripts>
       <scripts name="Pause">
         <script>scripts\scr_pause_return.gml</script>

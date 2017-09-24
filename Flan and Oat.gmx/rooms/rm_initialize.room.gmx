@@ -10,7 +10,8 @@
   <persistent>0</persistent>
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
-  <code>draw_texture_flush();
+  <code>//Draw settings
+draw_texture_flush();
 texture_set_interpolation(false);
 window_set_size(display_get_width(), display_get_height());
 window_set_fullscreen(true);
@@ -22,6 +23,7 @@ var ww = a[2] - a[0];
 var hh = a[3] - a[1];
 display_set_gui_maximise(display_get_width()/room_width, display_get_height()/room_height, xx, yy);
 
+//Global variables
 global.keyUp = ord("W");
 global.keyDown = ord("S");
 global.keyRight = ord("D");
@@ -29,10 +31,31 @@ global.keyLeft = ord("A");
 
 global.textScale = .25;
 
+//Save &amp; Load data
+if file_exists("saveNumber.txt") {
+    file = file_text_open_read("saveNumber.txt");
+    global.saveNumber = file_text_read_real(file);
+    file_text_close(file);
+} else {
+    global.saveNumber = 1;
+    file = file_text_open_write("saveNumber.txt");
+    file_text_write_real(file, global.saveNumber);
+    file_text_close(file);
+}
 if !directory_exists(working_directory + "\saveData") directory_create("saveData");
-global.game_mainDir = working_directory + "\saveData";
+if !directory_exists(working_directory + "\saveData2") directory_create("saveData2");
+if !directory_exists(working_directory + "\saveData3") directory_create("saveData3");
+if global.saveNumber == 1 {
+    global.game_mainDir = working_directory + "\saveData";
+} else if global.saveNumber == 2 {
+    global.game_mainDir = working_directory + "\saveData2";
+} else if global.saveNumber == 3 {
+    global.game_mainDir = working_directory + "\saveData3";
+}
 
+//Randomize
 randomize();
+//Next room
 room_goto_next();</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
