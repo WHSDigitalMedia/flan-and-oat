@@ -1,4 +1,4 @@
-if file_exists(working_directory + "\save.txt") {
+if file_exists(global.game_mainDir + "\save.txt") {
     instance_create(x, y, class_player);
     load_player_loc();
 } else {

@@ -1,7 +1,7 @@
-///loads player location
-if file_exists(working_directory + "\save.txt") {
+///load_player_loc()
+if file_exists(global.game_mainDir + "\save.txt") {
     //Decrypt data
-    file = file_text_open_read(working_directory + "\save.txt");
+    file = file_text_open_read(global.game_mainDir + "\save.txt");
     data = file_text_read_string(file);
     file_text_readln(file);
     str64 = base64_decode(data);

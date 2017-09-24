@@ -29,6 +29,8 @@
 target_room = rm_level_2;
 target_x = 288;
 target_y = 160;
+
+load_door_state(id);
 </string>
           </argument>
         </arguments>

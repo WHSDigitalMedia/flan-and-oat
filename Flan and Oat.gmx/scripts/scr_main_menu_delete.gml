@@ -1,1 +1,1 @@
-if file_exists("save.txt") file_delete("save.txt");
+if directory_exists(global.game_mainDir) directory_destroy("saveData");

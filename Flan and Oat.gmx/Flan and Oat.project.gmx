@@ -60,8 +60,10 @@
       </scripts>
     </scripts>
     <scripts name="Saving and Loading">
-      <script>scripts\load_player_loc.gml</script>
       <script>scripts\save_player_loc.gml</script>
+      <script>scripts\load_player_loc.gml</script>
+      <script>scripts\save_door_state.gml</script>
+      <script>scripts\load_door_state.gml</script>
     </scripts>
     <scripts name="Textbox">
       <script>scripts\create_textbox_main.gml</script>

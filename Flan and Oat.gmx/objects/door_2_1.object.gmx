@@ -25,12 +25,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited();
-
-lock = true;
+            <string>lock = true;
 target_room = rm_level_1;
 target_x = 416;
 target_y = 128;
+
+load_door_state(id);
 </string>
           </argument>
         </arguments>

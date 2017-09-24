@@ -30,8 +30,9 @@ intensity = 0.7; //the blur intensity
 steps = 3; //also affects intensity but it's better to change the above value
 draw = false; 
 spr = -1; //the sprite the surface will draw
-global.roomPrev = -1;
 map = false;
+
+global.roomPrev = -1;
 </string>
           </argument>
         </arguments>
@@ -70,7 +71,7 @@ map = false;
         if instance_exists(class_button) with (class_button) instance_destroy();
         pause = false;
         sprite_delete(spr);
-        room_goto(global.roomPrev);
+        load_player_loc();
         view_enabled = true;
         view_visible[0] = true;
     }

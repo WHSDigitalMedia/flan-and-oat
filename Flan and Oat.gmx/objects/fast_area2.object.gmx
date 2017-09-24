@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Init vars
 name = "Area 2";
-prev = rm_level_3;
+new = rm_level_3;
 xx = 192;
 yy = 224;
 </string>
@@ -51,7 +51,7 @@ yy = 224;
           <argument>
             <kind>1</kind>
             <string>///Player loc
-if global.roomPrev == prev {
+if global.roomPrev == new {
     with (class_player) {
         x = other.x;
         y = other.y;

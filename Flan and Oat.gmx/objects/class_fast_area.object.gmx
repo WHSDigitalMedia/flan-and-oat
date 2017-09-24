@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Init vars
 name = "Area 1";
-prev = rm_level_1;
+new = rm_level_1;
 xx = 288;
 yy = 320;
 </string>
@@ -51,7 +51,7 @@ yy = 320;
           <argument>
             <kind>1</kind>
             <string>///Player loc
-if global.roomPrev == prev || global.roomPrev == rm_level_2 {
+if global.roomPrev == new || global.roomPrev == rm_level_2 {
     with (class_player) {
         x = other.x;
         y = other.y;
@@ -153,12 +153,7 @@ if global.roomPrev == prev || global.roomPrev == rm_level_2 {
           <argument>
             <kind>1</kind>
             <string>if isOver(self, 0, 0, 0, 0) &amp;&amp; mouse_check_button_pressed(mb_left) {
-    global.roomPrev = prev;
-    with (class_player) {
-        x = other.xx;
-        y = other.yy;
-        allowMovement = true;
-    }
+    save_player_loc(xx, yy, new);
     keyboard_key_press(vk_tab);
 }
 </string>
