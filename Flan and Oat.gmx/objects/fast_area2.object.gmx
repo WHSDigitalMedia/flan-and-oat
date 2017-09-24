@@ -27,9 +27,9 @@
             <kind>1</kind>
             <string>///Init vars
 name = "Area 2";
-new = rm_level_3;
-xx = 192;
-yy = 224;
+room_targ = rm_level_3;
+xtarg = 192;
+ytarg = 224;
 </string>
           </argument>
         </arguments>
@@ -51,7 +51,7 @@ yy = 224;
           <argument>
             <kind>1</kind>
             <string>///Player loc
-if global.roomPrev == new {
+if global.roomPrev == room_targ {
     with (class_player) {
         x = other.x;
         y = other.y;

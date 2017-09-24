@@ -1,5 +1,7 @@
 ///load_player_loc()
 if file_exists(global.game_mainDir + "\save.txt") {
+    var file, data, str64, inventory_list;
+
     //Decrypt data
     file = file_text_open_read(global.game_mainDir + "\save.txt");
     file_text_readln(file);

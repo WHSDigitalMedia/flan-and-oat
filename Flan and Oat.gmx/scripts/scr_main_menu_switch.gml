@@ -11,6 +11,7 @@ if global.saveNumber == 1 {
     global.game_mainDir = working_directory + "\saveData";
 }
 
+var file;
 file = file_text_open_write("saveNumber.txt");
 file_text_write_real(file, global.saveNumber);
 file_text_close(file);

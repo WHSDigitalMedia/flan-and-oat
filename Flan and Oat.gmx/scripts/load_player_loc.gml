@@ -1,5 +1,7 @@
 ///load_player_loc()
 if file_exists(global.game_mainDir + "\save.txt") {
+    var file, data, str64, xtarg, ytarg;
+    
     //Decrypt data
     file = file_text_open_read(global.game_mainDir + "\save.txt");
     data = file_text_read_string(file);
@@ -11,11 +13,12 @@ if file_exists(global.game_mainDir + "\save.txt") {
     ds_list_read(player_loc_list, str64);
     
     //Set Player vars
-    tarx = ds_list_find_value(player_loc_list, 0);
-    tary = ds_list_find_value(player_loc_list, 1);
+    xtarg = ds_list_find_value(player_loc_list, 0);
+    ytarg = ds_list_find_value(player_loc_list, 1);
     with (class_player) {
-        x = other.tarx;
-        y = other.tary;
+        x = xtarg;
+        y = ytarg;
+        allowMovement = true;
     }
     room_goto(ds_list_find_value(player_loc_list, 2));
     

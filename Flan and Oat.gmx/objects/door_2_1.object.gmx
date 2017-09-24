@@ -26,9 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>lock = true;
-target_room = rm_level_1;
-target_x = 416;
-target_y = 128;
+room_targ = rm_level_1;
+xtarg = 416;
+ytarg = 128;
 
 load_door_state(id);
 </string>

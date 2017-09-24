@@ -1,4 +1,6 @@
 ///save_door_state(id)
+var door_state_list, str, file;
+
 door_state_list = ds_list_create();
 ds_list_add(door_state_list, argument0.lock);
 str = ds_list_write(door_state_list);

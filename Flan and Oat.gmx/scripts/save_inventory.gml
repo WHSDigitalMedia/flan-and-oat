@@ -1,8 +1,10 @@
 ///save_inventory()
+var inventory_list, num, str, file;
+
 inventory_list = ds_list_create();
 for (var i = 0; i < ds_list_size(global.inventory_num_list); i++) {
-    _num = ds_list_find_value(global.inventory_num_list, i);
-    ds_list_add(inventory_list, ds_map_find_value(global.inventory_map, _num));
+    num = ds_list_find_value(global.inventory_num_list, i);
+    ds_list_add(inventory_list, ds_map_find_value(global.inventory_map, num));
 }
 str = ds_list_write(inventory_list);
 

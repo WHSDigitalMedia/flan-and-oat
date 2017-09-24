@@ -136,7 +136,6 @@ if allowMovement {
             <string>///Room Checks
 if room != rm_pause_menu &amp;&amp; room != rm_map {
     if !instance_exists(gui_camera) instance_create(x, y, gui_camera);
-    allowMovement = true;
     visible = true;
 }
 if room != rm_pause_menu persistent = true;

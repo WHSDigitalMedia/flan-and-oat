@@ -1,7 +1,7 @@
 ///isOver(object, x1, x2, y1, y2)
 //ignores the last four arguments if a valid object is passed into 
-over = false;
-target = argument0;
+var over = false;
+var target = argument0;
 
 if target == noone {
     x1 = argument1;

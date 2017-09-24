@@ -1,5 +1,4 @@
 ///move_step(speed, direction, collision object)
-
 var spd = argument0;
 var dir = argument1;
 var toCol = argument2;

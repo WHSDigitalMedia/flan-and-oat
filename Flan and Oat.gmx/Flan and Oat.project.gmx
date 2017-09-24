@@ -85,7 +85,6 @@
     <font>fonts\fnt_textbox</font>
   </fonts>
   <objects name="objects">
-    <object>objects\debug_mouse</object>
     <object>objects\class_nonGUI</object>
     <objects name="Controllers">
       <object>objects\controller_main_menu</object>

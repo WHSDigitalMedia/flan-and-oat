@@ -5,10 +5,10 @@ var act = argument1;
 var color = argument2;
 var middle = argument3;
 var fnt = argument4;
-var tarx = argument5;
-var tary = argument6;
+var xtarg = argument5;
+var ytarg = argument6;
 
-with (instance_create(tarx, tary, class_button)) {
+with (instance_create(xtarg, ytarg, class_button)) {
     name = title;
     action = act;
     text_color = color;
