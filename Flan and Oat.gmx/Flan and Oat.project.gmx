@@ -64,6 +64,8 @@
       <script>scripts\load_player_loc.gml</script>
       <script>scripts\save_door_state.gml</script>
       <script>scripts\load_door_state.gml</script>
+      <script>scripts\save_inventory.gml</script>
+      <script>scripts\load_inventory.gml</script>
     </scripts>
     <scripts name="Textbox">
       <script>scripts\create_textbox_main.gml</script>
@@ -91,11 +93,11 @@
       <object>objects\controller_save</object>
     </objects>
     <objects name="Items">
-      <object>objects\obj_healthPot</object>
-      <object>objects\obj_sword</object>
       <objects name="Inventory">
         <object>objects\data_inventory</object>
       </objects>
+      <object>objects\obj_healthPot</object>
+      <object>objects\obj_sword</object>
     </objects>
     <objects name="Player">
       <object>objects\class_player</object>

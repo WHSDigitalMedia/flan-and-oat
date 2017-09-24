@@ -25,9 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.inventory_map = ds_map_create(); //map of the item names
+            <string>global.inventory_map = ds_map_create(); //map of the inventory
+global.inventory_num_list = ds_list_create(); //matching numbers for the above
 
-global.maxItems = 8;
+load_inventory();
 </string>
           </argument>
         </arguments>
