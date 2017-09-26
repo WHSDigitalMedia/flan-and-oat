@@ -28,7 +28,7 @@
             <string>///Set Variables
 name = "";
 action = noone;
-text_color = c_white;
+text_color = c_gray;
 center = false;
 font = fnt_textbox;
 spr = spr_main_menu_start;
@@ -61,7 +61,8 @@ strHeight = string_height(name) * global.textScale;
 
 if isOver(self, 0, 0, 0, 0) {
     if mouse_check_button_pressed(mb_left) script_execute(action);
-}
+    text_color = c_white;
+} else text_color = c_gray;
 </string>
           </argument>
         </arguments>

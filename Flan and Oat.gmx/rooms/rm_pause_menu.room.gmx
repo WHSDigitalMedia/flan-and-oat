@@ -14,7 +14,8 @@
 view_visible[0] = false;
 
 create_button("Main Menu", scr_pause_return, c_white, true, fnt_textbox, room_width/2, room_height/2);
-create_button("Quit", scr_main_menu_quit, c_white, true, fnt_textbox, room_width/2, room_height/2 + 128);</code>
+create_button("Quit", scr_main_menu_quit, c_white, true, fnt_textbox, room_width/2 - 128, room_height/2 + 128);
+create_button("Save", save_game, c_white, true, fnt_textbox, room_width/2 + 128, room_height/2 + 128);</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>

@@ -3,7 +3,7 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="3" name="datafiles">
+  <datafiles number="4" name="datafiles">
     <datafile>
       <name>item_data.ini</name>
       <exists>-1</exists>
@@ -61,12 +61,15 @@
       </scripts>
     </scripts>
     <scripts name="Saving and Loading">
+      <script>scripts\save_game.gml</script>
       <script>scripts\save_player_loc.gml</script>
       <script>scripts\load_player_loc.gml</script>
       <script>scripts\save_door_state.gml</script>
       <script>scripts\load_door_state.gml</script>
       <script>scripts\save_inventory.gml</script>
       <script>scripts\load_inventory.gml</script>
+      <script>scripts\save_player_stats.gml</script>
+      <script>scripts\load_player_stats.gml</script>
     </scripts>
     <scripts name="Textbox">
       <script>scripts\create_textbox_main.gml</script>
@@ -90,7 +93,6 @@
       <object>objects\controller_main_menu</object>
       <object>objects\controller_depth</object>
       <object>objects\controller_pause</object>
-      <object>objects\controller_save</object>
     </objects>
     <objects name="Items">
       <objects name="Inventory">
@@ -100,6 +102,7 @@
       <object>objects\obj_sword</object>
     </objects>
     <objects name="Player">
+      <object>objects\data_player</object>
       <object>objects\class_player</object>
     </objects>
     <objects name="NPCs">

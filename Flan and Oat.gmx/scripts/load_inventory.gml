@@ -6,7 +6,6 @@ if file_exists(global.game_mainDir + "\save.txt") {
     file = file_text_open_read(global.game_mainDir + "\save.txt");
     file_text_readln(file);
     data = file_text_read_string(file);
-    file_text_readln(file);
     str64 = base64_decode(data);
     
     //Read data into game

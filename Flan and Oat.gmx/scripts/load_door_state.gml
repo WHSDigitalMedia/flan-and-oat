@@ -5,7 +5,6 @@ if file_exists(global.game_mainDir + "\" + string(argument0) + ".txt") {
     //Decrypt data
     file = file_text_open_read(global.game_mainDir + "\" + string(argument0) + ".txt");
     data = file_text_read_string(file);
-    file_text_readln(file);
     str64 = base64_decode(data);
     
     //Read data into game

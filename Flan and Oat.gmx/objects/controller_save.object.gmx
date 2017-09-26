@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>save_player_loc(class_player.x, class_player.y, room);
 save_inventory();
+save_player_stats();
 
 instance_destroy();
 </string>

@@ -1,1 +1,1 @@
-class_player.move_speed_max *= 0.5;
+data_player.atk *= 0.5;

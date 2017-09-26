@@ -153,7 +153,7 @@ if global.roomPrev == room_targ || global.roomPrev == rm_level_2 {
           <argument>
             <kind>1</kind>
             <string>if isOver(self, 0, 0, 0, 0) &amp;&amp; mouse_check_button_pressed(mb_left) {
-    save_player_loc(xtarg, ytarg, room_targ);
+    save_player_loc(xtarg, ytarg, room_targ, true);
     with (class_player) {
         allowMovement = true;
     }
