@@ -61,7 +61,7 @@ strHeight = string_height(name) * global.textScale;
 
 if isOver(self, 0, 0, 0, 0) {
     if mouse_check_button_pressed(mb_left) script_execute(action);
-    text_color = c_white;
+    if action != scr_null text_color = c_white;
 } else text_color = c_gray;
 </string>
           </argument>
