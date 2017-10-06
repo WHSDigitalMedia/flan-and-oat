@@ -55,29 +55,34 @@ global.roomPrev = -1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_tab)) &amp;&amp; !instance_exists(class_textBox) {
-    if !map {
-        //so only tab opens the map, but both tab and esc will close it
-        if keyboard_check_pressed(vk_tab) map = true;
-    } else map = false;
-    
-    if !pause {
-        //have to auto save this one or the game won't know where to return to
-        save_player_loc(data_player.x, data_player.y, data_player.room_index, true);
-        global.roomPrev = room;
-        texture_set_interpolation(true);
-        pause = true;
-        draw = true;
-    } else {
-        if instance_exists(class_button) with (class_button) instance_destroy();
-        pause = false;
-        sprite_delete(spr);
-        load_player_loc(true);        //return to previous room
-        view_enabled = true;
-        view_visible[0] = true;
+            <string>//check to see if the gui buttons exist
+if !instance_exists(gui_pause_button) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_map instance_create(x, y, gui_pause_button);
+if !instance_exists(gui_map_button) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_map instance_create(x, y, gui_map_button);
+
+if !instance_exists(class_textBox) {
+    if keyboard_check_released(vk_escape) || keyboard_check_released(vk_tab){
+        if !map {
+            //so only tab opens the map, but both tab and esc will close it
+            if keyboard_check_released(vk_tab) map = true;
+        } else map = false;
+        
+        if !pause {
+            //have to auto save this one or the game won't know where to return to
+            save_player_loc(data_player.x, data_player.y, data_player.room_index, true);
+            global.roomPrev = room;
+            texture_set_interpolation(true);
+            pause = true;
+            draw = true;
+        } else {
+            if instance_exists(class_button) with (class_button) instance_destroy();
+            pause = false;
+            sprite_delete(spr);
+            load_player_loc(true);        //return to previous room
+            view_enabled = true;
+            view_visible[0] = true;
+        }
     }
 }
-
 </string>
           </argument>
         </arguments>

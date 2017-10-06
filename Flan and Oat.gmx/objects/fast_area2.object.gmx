@@ -51,7 +51,7 @@ ytarg = 224;
           <argument>
             <kind>1</kind>
             <string>///Player loc
-if global.roomPrev == room_targ {
+if global.roomPrev == room_targ || global.roomPrev == rm_level_4 {
     with (class_player) {
         x = other.x;
         y = other.y;

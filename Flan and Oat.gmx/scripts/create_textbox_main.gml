@@ -7,6 +7,8 @@ var scr3 = argument3;
 var arg0 = argument4;
 var arg1 = argument5;
 var arg2 = argument6;
+
+//disable player movement
 class_player.allowMovement = false;
 
 with (instance_create(32, 32, class_textBox)) {

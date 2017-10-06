@@ -56,6 +56,10 @@
         <script>scripts\scr_main_menu_delete.gml</script>
         <script>scripts\scr_main_menu_switch.gml</script>
       </scripts>
+      <scripts name="HUD">
+        <script>scripts\scr_sim_pause.gml</script>
+        <script>scripts\scr_sim_map.gml</script>
+      </scripts>
       <scripts name="Pause">
         <script>scripts\scr_pause_return.gml</script>
       </scripts>
@@ -121,6 +125,12 @@
         <objects name="Level 2">
           <object>objects\door_2_1</object>
         </objects>
+        <objects name="Level 3">
+          <object>objects\door_3_4</object>
+        </objects>
+        <objects name="Level 4">
+          <object>objects\door_4_3</object>
+        </objects>
       </objects>
     </objects>
     <objects name="Map">
@@ -132,6 +142,8 @@
       <object>objects\class_textBox</object>
       <object>objects\class_button</object>
       <object>objects\gui_camera</object>
+      <object>objects\gui_pause_button</object>
+      <object>objects\gui_map_button</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -145,6 +157,7 @@
     </rooms>
     <rooms name="Area 2">
       <room>rooms\rm_level_3</room>
+      <room>rooms\rm_level_4</room>
     </rooms>
   </rooms>
   <help>
