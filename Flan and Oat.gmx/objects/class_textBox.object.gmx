@@ -45,9 +45,9 @@ draw_set_font(fnt_textbox);
 accept[0] = noone;
 accept[1] = noone;
 accept[2] = noone;
-acceptArg[0] = noone;
-acceptArg[1] = noone;
-acceptArg[2] = noone;
+acceptArg[0, 0] = noone;
+acceptArg[1, 0] = noone;
+acceptArg[2, 0] = noone;
 
 width = window_get_width() * 0.8;
 height = window_get_height() * 0.8;
@@ -138,28 +138,41 @@ if strPos &lt;= messageLen { //proceed only if the message hasn't been fully par
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///make a selection
+            <string>///Make a selection
 if done {
-    if keyboard_check_pressed(ord("1")) || keyboard_check_pressed(ord("2")) || keyboard_check_pressed(ord("3")) {
-        if keyboard_check_pressed(ord("1")) &amp;&amp; script_exists(accept[0]) {
+    //loops through all possible values
+    for (var i = 0; i &lt; array_length_1d(accept); i++) {
+        if keyboard_check_pressed(ord(string(i + 1))) &amp;&amp; script_exists(accept[i]) { //checks to see if the script exists, just in case
+            var argsNum = array_length_2d(acceptArg, i);
+            
+            switch (argsNum) {
+                case 1: script_execute(accept[i], acceptArg[i, 0]); break;
+                case 2: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1]); break;
+                case 3: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2]); break;
+                case 4: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3]); break;
+                case 5: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4]); break;
+                case 6: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5]); break;
+                case 7: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6]); break;
+                case 8: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7]); break;
+                case 9: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7], acceptArg[i, 8]); break;
+                case 10: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7], acceptArg[i, 8], acceptArg[i, 9]); break;
+                case 11: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7], acceptArg[i, 8], acceptArg[i, 9],
+                        acceptArg[i, 10]); break;
+                case 12: script_execute(accept[i], acceptArg[i, 0], acceptArg[i, 1], acceptArg[i, 2], acceptArg[i, 3],
+                        acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7], acceptArg[i, 8], acceptArg[i, 9],
+                        acceptArg[i, 10], acceptArg[i, 11]); break;
+                default: break;
+            }
             class_player.allowMovement = true;
-            if acceptArg[0] == noone script_execute(accept[0]);
-            else script_execute(accept[0], acceptArg[0]);
-            //cleanup
             instance_destroy();
-        } else if keyboard_check_pressed(ord("2")) &amp;&amp; script_exists(accept[1]) {
-            class_player.allowMovement = true;
-            if acceptArg[1] == noone script_execute(accept[1]);
-            else script_execute(accept[1], acceptArg[1]);
-            //cleanup
-            instance_destroy();
-        } else if keyboard_check_pressed(ord("3")) &amp;&amp; script_exists(accept[2]) {
-            class_player.allowMovement = true;
-            if acceptArg[2] == noone script_execute(accept[2]);
-            else script_execute(accept[2], acceptArg[2]);
-            //cleanup
-            instance_destroy();
-        }
+        }    
     }
 }
 </string>

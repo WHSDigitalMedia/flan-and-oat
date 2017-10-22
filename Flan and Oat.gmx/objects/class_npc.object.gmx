@@ -26,12 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>msg = "Toggle movement speed. Current speed: " + string(class_player.move_speed_max) + "#[1] halve speed#[2] double speed#[3] reset speed"
-a1 = scr_text1;
-a2 = scr_text2;
-a3 = scr_text3;
-b1 = noone;
-b2 = noone;
-b3 = noone;
+action[0] = noone;
+arg[0, 0] = noone;
 </string>
           </argument>
         </arguments>
@@ -55,7 +51,11 @@ b3 = noone;
           <argument>
             <kind>1</kind>
             <string>if distance_to_object(class_player) &lt; 64 &amp;&amp; keyboard_check_pressed(ord("E")) &amp;&amp; !instance_exists(class_textBox) {
-    script_execute(create_textbox_main, msg, a1, a2, a3, b1, b2, b3);
+    create_textbox_message(msg);
+    create_textbox_actions(action[0]);
+    create_textbox_args(0, arg[0, 0]);
+    create_textbox_args(1, arg[1, 0]);
+    create_textbox_args(2, arg[2, 0]);
 }
 </string>
           </argument>

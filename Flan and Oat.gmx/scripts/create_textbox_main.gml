@@ -16,9 +16,9 @@ with (instance_create(32, 32, class_textBox)) {
     accept[0] = scr1;
     accept[1] = scr2;
     accept[2] = scr3;
-    acceptArg[0] = arg0;
-    acceptArg[1] = arg1;
-    acceptArg[2] = arg2;
+    acceptArg[0, 0] = arg0;
+    acceptArg[1, 0] = arg1;
+    acceptArg[2, 0] = arg2;
     width = 1200;
     height = 700;
 }

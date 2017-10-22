@@ -31,6 +31,7 @@ global.keyLeft = ord("A");
 
 global.textScale = .25;
 global.doorList = -1;
+global.openText = noone;
 
 //Save &amp; Load data
 if file_exists("saveNumber.txt") {

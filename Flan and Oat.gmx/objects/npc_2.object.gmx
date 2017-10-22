@@ -26,12 +26,12 @@
           <argument>
             <kind>1</kind>
             <string>msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Nope."
-a1 = inventory_add;
-a2 = inventory_add;
-a3 = scr_null;
-b1 = "Stone Sword";
-b2 = "Health Pot";
-b3 = noone;
+action[0] = inventory_add;
+action[1] = inventory_add;
+action[2] = scr_null;
+arg[0, 0] = "Stone Sword";
+arg[1, 0] = "Health Pot";
+arg[2, 0] = noone;
 </string>
           </argument>
         </arguments>

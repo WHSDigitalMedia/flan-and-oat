@@ -77,6 +77,9 @@
     </scripts>
     <scripts name="Textbox">
       <script>scripts\create_textbox_main.gml</script>
+      <script>scripts\create_textbox_message.gml</script>
+      <script>scripts\create_textbox_actions.gml</script>
+      <script>scripts\create_textbox_args.gml</script>
       <script>scripts\scr_null.gml</script>
       <scripts name="Doors">
         <script>scripts\scr_unlock.gml</script>

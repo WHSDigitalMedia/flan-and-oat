@@ -26,12 +26,12 @@
           <argument>
             <kind>1</kind>
             <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
-a1 = scr_text1;
-a2 = scr_text2;
-a3 = scr_text3;
-b1 = noone;
-b2 = noone;
-b3 = noone;
+action[0] = scr_text1;
+action[1] = scr_text2;
+action[2] = scr_text3;
+arg[0, 0] = noone;
+arg[1, 0] = noone;
+arg[2, 0] = noone;
 </string>
           </argument>
         </arguments>
@@ -54,8 +54,7 @@ b3 = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
-msg = "the world we live in. it's so... wonderous. mysterious. even magical. no... no no no.. not that world. i meant this one. the smartphone. each system and program app is it's own little planet of perfect. technology. all providing services so necessary, so crucial, so unbelievably profound. look who just sent me a text! addie mccallister? it must be a mistake. or a joke. or a scam! don't send her your social security number. she's right there! that's our user, alex. and, like every freshman in high school, his whole life, everything, revolves around his phone. and, because the pace of life gets, faster and faster... phones down in five. and attention spans get shorter and shorter... and... you're probably not even listening to me right now. who has the time to type out actual words? and that's where we come in. the most important invention in the history of communication! emo gees. that's my home! textopolis. here, each of us does one thing, and we have to nail it every time. christmas tree just has to stand there, all festive. merry christmas! it's still september, tim! and princesses... i am so pretty. they just gotta wear their crowns and keep their hair comb. we are so pretty. devil, poop, thumbs up, they just show up and they're good to go. but for the faces, the pressure is on. cryer always has to cry, even if he just won the lottery. hurray, i'm a millionaire! laugher's always laughing, even if he's just broken his arm. ahh!! ah! i can see the bone!! ah ah ah ah ah... and me, i'm a meh. so i gotta totally be over it all the time, you know? like meh, who cares. which is not as easy as it sounds. i gotta be mehhhhhhhhh i GOTTA! be! mehhhhhhhhh morning misses D, i see you have the little minis with ya! oh, they're so... cute! NYAH, SO ADORABLE, I CAN'T TAKE IT! I WILL NEVER GET THEM TO SLEEP! STICK TO YOUR ONE FACE, WEIRDO. OLE! OLE! OH NO! OH NO! it's hard to only act blasé. when, living in textopolis is.... just so exciting! hah low good simeans! those ah some shalp attach shays! yes, well we have business to attend to. whot kind off business? monkey business. ha ha ha ha, i sounded british. meh... Oh, that was really good.. meh ? meh ... meh ha ha... what the freak ya doing there, mate? practicing. today is my first day on the phone. oh, droit. i'm gonna be so.. meh. what are you going to do? blah! me and the boys are gonna throw ourselves on the barbie! woo! puh-zow! gooday, mate! hey, koh knee chee wah! sorry emote icons!! oh, I hate knocking over the elderly.. let me help, let me help... oh, my colon!!! ducks... hey, is that the time? HEY, my eyes are up here, pal! woo ooh hoo! woo hoo! right on time! and last week, Alex sent me next to THIS text! huh? huh? HA HA HA THAT ELEPHANT PISSED HIMSELF HA HA HA AH HAH HA HAH HAH UH HUH HUH why are YOU laughing, freak? ho ho ha ha ha! now, unlike me, my parents are total pros. gene, please tell me you weren't laughing just now. gene so help me i swear oh, he was, I remember. let's go see if you can get it right. i have some bad news, gene, and i'm afraid that you'll have the wrong reaction. ok, what's the wrong reaction? anything other than meh. come on! i don't want to be late! i'm not letting you go to work today. wait, WHAT? you're just not ready, son. come on!! working in a cube is an Emoji's whole purpose in life! everybody my age is working on the phone except for me! oh sweetie, that's not true. ow! YEAH! i'm going to work on the phone and I'm only ten! that's because I believe in you! should we wash our hands? ha ha ha ha ha ha ha! we're number two! we're number two! see? i, i know i'm different, ok? but, i need to... i can be meh... i just... want to be a working emoji, you know, like... everybody else... and then... i would finally fit in, you know? ah, you fit in, honey. no I don't, mom. I never have. but I could change all that if you just let me! just give me a chance! but what if you get sent out on the phone, making the wrong face? no dad, i'll make the right face! look!#[1] Okay#[2] Alright...#[3] You're freaking me out, man";
+            <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
 
 event_inherited();
 </string>
