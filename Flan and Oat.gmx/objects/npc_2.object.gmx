@@ -25,13 +25,17 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Nope."
+            <string>msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Got any secret stuff?#[4] Nope."
 action[0] = inventory_add;
 action[1] = inventory_add;
-action[2] = scr_null;
+action[2] = inventory_add;
+action[3] = create_textbox_short;
 arg[0, 0] = "Stone Sword";
 arg[1, 0] = "Health Pot";
-arg[2, 0] = noone;
+arg[2, 0] = "Spitoon Hat";
+arg[3, 0] = "Wow, so I'm not good enough for you or something?#[1] Uh... you took that the wrong way. See you around.";
+arg[3, 1] = scr_null;
+arg[3, 2] = noone;
 </string>
           </argument>
         </arguments>

@@ -52,10 +52,134 @@ arg[0, 0] = noone;
             <kind>1</kind>
             <string>if distance_to_object(class_player) &lt; 64 &amp;&amp; keyboard_check_pressed(ord("E")) &amp;&amp; !instance_exists(class_textBox) {
     create_textbox_message(msg);
-    create_textbox_actions(action[0]);
-    create_textbox_args(0, arg[0, 0]);
-    create_textbox_args(1, arg[1, 0]);
-    create_textbox_args(2, arg[2, 0]);
+    
+    switch (array_length_1d(action)) {
+        case 1: 
+            create_textbox_actions(action[0]); 
+            add_textbox_args(0);
+            break;
+        case 2: 
+            create_textbox_actions(action[0], action[1]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            break;
+        case 3: 
+            create_textbox_actions(action[0], action[1], action[2]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);
+            break;
+        case 4: 
+            create_textbox_actions(action[0], action[1], action[2], action[3]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            break;
+        case 5: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            break;
+        case 6: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            break;
+        case 7: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            break;
+        case 8: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6], action[7]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            add_textbox_args(7);
+            break;
+        case 9: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6], action[7], action[8]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            add_textbox_args(7);
+            add_textbox_args(8);
+            break;
+        case 10: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6], action[7], action[8], action[9]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            add_textbox_args(7);
+            add_textbox_args(8);
+            add_textbox_args(9);
+            break;
+        case 11: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6], action[7], action[8], action[9], action[10]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            add_textbox_args(7);
+            add_textbox_args(8);
+            add_textbox_args(9);
+            add_textbox_args(10);
+            break;
+        case 12: 
+            create_textbox_actions(action[0], action[1], action[2], action[3],
+            action[4], action[5], action[6], action[7], action[8], action[9], action[10],
+            action[11]); 
+            add_textbox_args(0);
+            add_textbox_args(1);
+            add_textbox_args(2);            
+            add_textbox_args(3);
+            add_textbox_args(4);
+            add_textbox_args(5);
+            add_textbox_args(6);
+            add_textbox_args(7);
+            add_textbox_args(8);
+            add_textbox_args(9);
+            add_textbox_args(10);
+            add_textbox_args(11);
+            break;
+        default: break;
+    }
+
 }
 </string>
           </argument>

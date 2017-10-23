@@ -76,11 +76,15 @@
       <script>scripts\load_player_stats.gml</script>
     </scripts>
     <scripts name="Textbox">
-      <script>scripts\create_textbox_main.gml</script>
-      <script>scripts\create_textbox_message.gml</script>
-      <script>scripts\create_textbox_actions.gml</script>
-      <script>scripts\create_textbox_args.gml</script>
-      <script>scripts\scr_null.gml</script>
+      <scripts name="Essentials">
+        <script>scripts\create_textbox_main.gml</script>
+        <script>scripts\create_textbox_short.gml</script>
+        <script>scripts\create_textbox_message.gml</script>
+        <script>scripts\create_textbox_actions.gml</script>
+        <script>scripts\create_textbox_args.gml</script>
+        <script>scripts\add_textbox_args.gml</script>
+        <script>scripts\scr_null.gml</script>
+      </scripts>
       <scripts name="Doors">
         <script>scripts\scr_unlock.gml</script>
       </scripts>
@@ -107,6 +111,7 @@
       </objects>
       <object>objects\obj_healthPot</object>
       <object>objects\obj_sword</object>
+      <object>objects\obj_spitoonHat</object>
     </objects>
     <objects name="Player">
       <object>objects\data_player</object>
