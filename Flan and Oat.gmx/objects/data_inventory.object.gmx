@@ -25,8 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.inventory_map = ds_map_create(); //map of the inventory
-global.inventory_num_list = ds_list_create(); //matching numbers for the above
+            <string>/*global.inventory_map = ds_map_create(); //map of the inventory
+global.inventory_num_list = ds_list_create(); //matching numbers for the above*/
+
+global.showInventory = false;
+global.curInvSelect = noone;
+
+global.max_items = 25;
+item_params = 10; //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
+global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
 load_inventory();
 </string>
