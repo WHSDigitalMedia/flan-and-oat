@@ -10,7 +10,7 @@ if file_exists(global.game_mainDir + "\save.txt") {
     str64 = base64_decode(data);
     
     //Read data into game
-    player_stats_list = ds_list_create();
+    var player_stats_list = ds_list_create();
     ds_list_read(player_stats_list, str64);
     
     //Set Player vars
