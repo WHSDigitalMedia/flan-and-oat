@@ -30,7 +30,7 @@ global.keyRight = ord("D");
 global.keyLeft = ord("A");
 
 global.textScale = .25;
-global.doorList = -1;
+global.doorList = ds_list_create();
 global.openText = noone;
 
 //Save &amp; Load data
