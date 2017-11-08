@@ -40,6 +40,8 @@
       <sprite>sprites\spr_main_menu_start</sprite>
     </sprites>
     <sprites name="Items">
+      <sprite>sprites\spr_spitoonHat</sprite>
+      <sprite>sprites\spr_sword</sprite>
       <sprite>sprites\spr_healthPot</sprite>
     </sprites>
     <sprites name="NPCs">

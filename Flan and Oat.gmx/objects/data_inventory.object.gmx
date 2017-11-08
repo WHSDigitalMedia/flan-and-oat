@@ -33,6 +33,11 @@ global.max_items = 25;
 item_params = 10; //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
+//testing stuff
+inventory_add("Spitoon Hat", 1);
+inventory_add("Health Pot", 3);
+inventory_add("Stone Sword", 2);
+
 load_inventory();
 </string>
           </argument>
@@ -103,13 +108,29 @@ load_inventory();
           <argument>
             <kind>1</kind>
             <string>if global.showInventory {
-    draw_roundrect_ext(32, 32, 2 * (view_wview[0] - 32), 2 * (view_hview[0] - 32), 10, 10, true);
+    for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+        //gets the sprite names
+        var sprName = ds_grid_get(global.inventory_grid, i, 6);
+        
+        //finds the sprite index
+        if is_string(sprName) {
+            var sprToCheck = asset_get_index(sprName);
+            if sprite_exists(sprToCheck) {
+                var sprWidth = sprite_get_width(sprToCheck);
+                var sprHeight = sprite_get_height(sprToCheck);
+                var padding = 32;
+                draw_sprite(sprToCheck, image_index, sprWidth + (i * sprWidth) + (i * padding), sprHeight + padding); //draws the sprite
+            }
+        }
+    }
+    
+    /*draw_roundrect_ext(32, 32, 2 * (view_wview[0] - 32), 2 * (view_hview[0] - 32), 10, 10, true);
     
     for (var i = 0; i &lt; 4; i++) {
         for (var j = 0; j &lt; 4; j++) {
             draw_roundrect_ext(i * 128 + 72, j * 128 + 72, i * 128 + 128 + 64, j * 128 + 128 + 64, 2, 2, false);
         }
-    }
+    }*/
 }
 </string>
           </argument>
