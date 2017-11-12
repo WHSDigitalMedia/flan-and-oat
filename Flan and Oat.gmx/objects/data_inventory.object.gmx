@@ -62,6 +62,8 @@ load_inventory();
           <argument>
             <kind>1</kind>
             <string>if keyboard_check_pressed(toggle) global.showInventory = !global.showInventory;
+
+
 </string>
           </argument>
         </arguments>
@@ -108,9 +110,32 @@ load_inventory();
           <argument>
             <kind>1</kind>
             <string>if global.showInventory {
-    for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+    /***************************************************
+      All of this is really jank code, needs to be fixed / made more efficient at a future date
+     ***************************************************/
+
+    //background panel
+    draw_set_color(c_dkgray);
+    draw_roundrect_ext(64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 32, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
+    
+    //side panel
+    draw_roundrect_ext(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 64 + 420, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
+
+    draw_set_color(c_white);
+    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, ds_grid_get(global.inventory_grid, 0, 0), global.textScale, global.textScale, 0);
+    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64, 64 + 128, ds_grid_get(global.inventory_grid, 0, 3), global.textScale, global.textScale, 0);
+    
+    //draws the slots
+    for (var i = 0; i &lt; 7; i++) {
+        for (var j = 0; j &lt; 6; j++) {
+            draw_set_color(c_gray);
+            draw_roundrect_ext(96 + (i * 32) + (i * 64), 96 + (j * 32) + (j * 64), 96 + (i * 32) + (i * 64) + 64, 96 + (j * 32) + (j * 64) + 64, 5, 5, false);         
+        }
+    }
+
+    for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
         //gets the sprite names
-        var sprName = ds_grid_get(global.inventory_grid, i, 6);
+        var sprName = ds_grid_get(global.inventory_grid, k, 6);
         
         //finds the sprite index
         if is_string(sprName) {
@@ -118,19 +143,11 @@ load_inventory();
             if sprite_exists(sprToCheck) {
                 var sprWidth = sprite_get_width(sprToCheck);
                 var sprHeight = sprite_get_height(sprToCheck);
-                var padding = 32;
-                draw_sprite(sprToCheck, image_index, sprWidth + (i * sprWidth) + (i * padding), sprHeight + padding); //draws the sprite
+                var padding = 64;
+                draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
             }
         }
     }
-    
-    /*draw_roundrect_ext(32, 32, 2 * (view_wview[0] - 32), 2 * (view_hview[0] - 32), 10, 10, true);
-    
-    for (var i = 0; i &lt; 4; i++) {
-        for (var j = 0; j &lt; 4; j++) {
-            draw_roundrect_ext(i * 128 + 72, j * 128 + 72, i * 128 + 128 + 64, j * 128 + 128 + 64, 2, 2, false);
-        }
-    }*/
 }
 </string>
           </argument>
