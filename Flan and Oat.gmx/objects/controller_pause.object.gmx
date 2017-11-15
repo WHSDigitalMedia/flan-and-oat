@@ -61,6 +61,11 @@ if !instance_exists(gui_map_button) &amp;&amp; room != rm_pause_menu &amp;&amp; 
 
 if !instance_exists(class_textBox) {
     if keyboard_check_released(vk_escape) || keyboard_check_released(vk_tab){
+        if global.showInventory {
+            global.showInventory = false; 
+            exit;
+        }
+        
         if !map {
             //so only tab opens the map, but both tab and esc will close it
             if keyboard_check_released(vk_tab) map = true;

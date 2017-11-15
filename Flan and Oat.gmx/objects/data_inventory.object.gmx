@@ -37,8 +37,15 @@ global.inventory_grid = ds_grid_create(global.max_items, item_params);
 inventory_add("Spitoon Hat", 1);
 inventory_add("Health Pot", 3);
 inventory_add("Stone Sword", 2);
-
 load_inventory();
+
+outputString = "";
+lastSpace = 0;
+strPos = 1;
+strDisplay = "";
+
+itemDisplayList = ds_list_create();
+
 </string>
           </argument>
         </arguments>
@@ -63,7 +70,33 @@ load_inventory();
             <kind>1</kind>
             <string>if keyboard_check_pressed(toggle) global.showInventory = !global.showInventory;
 
+desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
+if is_string(desc) {
+    descLen = string_length(desc);
+    
+    while strPos &lt;= descLen {
+        nextChar = string_char_at(desc, strPos);
+        
+        if nextChar == " " lastSpace = strPos;
+        
+        strDisplay += nextChar;
+        
+        if string_width(strDisplay) * global.textScale &gt; 420 - 64 {
+            strDisplay = string_delete(strDisplay, lastSpace, descLen);
+            strDisplay += "#";
+            strPos = lastSpace;
+        }
+        
+        strPos++;
+    }
+}
 
+if !global.showInventory {
+    for (var i = 0; i &lt; ds_list_size(itemDisplayList); i++) {
+        var objToDestroy = ds_list_find_value(itemDisplayList, i);
+        if instance_exists(objToDestroy) instance_destroy(objToDestroy);
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -87,6 +120,7 @@ load_inventory();
           <argument>
             <kind>1</kind>
             <string>inventory_cleanup();
+ds_list_destroy(itemDisplayList);
 </string>
           </argument>
         </arguments>
@@ -121,9 +155,14 @@ load_inventory();
     //side panel
     draw_roundrect_ext(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 64 + 420, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
 
+    //draw the name of the item
     draw_set_color(c_white);
-    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, ds_grid_get(global.inventory_grid, 0, 0), global.textScale, global.textScale, 0);
-    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64, 64 + 128, ds_grid_get(global.inventory_grid, 0, 3), global.textScale, global.textScale, 0);
+    draw_set_halign(fa_center);
+    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 210, 64 + 64, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
+
+    //draw the item description
+    draw_set_halign(fa_left);
+    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128, strDisplay, global.textScale, global.textScale, 0);
     
     //draws the slots
     for (var i = 0; i &lt; 7; i++) {
@@ -136,15 +175,20 @@ load_inventory();
     for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
         //gets the sprite names
         var sprName = ds_grid_get(global.inventory_grid, k, 6);
+        //gets the object
+        var objName = ds_grid_get(global.inventory_grid, k, 5);
         
         //finds the sprite index
-        if is_string(sprName) {
+        if is_string(sprName) &amp;&amp; is_string(objName) {
             var sprToCheck = asset_get_index(sprName);
-            if sprite_exists(sprToCheck) {
+            var objToCheck = asset_get_index(objName);
+            if sprite_exists(sprToCheck) &amp;&amp; object_exists(objToCheck) {
                 var sprWidth = sprite_get_width(sprToCheck);
                 var sprHeight = sprite_get_height(sprToCheck);
                 var padding = 64;
-                draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
+                var obj = instance_create(128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding, objToCheck);
+                ds_list_add(itemDisplayList, obj);
+                //draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
             }
         }
     }
