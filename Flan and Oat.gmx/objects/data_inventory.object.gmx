@@ -70,24 +70,26 @@ itemDisplayList = ds_list_create();
             <kind>1</kind>
             <string>if keyboard_check_pressed(toggle) global.showInventory = !global.showInventory;
 
-desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
-if is_string(desc) {
-    descLen = string_length(desc);
-    
-    while strPos &lt;= descLen {
-        nextChar = string_char_at(desc, strPos);
+if global.curInvSelect != noone {
+    desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
+    if is_string(desc) {
+        descLen = string_length(desc);
         
-        if nextChar == " " lastSpace = strPos;
-        
-        strDisplay += nextChar;
-        
-        if string_width(strDisplay) * global.textScale &gt; 420 - 64 {
-            strDisplay = string_delete(strDisplay, lastSpace, descLen);
-            strDisplay += "#";
-            strPos = lastSpace;
+        while strPos &lt;= descLen {
+            nextChar = string_char_at(desc, strPos);
+            
+            if nextChar == " " lastSpace = strPos;
+            
+            strDisplay += nextChar;
+            
+            if string_width(strDisplay) * global.textScale &gt; 420 - 64 {
+                strDisplay = string_delete(strDisplay, lastSpace, descLen);
+                strDisplay += "#";
+                strPos = lastSpace;
+            }
+            
+            strPos++;
         }
-        
-        strPos++;
     }
 }
 
