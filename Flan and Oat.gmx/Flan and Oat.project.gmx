@@ -69,6 +69,7 @@
       </scripts>
       <scripts name="HUD">
         <script>scripts\scr_sim_pause.gml</script>
+        <script>scripts\scr_sim_inv.gml</script>
         <script>scripts\scr_sim_map.gml</script>
       </scripts>
       <scripts name="Pause">
@@ -85,6 +86,7 @@
       <script>scripts\load_inventory.gml</script>
       <script>scripts\save_player_stats.gml</script>
       <script>scripts\load_player_stats.gml</script>
+      <script>scripts\pause_game.gml</script>
     </scripts>
     <scripts name="Textbox">
       <scripts name="Essentials">
@@ -164,12 +166,14 @@
       <object>objects\gui_camera</object>
       <object>objects\gui_pause_button</object>
       <object>objects\gui_map_button</object>
+      <object>objects\gui_inv_button</object>
     </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_initialize</room>
     <room>rooms\rm_main_menu</room>
     <room>rooms\rm_pause_menu</room>
+    <room>rooms\rm_inventory</room>
     <room>rooms\rm_map</room>
     <rooms name="Area 1">
       <room>rooms\rm_level_1</room>

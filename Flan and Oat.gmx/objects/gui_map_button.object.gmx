@@ -58,10 +58,10 @@ strHeight = string_height(name) * global.textScale;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>x = view_xview[0] + 96;
+            <string>x = view_xview[0] + 80;
 y = view_yview[0] + 32;
 
-if room = rm_map || room = rm_pause_menu instance_destroy();
+if room = rm_map || room = rm_pause_menu || room = rm_inventory instance_destroy();
 
 event_inherited();
 </string>

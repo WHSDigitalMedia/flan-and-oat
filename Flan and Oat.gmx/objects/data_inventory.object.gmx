@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-2</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,26 +25,22 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.showInventory = false;
-global.curInvSelect = noone;
-toggle = vk_shift;
+            <string>global.curInvSelect = noone;
+itemsDrawn = false;
 
 global.max_items = 25;
 item_params = 10; //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
-//testing stuff
-inventory_add("Spitoon Hat", 1);
-inventory_add("Health Pot", 3);
-inventory_add("Stone Sword", 2);
-load_inventory();
-
+//item descriptions
 outputString = "";
 lastSpace = 0;
 strPos = 1;
 strDisplay = "";
 
-itemDisplayList = ds_list_create();
+itemDisplayList = ds_list_create(); //objects created by the inventory stored here
+
+load_inventory();
 
 </string>
           </argument>
@@ -68,9 +64,7 @@ itemDisplayList = ds_list_create();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if keyboard_check_pressed(toggle) global.showInventory = !global.showInventory;
-
-if global.curInvSelect != noone {
+            <string>if global.curInvSelect != noone {
     desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
     if is_string(desc) {
         descLen = string_length(desc);
@@ -93,7 +87,32 @@ if global.curInvSelect != noone {
     }
 }
 
-if !global.showInventory {
+if room == rm_inventory &amp;&amp; !itemsDrawn {
+    for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
+        //gets the sprite names
+        var sprName = ds_grid_get(global.inventory_grid, k, 6);
+        //gets the object
+        var objName = ds_grid_get(global.inventory_grid, k, 5);
+        
+        //finds the object index
+        if is_string(sprName) &amp;&amp; is_string(objName) {
+            var sprToCheck = asset_get_index(sprName);
+            var objToCheck = asset_get_index(objName);
+            if sprite_exists(sprToCheck) &amp;&amp; object_exists(objToCheck) {
+                var sprWidth = sprite_get_width(sprToCheck);
+                var sprHeight = sprite_get_height(sprToCheck);
+                var padding = 64;
+                var obj = instance_create(128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding, objToCheck);
+                ds_list_add(itemDisplayList, obj);
+                //draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
+            }
+        }
+    }
+    itemsDrawn = true;
+}
+
+if room != rm_inventory {
+    itemsDrawn = false;
     for (var i = 0; i &lt; ds_list_size(itemDisplayList); i++) {
         var objToDestroy = ds_list_find_value(itemDisplayList, i);
         if instance_exists(objToDestroy) instance_destroy(objToDestroy);
@@ -128,7 +147,7 @@ ds_list_destroy(itemDisplayList);
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="64">
+    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -145,7 +164,7 @@ ds_list_destroy(itemDisplayList);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.showInventory {
+            <string>if room == rm_inventory {
     /***************************************************
       All of this is really jank code, needs to be fixed / made more efficient at a future date
      ***************************************************/
@@ -156,42 +175,30 @@ ds_list_destroy(itemDisplayList);
     
     //side panel
     draw_roundrect_ext(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 64 + 420, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
-
-    //draw the name of the item
-    draw_set_color(c_white);
-    draw_set_halign(fa_center);
-    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 210, 64 + 64, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
-
-    //draw the item description
-    draw_set_halign(fa_left);
-    draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128, strDisplay, global.textScale, global.textScale, 0);
+    
+    if global.curInvSelect != noone {
+        //draw the name of the item
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 210, 64 + 64, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
+    
+        //draw the item description
+        draw_set_halign(fa_left);
+        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128, strDisplay, global.textScale, global.textScale, 0);
+        
+        //draw the item stats
+        var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 4);
+        var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
+        var dist = string_height(strDisplay) * global.textScale;
+        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128 + dist + 64, "Cost: " + string(cost), global.textScale, global.textScale, 0);
+        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128 + dist + 128, "Amount: " + string(number), global.textScale, global.textScale, 0);
+    }
     
     //draws the slots
     for (var i = 0; i &lt; 7; i++) {
         for (var j = 0; j &lt; 6; j++) {
             draw_set_color(c_gray);
             draw_roundrect_ext(96 + (i * 32) + (i * 64), 96 + (j * 32) + (j * 64), 96 + (i * 32) + (i * 64) + 64, 96 + (j * 32) + (j * 64) + 64, 5, 5, false);         
-        }
-    }
-
-    for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
-        //gets the sprite names
-        var sprName = ds_grid_get(global.inventory_grid, k, 6);
-        //gets the object
-        var objName = ds_grid_get(global.inventory_grid, k, 5);
-        
-        //finds the sprite index
-        if is_string(sprName) &amp;&amp; is_string(objName) {
-            var sprToCheck = asset_get_index(sprName);
-            var objToCheck = asset_get_index(objName);
-            if sprite_exists(sprToCheck) &amp;&amp; object_exists(objToCheck) {
-                var sprWidth = sprite_get_width(sprToCheck);
-                var sprHeight = sprite_get_height(sprToCheck);
-                var padding = 64;
-                var obj = instance_create(128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding, objToCheck);
-                ds_list_add(itemDisplayList, obj);
-                //draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
-            }
         }
     }
 }
