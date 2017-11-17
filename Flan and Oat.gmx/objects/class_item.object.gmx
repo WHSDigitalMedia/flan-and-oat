@@ -27,6 +27,37 @@
             <kind>1</kind>
             <string>depth = -3;
 padding = 16; //extra room to cover the full item
+
+//alarm to determine whether to pick up or not
+alarm_set(0, -1);
+
+pickupDelay = room_speed * 0.20;
+gotXY = false;
+prevX = x;
+prevY = y;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>alarm_set(0, -1);
 </string>
           </argument>
         </arguments>
@@ -49,24 +80,89 @@ padding = 16; //extra room to cover the full item
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//check if clicked
-if mouse_check_button_released(mb_left) {
-    if mouse_x &gt; x - sprite_width/2 - padding &amp;&amp; mouse_x &lt; x + sprite_width/2 + padding {
-        if mouse_y &gt; y - sprite_height/2 - padding &amp;&amp; mouse_y &lt; y + sprite_height/2 + padding {
-            //change the side panel display
-            with (data_inventory) {
-                outputString = "";
-                lastSpace = 0;
-                strPos = 1;
-                strDisplay = "";
-            } 
-            //set the currently selected item
-            for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
-                if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 5) {
-                    global.curInvSelect = i;
-                    i = ds_grid_width(global.inventory_grid) + 1;
-                }
+            <string>//check if mouse over
+if isOver(noone, x - sprite_width/2 - padding, x + sprite_width/2 + padding, y - sprite_width/2 - padding, y + sprite_width/2 + padding) {
+    //change the side panel display
+    if mouse_check_button_pressed(mb_left) {
+        with (data_inventory) {
+            outputString = "";
+            lastSpace = 0;
+            strPos = 1;
+            strDisplay = "";
+        } 
+        //set the currently selected item
+        for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+            if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 5) {
+                global.curInvSelect = i;
+                i = ds_grid_width(global.inventory_grid) + 1;
             }
+        }
+        alarm_set(0, pickupDelay);    
+    }
+    
+    //pickup item
+    if mouse_check_button(mb_left) &amp;&amp; alarm[0] == -1 &amp;&amp; global.pickup == noone { 
+        //get current X and Y coords to return if dropped
+        if !gotXY {
+            prevX = x;
+            prevY = y;
+            gotXY = true;
+        }
+        global.pickup = self;
+    } 
+    
+    //drop item
+    if mouse_check_button_released(mb_left) &amp;&amp; global.pickup == self {
+        if place_empty(x, y) {
+            //return to intial slot
+            x = prevX;
+            y = prevY;
+            global.pickup = noone;
+            gotXY = false;
+        } else {
+            inventory_switch(); 
+            global.pickup = noone;
+            gotXY = false;
+        }
+    }
+}
+
+//drag items
+if global.pickup == self {
+    x = mouse_x;
+    y = mouse_y;
+}
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_self();
+
+if global.curInvSelect != noone {
+    var toCheck = asset_get_index(ds_grid_get(global.inventory_grid, global.curInvSelect, 5));
+    if instance_exists(toCheck) {
+        if object_index == toCheck.object_index {
+            draw_roundrect_colour(x - sprite_width/2 - 16, y - sprite_height/2 - 16, x + sprite_width/2 + 16, y + sprite_width/2 + 16, c_white, c_white, true);
         }
     }
 }

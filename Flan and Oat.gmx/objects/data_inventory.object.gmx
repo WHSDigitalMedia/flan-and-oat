@@ -32,6 +32,8 @@ global.max_items = 25;
 item_params = 10; //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
+global.pickup = noone;
+
 //item descriptions
 outputString = "";
 lastSpace = 0;
@@ -40,6 +42,9 @@ strDisplay = "";
 
 itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
+/*inventory_add("Stone Sword", 1);
+inventory_add("Health Pot", 1);
+inventory_add("Spitoon Hat", 1);*/
 load_inventory();
 
 </string>
@@ -141,7 +146,6 @@ if room != rm_inventory {
           <argument>
             <kind>1</kind>
             <string>inventory_cleanup();
-ds_list_destroy(itemDisplayList);
 </string>
           </argument>
         </arguments>
