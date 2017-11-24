@@ -28,6 +28,7 @@
             <string>pause = false;
 map = false;
 inv = false;
+combat = false;
 
 intensity = 0.7; //the blur intensity
 steps = 3; //also affects intensity but it's better to change the above value
@@ -58,7 +59,7 @@ global.roomPrev = -1;
           <argument>
             <kind>1</kind>
             <string>//check to see if the gui buttons exist
-if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_inventory {
+if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_inventory &amp;&amp; room != rm_combat {
     if !instance_exists(gui_pause_button) instance_create(x, y, gui_pause_button);
     if !instance_exists(gui_map_button) instance_create(x, y, gui_map_button);
     if !instance_exists(gui_inv_button) instance_create(x, y, gui_inv_button);
@@ -67,17 +68,17 @@ if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_invento
 //makes sure we aren't interrupting an important NPC dialogue
 if !instance_exists(class_textBox) {
     //pressing tab toggles the map
-    if keyboard_check_released(vk_tab) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_inventory {
+    if keyboard_check_released(vk_tab) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_inventory &amp;&amp; room != rm_combat {
         map = !map;
         pause_game();
     }
     //pressing shift toggles the inventory
-    if keyboard_check_released(vk_shift) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_map {
+    if keyboard_check_released(vk_shift) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_combat{
         inv = !inv;
         pause_game();
     }
     //pressing esc acts as a catch all    
-    if keyboard_check_released(vk_escape) {    
+    if keyboard_check_released(vk_escape) &amp;&amp; room != rm_combat {    
         pause_game();
         map = false;
         inv = false;
@@ -161,6 +162,10 @@ if !instance_exists(class_textBox) {
             with (class_player) persistent = false;
             with (gui_camera) persistent = false;
             room_goto(rm_inventory);
+        } else if combat {
+            with (class_player) allowMovement = false;
+            with (gui_camera) instance_destroy();
+            room_goto(rm_combat);
         } else {
             with (class_player) persistent = false;
             with (gui_camera) persistent = false;

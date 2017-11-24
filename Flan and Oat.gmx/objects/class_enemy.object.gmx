@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>class_playerPrompt</parentName>
+  <parentName>class_npc</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,13 +25,13 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
-action[0] = scr_text1;
-action[1] = scr_text2;
-action[2] = scr_text3;
+            <string>msg = "Hey, you! Let's battle!#[1] Alright, but prepare to have your butt kicked!#[2] What? No way!";
+action[0] = init_combat;
+action[1] = scr_null;
 arg[0, 0] = noone;
 arg[1, 0] = noone;
-arg[2, 0] = noone;
+
+playerToggle = false;
 </string>
           </argument>
         </arguments>
@@ -54,9 +54,36 @@ arg[2, 0] = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+            <string>if !playerToggle || keyboard_check_pressed(ord('E')) {
+    event_inherited();
+    playerToggle = true;
+}
 
-event_inherited();
+if distance_to_object(class_player) &gt; 64 playerToggle = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_self();
+draw_text(x, y, playerToggle);
 </string>
           </argument>
         </arguments>

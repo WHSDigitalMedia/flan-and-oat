@@ -107,6 +107,9 @@
         <script>scripts\scr_text2.gml</script>
         <script>scripts\scr_text3.gml</script>
       </scripts>
+      <scripts name="Enemies">
+        <script>scripts\init_combat.gml</script>
+      </scripts>
     </scripts>
   </scripts>
   <fonts name="fonts">
@@ -134,8 +137,12 @@
     </objects>
     <objects name="NPCs">
       <object>objects\class_npc</object>
+      <object>objects\class_playerPrompt</object>
       <object>objects\npc_1</object>
       <object>objects\npc_2</object>
+      <objects name="Enemies">
+        <object>objects\class_enemy</object>
+      </objects>
     </objects>
     <objects name="Environment">
       <object>objects\class_solid</object>
@@ -176,6 +183,7 @@
     <room>rooms\rm_pause_menu</room>
     <room>rooms\rm_inventory</room>
     <room>rooms\rm_map</room>
+    <room>rooms\rm_combat</room>
     <rooms name="Area 1">
       <room>rooms\rm_level_1</room>
       <room>rooms\rm_level_2</room>
