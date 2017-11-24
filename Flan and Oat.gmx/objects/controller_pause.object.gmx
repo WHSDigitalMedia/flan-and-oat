@@ -25,14 +25,14 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>pause = false;
-map = false;
-inv = false;
-combat = false;
+            <string>global.pause = false;
+global.map = false;
+global.inv = false;
+global.combat = false;
 
 intensity = 0.7; //the blur intensity
 steps = 3; //also affects intensity but it's better to change the above value
-draw = false; 
+global.draw = false; 
 spr = -1; //the sprite the surface will draw
 
 global.roomPrev = -1;
@@ -69,19 +69,19 @@ if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_invento
 if !instance_exists(class_textBox) {
     //pressing tab toggles the map
     if keyboard_check_released(vk_tab) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_inventory &amp;&amp; room != rm_combat {
-        map = !map;
+        global.map = !global.map;
         pause_game();
     }
     //pressing shift toggles the inventory
     if keyboard_check_released(vk_shift) &amp;&amp; room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_combat{
-        inv = !inv;
+        global.inv = !global.inv;
         pause_game();
     }
     //pressing esc acts as a catch all    
     if keyboard_check_released(vk_escape) &amp;&amp; room != rm_combat {    
         pause_game();
-        map = false;
-        inv = false;
+        global.map = false;
+        global.inv = false;
     }
 }
 </string>
@@ -129,8 +129,8 @@ if !instance_exists(class_textBox) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if pause {
-    if draw {
+            <string>if global.pause {
+    if global.draw {
         var i, surface;
         for (i = 0; i &lt;= steps; i++) {
             surface[i] = surface_create(window_get_width() * power(intensity, i), window_get_height() * power(intensity, i));
@@ -154,15 +154,15 @@ if !instance_exists(class_textBox) {
         spr = sprite_create_from_surface(surface[0], 0, 0, window_get_width(), window_get_height(), false, false, 0, 0);
         for (i = 0; i &lt;= steps; i++) surface_free(surface[i]);
         
-        if map {
+        if global.map {
             with (class_player) allowMovement = false;
             with (gui_camera) instance_destroy();
             room_goto(rm_map);
-        } else if inv {
+        } else if global.inv {
             with (class_player) persistent = false;
             with (gui_camera) persistent = false;
             room_goto(rm_inventory);
-        } else if combat {
+        } else if global.combat {
             with (class_player) allowMovement = false;
             with (gui_camera) instance_destroy();
             room_goto(rm_combat);
@@ -171,7 +171,7 @@ if !instance_exists(class_textBox) {
             with (gui_camera) persistent = false;
             room_goto(rm_pause_menu);
         }
-        draw = false;
+        global.draw = false;
     }
 }
 </string>
@@ -196,7 +196,7 @@ if !instance_exists(class_textBox) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
+            <string>if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
     //draws the blurred background
     draw_sprite(spr, 0, 0, 0); 
     

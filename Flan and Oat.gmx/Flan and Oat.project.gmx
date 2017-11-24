@@ -120,6 +120,7 @@
     <objects name="Controllers">
       <object>objects\controller_main_menu</object>
       <object>objects\controller_depth</object>
+      <object>objects\controller_combat</object>
       <object>objects\controller_pause</object>
     </objects>
     <objects name="Items">

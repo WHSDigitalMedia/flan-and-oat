@@ -135,12 +135,12 @@ if allowMovement {
           <argument>
             <kind>1</kind>
             <string>///Room Checks
-if room != rm_pause_menu &amp;&amp; room != rm_map {
+if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_combat {
     if !instance_exists(gui_camera) instance_create(x, y, gui_camera);
     visible = true;
 }
 if room != rm_pause_menu persistent = true;
-if room = rm_map allowMovement = false;
+if room == rm_map || room == rm_combat allowMovement = false;
 </string>
           </argument>
         </arguments>
