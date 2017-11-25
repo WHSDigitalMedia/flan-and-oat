@@ -38,6 +38,7 @@
     </sprites>
     <sprites name="Buttons">
       <sprite>sprites\spr_main_menu_start</sprite>
+      <sprite>sprites\spr_move</sprite>
     </sprites>
     <sprites name="Items">
       <sprite>sprites\spr_spitoonHat</sprite>
@@ -53,6 +54,10 @@
   <scripts name="scripts">
     <script>scripts\move_step.gml</script>
     <script>scripts\isOver.gml</script>
+    <scripts name="Combat">
+      <script>scripts\scr_attack.gml</script>
+      <script>scripts\char_select.gml</script>
+    </scripts>
     <scripts name="Inventory">
       <script>scripts\inventory_add.gml</script>
       <script>scripts\inventory_cleanup.gml</script>
@@ -141,6 +146,9 @@
       <object>objects\class_playerPrompt</object>
       <object>objects\npc_1</object>
       <object>objects\npc_2</object>
+      <objects name="Allies">
+        <object>objects\class_ally</object>
+      </objects>
       <objects name="Enemies">
         <object>objects\class_enemy</object>
       </objects>
@@ -171,11 +179,16 @@
     </objects>
     <objects name="GUI">
       <object>objects\class_textBox</object>
-      <object>objects\class_button</object>
       <object>objects\gui_camera</object>
-      <object>objects\gui_pause_button</object>
-      <object>objects\gui_map_button</object>
-      <object>objects\gui_inv_button</object>
+      <objects name="Buttons">
+        <object>objects\class_button</object>
+        <object>objects\gui_pause_button</object>
+        <object>objects\gui_map_button</object>
+        <object>objects\gui_inv_button</object>
+        <objects name="Moves">
+          <object>objects\class_move</object>
+        </objects>
+      </objects>
     </objects>
   </objects>
   <rooms name="rooms">

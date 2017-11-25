@@ -25,7 +25,134 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>barHeight = room_height/4;
+            <string>///Initalize Variables
+barHeight = room_height/4;
+
+global.charSelected = noone;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Return to overworld after battle
+if !instance_exists(class_enemy) {
+    with (controller_pause) {
+        global.combat = false;
+        pause_game();
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Cleanup ds_lists
+if ds_exists(allyList, ds_type_list) ds_list_destroy(allyList);
+if ds_exists(enemyList, ds_type_list) ds_list_destroy(enemyList);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Create combat lists
+allyList = ds_list_create();
+enemyList = ds_list_create();
+
+//add player and allies to ds_list
+if instance_exists(class_player) ds_list_add(allyList, class_player);
+if instance_exists(class_ally) {
+    for (var i = 0; i &lt; instance_number(class_ally); i++) {
+        ds_list_add(allyList, instance_find(class_ally, i));
+    }
+}
+
+//add enemies to ds_list
+if instance_exists(class_enemy) {
+    for (var j = 0; j &lt; instance_number(class_enemy); j++) {
+        ds_list_add(enemyList, instance_find(class_enemy, j));
+    }
+}
+
+//set the first instance in the ally list to be the initially selected character
+/*var initChar = ds_list_find_value(allyList, 0);
+if initChar == class_player global.charSelected = data_player;
+else global.charSelected = initChar;*/
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Cleanup ds_lists
+if ds_exists(allyList, ds_type_list) ds_list_destroy(allyList);
+if ds_exists(enemyList, ds_type_list) ds_list_destroy(enemyList);
 </string>
           </argument>
         </arguments>
@@ -48,9 +175,132 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_alpha(0.5);
+            <string>///Main HUD
+draw_set_alpha(0.5);
 draw_rectangle_colour(0, room_height - barHeight, room_width, room_height, c_gray, c_gray, c_gray, c_gray, false);
 draw_set_alpha(1);
+
+//Draws the stats of the selected character
+if instance_exists(global.charSelected) {
+    var atk, def, acc, spd;
+    atk = string(global.charSelected.atk);
+    def = string(global.charSelected.def);
+    acc = string(global.charSelected.acc);
+    spd = string(global.charSelected.spd);
+    
+    var obj;
+    if global.charSelected == data_player obj = object_get_name(class_player);
+    else obj = object_get_name(global.charSelected.object_index);
+    
+    draw_set_halign(fa_center);
+    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.9,
+            obj, global.textScale, global.textScale, 0, c_white, c_white, c_white, 
+            c_white, 1);
+    
+    draw_set_halign(fa_left);
+    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.60, 
+        "Attack: " + atk + "#Defense: " + def + "#Accuracy: " + acc + "#Speed: " + spd, 
+        0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
+}
+
+//Draws the health bar of player
+draw_roundrect_colour_ext(64, room_height - 128, 64 + data_player.hp * 10, room_height - 72, 5, 5, c_red, c_red, false);
+draw_sprite_ext(spr_player, image_index, 64, room_height - 64, 2, 2, 0, image_blend, 1);    
+draw_set_halign(fa_left);
+draw_text_transformed_colour(64, room_height - 64, string(data_player.hp) + "/" + string(data_player.hp),
+    0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Enemy Healthbars
+for (var i = 0; i &lt; ds_list_size(enemyList); i++) {
+    var enemy = ds_list_find_value(enemyList, i);
+    if instance_exists(enemy) {
+        draw_roundrect_colour_ext(enemy.x - 64, enemy.y + 32, enemy.x - 64 + enemy.hp * 10, enemy.y + 48, 5, 5, c_red, c_red, false);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Select a Move
+var move;
+
+if global.charSelected == data_player {
+    draw_ellipse(class_player.x - 64, class_player.y - 64, class_player.x + 64, class_player.y + 64, true);
+    
+    //move array
+    move[0] = instance_create(class_player.x - 64, class_player.y + 64, class_move);
+    move[1] = instance_create(class_player.x - 64, class_player.y - 64, class_move);
+    move[2] = instance_create(class_player.x + 64, class_player.y + 64, class_move);
+    move[3] = instance_create(class_player.x + 64, class_player.y - 64, class_move);
+    
+    for (var i = 0; i &lt; array_length_1d(move); i++) {
+        with (move[i]) {
+            action = scr_attack;
+        }
+    }
+} /*else {
+    for (var j = 0; j &lt; array_length_1d(move); j++) {
+        if instance_exists(move[j]) with (move[j]) instance_destroy();
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Select an Enemy
+
 </string>
           </argument>
         </arguments>

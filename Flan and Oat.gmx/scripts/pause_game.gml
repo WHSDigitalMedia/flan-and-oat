@@ -9,7 +9,7 @@ if !global.pause {
 } else {
     if instance_exists(class_button) with (class_button) instance_destroy();
     global.pause = false;
-    sprite_delete(spr);
+    with (controller_pause) if sprite_exists(spr) sprite_delete(spr);
     load_player_loc(true);        //return to previous room
     view_enabled = true;
     view_visible[0] = true;

@@ -25,19 +25,13 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Hey, you! Let's battle!#[1] Alright, but prepare to have your butt kicked!#[2] What? No way!";
-action[0] = init_combat;
+            <string>msg = "Hey there! What can I help you with?#[1] Nothing#[2] Nothing (but in a teenage angst kind of way)#[3] Nothing (but in a wistful sorta of tone)";
+action[0] = scr_null;
 action[1] = scr_null;
-arg[0, 0] = id;
+action[2] = scr_null;
+arg[0, 0] = noone;
 arg[1, 0] = noone;
-
-playerToggle = false;
-
-atk = 5;
-def = 5;
-spd = 5;
-acc = 5;
-hp = 7;
+arg[2, 0] = noone;
 </string>
           </argument>
         </arguments>
@@ -60,16 +54,8 @@ hp = 7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if !playerToggle || keyboard_check_pressed(ord('E')) {
-    event_inherited();
-    playerToggle = true;
-}
-
-if distance_to_object(class_player) &gt; 64 playerToggle = false;
-
+            <string>event_inherited();
 char_select();
-
-if hp &lt;= 0 instance_destroy();
 </string>
           </argument>
         </arguments>
