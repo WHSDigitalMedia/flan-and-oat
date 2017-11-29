@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-999</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -31,6 +31,62 @@ initMoves = false;
 
 global.charSelected = noone;
 curTurn = -1; //who is currently doing a thing
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>301</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_set_alarm</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>-1</string>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Attacks
+if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy {
+    with (data_player) {
+        hp--;
+    }
+    
+    ds_priority_delete_max(global.combatQueue);
+    alarm_set(0, room_speed);
+} else alarm_set(0, -1);
+
 </string>
           </argument>
         </arguments>
@@ -80,17 +136,12 @@ if !instance_exists(class_enemy) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//set who goes next
+            <string>///set who goes next
 curTurn = ds_priority_find_max(global.combatQueue);
 
-if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy {
-    with (data_player) {
-        hp--;
-    }
-    
-    ds_priority_delete_max(global.combatQueue);
-}
+if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy &amp;&amp; alarm[0] == -1 alarm_set(0, room_speed);
 
+//reset the queue
 if ds_priority_empty(global.combatQueue) {
     for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
         var inst = instance_find(class_nonGUI, i);
@@ -219,61 +270,6 @@ if ds_exists(global.combatQueue, ds_type_priority) ds_priority_destroy(global.co
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Main HUD
-draw_set_alpha(0.5);
-draw_rectangle_colour(0, room_height - barHeight, room_width, room_height, c_gray, c_gray, c_gray, c_gray, false);
-draw_set_alpha(1);
-
-//Draws the stats of the selected character
-if instance_exists(global.charSelected) {
-    var atk, def, acc, spd;
-    atk = string(global.charSelected.atk);
-    def = string(global.charSelected.def);
-    acc = string(global.charSelected.acc);
-    spd = string(global.charSelected.spd);
-    
-    var obj;
-    if global.charSelected == data_player obj = class_player.id;
-    else obj = global.charSelected.id;
-    
-    draw_set_halign(fa_center);
-    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.9,
-            obj, global.textScale, global.textScale, 0, c_white, c_white, c_white, 
-            c_white, 1);
-    
-    draw_set_halign(fa_left);
-    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.60, 
-        "Attack: " + atk + "#Defense: " + def + "#Accuracy: " + acc + "#Speed: " + spd, 
-        0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
-}
-
-//Draws the health bar of player
-draw_roundrect_colour_ext(64, room_height - 128, 64 + data_player.hp * 10, room_height - 72, 5, 5, c_red, c_red, false);
-draw_sprite_ext(spr_player, image_index, 64, room_height - 64, 2, 2, 0, image_blend, 1);    
-draw_set_halign(fa_left);
-draw_text_transformed_colour(64, room_height - 64, string(data_player.hp) + "/" + string(data_player.hp),
-    0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
-
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Draw Enemy Healthbars
 for (var i = 0; i &lt; ds_list_size(enemyList); i++) {
     var enemy = ds_list_find_value(enemyList, i);
@@ -302,7 +298,7 @@ for (var i = 0; i &lt; ds_list_size(enemyList); i++) {
           <argument>
             <kind>1</kind>
             <string>///Select a Move
-if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_player {
+if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_player {
     var move;
     
     if global.charSelected == data_player {
@@ -348,6 +344,65 @@ if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_player {
             <kind>1</kind>
             <string>///Select an Enemy
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Main HUD
+draw_set_alpha(0.5);
+draw_rectangle_colour(0, room_height - barHeight, room_width, room_height, c_gray, c_gray, c_gray, c_gray, false);
+draw_set_alpha(1);
+
+//Draws the stats of the selected character
+if instance_exists(global.charSelected) {
+    var atk, def, acc, spd;
+    atk = string(global.charSelected.atk);
+    def = string(global.charSelected.def);
+    acc = string(global.charSelected.acc);
+    spd = string(global.charSelected.spd);
+    
+    var obj;
+    if global.charSelected == data_player obj = class_player.id;
+    else obj = global.charSelected.id;
+    
+    draw_set_halign(fa_center);
+    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.9,
+            obj, global.textScale, global.textScale, 0, c_white, c_white, c_white, 
+            c_white, 1);
+    
+    draw_set_halign(fa_left);
+    draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.60, 
+        "Attack: " + atk + "#Defense: " + def + "#Accuracy: " + acc + "#Speed: " + spd, 
+        0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
+}
+
+//Draws the health bar of player
+draw_roundrect_colour_ext(64, room_height - 128, 64 + data_player.hp * 10, room_height - 72, 5, 5, c_red, c_red, false);
+draw_sprite_ext(spr_player, image_index, 64, room_height - 64, 2, 2, 0, image_blend, 1);    
+draw_set_halign(fa_left);
+draw_text_transformed_colour(64, room_height - 64, string(data_player.hp) + "/" + string(data_player.hp),
+    0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
+
+    
+//Draw the current turn (debugging purposes only)
+draw_text_transformed_colour(64, 64, "Current Turn: " + string(curTurn), global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+draw_text_transformed_colour(64, 128, "Alarm: " + string(alarm[0]), global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
 </string>
           </argument>
         </arguments>
