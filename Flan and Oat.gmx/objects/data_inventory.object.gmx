@@ -42,9 +42,9 @@ strDisplay = "";
 
 itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
-/*inventory_add("Stone Sword", 1);
+inventory_add("Stone Sword", 1);
 inventory_add("Health Pot", 1);
-inventory_add("Spitoon Hat", 1);*/
+inventory_add("Spitoon Hat", 1);
 load_inventory();
 
 </string>

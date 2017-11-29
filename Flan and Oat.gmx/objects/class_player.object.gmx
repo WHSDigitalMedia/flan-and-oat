@@ -163,6 +163,12 @@ if room == rm_map || room == rm_combat allowMovement = false;
             <kind>1</kind>
             <string>///Combat
 char_select();
+
+atk = data_player.atk;
+def = data_player.def;
+spd = data_player.spd;
+acc = data_player.acc;
+hp = data_player.hp;
 </string>
           </argument>
         </arguments>

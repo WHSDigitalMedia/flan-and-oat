@@ -27,8 +27,10 @@
             <kind>1</kind>
             <string>///Initalize Variables
 barHeight = room_height/4;
+initMoves = false;
 
 global.charSelected = noone;
+curTurn = -1; //who is currently doing a thing
 </string>
           </argument>
         </arguments>
@@ -62,6 +64,43 @@ if !instance_exists(class_enemy) {
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>//set who goes next
+curTurn = ds_priority_find_max(global.combatQueue);
+
+if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy {
+    with (data_player) {
+        hp--;
+    }
+    
+    ds_priority_delete_max(global.combatQueue);
+}
+
+if ds_priority_empty(global.combatQueue) {
+    for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
+        var inst = instance_find(class_nonGUI, i);
+        ds_priority_add(global.combatQueue, inst, inst.spd);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="7" enumb="5">
       <action>
@@ -80,9 +119,10 @@ if !instance_exists(class_enemy) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Cleanup ds_lists
+            <string>///Cleanup Data Structures
 if ds_exists(allyList, ds_type_list) ds_list_destroy(allyList);
 if ds_exists(enemyList, ds_type_list) ds_list_destroy(enemyList);
+if ds_exists(global.combatQueue, ds_type_priority) ds_priority_destroy(global.combatQueue);
 </string>
           </argument>
         </arguments>
@@ -106,28 +146,31 @@ if ds_exists(enemyList, ds_type_list) ds_list_destroy(enemyList);
           <argument>
             <kind>1</kind>
             <string>///Create combat lists
-allyList = ds_list_create();
-enemyList = ds_list_create();
 
+//overall priority queue, ordered by speed
+global.combatQueue = ds_priority_create();
+for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
+    var inst = instance_find(class_nonGUI, i);
+    ds_priority_add(global.combatQueue, inst, inst.spd);
+}
+
+/*lists for drawing healthbars*/
 //add player and allies to ds_list
+allyList = ds_list_create();
 if instance_exists(class_player) ds_list_add(allyList, class_player);
 if instance_exists(class_ally) {
-    for (var i = 0; i &lt; instance_number(class_ally); i++) {
-        ds_list_add(allyList, instance_find(class_ally, i));
+    for (var k = 0; k &lt; instance_number(class_ally); k++) {
+        ds_list_add(allyList, instance_find(class_ally, k));
     }
 }
 
 //add enemies to ds_list
+enemyList = ds_list_create();
 if instance_exists(class_enemy) {
     for (var j = 0; j &lt; instance_number(class_enemy); j++) {
         ds_list_add(enemyList, instance_find(class_enemy, j));
     }
 }
-
-//set the first instance in the ally list to be the initially selected character
-/*var initChar = ds_list_find_value(allyList, 0);
-if initChar == class_player global.charSelected = data_player;
-else global.charSelected = initChar;*/
 </string>
           </argument>
         </arguments>
@@ -150,9 +193,10 @@ else global.charSelected = initChar;*/
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Cleanup ds_lists
+            <string>///Cleanup Data Structures
 if ds_exists(allyList, ds_type_list) ds_list_destroy(allyList);
 if ds_exists(enemyList, ds_type_list) ds_list_destroy(enemyList);
+if ds_exists(global.combatQueue, ds_type_priority) ds_priority_destroy(global.combatQueue);
 </string>
           </argument>
         </arguments>
@@ -189,8 +233,8 @@ if instance_exists(global.charSelected) {
     spd = string(global.charSelected.spd);
     
     var obj;
-    if global.charSelected == data_player obj = object_get_name(class_player);
-    else obj = object_get_name(global.charSelected.object_index);
+    if global.charSelected == data_player obj = class_player.id;
+    else obj = global.charSelected.id;
     
     draw_set_halign(fa_center);
     draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.9,
@@ -258,26 +302,29 @@ for (var i = 0; i &lt; ds_list_size(enemyList); i++) {
           <argument>
             <kind>1</kind>
             <string>///Select a Move
-var move;
-
-if global.charSelected == data_player {
-    draw_ellipse(class_player.x - 64, class_player.y - 64, class_player.x + 64, class_player.y + 64, true);
+if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_player {
+    var move;
     
-    //move array
-    move[0] = instance_create(class_player.x - 64, class_player.y + 64, class_move);
-    move[1] = instance_create(class_player.x - 64, class_player.y - 64, class_move);
-    move[2] = instance_create(class_player.x + 64, class_player.y + 64, class_move);
-    move[3] = instance_create(class_player.x + 64, class_player.y - 64, class_move);
+    if global.charSelected == data_player {
+        draw_ellipse(class_player.x - 64, class_player.y - 64, class_player.x + 64, class_player.y + 64, true);
     
-    for (var i = 0; i &lt; array_length_1d(move); i++) {
-        with (move[i]) {
-            action = scr_attack;
+        if !initMoves {    
+            //move array
+            move[0] = instance_create(class_player.x - 64, class_player.y + 64, class_move);
+            move[1] = instance_create(class_player.x - 64, class_player.y - 64, class_move);
+            move[2] = instance_create(class_player.x + 64, class_player.y + 64, class_move);
+            move[3] = instance_create(class_player.x + 64, class_player.y - 64, class_move);
+            
+            for (var i = 0; i &lt; array_length_1d(move); i++) {
+                with (move[i]) {
+                    action = scr_attack;
+                }
+            }
+            initMoves = true;
         }
-    }
-} /*else {
-    for (var j = 0; j &lt; array_length_1d(move); j++) {
-        if instance_exists(move[j]) with (move[j]) instance_destroy();
-    }
+    } 
+    
+    if !instance_exists(class_move) initMoves = false;
 }
 </string>
           </argument>
