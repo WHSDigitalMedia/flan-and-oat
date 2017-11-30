@@ -30,6 +30,7 @@ def = 10;
 spd = 10;
 acc = 10;
 hp = 10;
+maxhp = 10;
 room_index = room;
 
 load_player_stats();

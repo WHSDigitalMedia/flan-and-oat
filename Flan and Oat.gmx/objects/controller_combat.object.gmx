@@ -143,6 +143,7 @@ if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.objec
 
 //reset the queue
 if ds_priority_empty(global.combatQueue) {
+    global.charSelected = noone;
     for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
         var inst = instance_find(class_nonGUI, i);
         ds_priority_add(global.combatQueue, inst, inst.spd);
@@ -396,7 +397,7 @@ if instance_exists(global.charSelected) {
 draw_roundrect_colour_ext(64, room_height - 128, 64 + data_player.hp * 10, room_height - 72, 5, 5, c_red, c_red, false);
 draw_sprite_ext(spr_player, image_index, 64, room_height - 64, 2, 2, 0, image_blend, 1);    
 draw_set_halign(fa_left);
-draw_text_transformed_colour(64, room_height - 64, string(data_player.hp) + "/" + string(data_player.hp),
+draw_text_transformed_colour(64, room_height - 64, string(data_player.hp) + "/" + string(data_player.maxhp),
     0.15, 0.15, 0, c_white, c_white, c_white, c_white, 1);
 
     
