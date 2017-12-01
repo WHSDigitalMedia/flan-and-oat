@@ -29,12 +29,15 @@
 name = "";
 action = noone;
 text_color = c_gray;
-center = false;
+center = 1;
 font = fnt_textbox;
 spr = spr_main_menu_start;
 strWidth = string_width(name) * global.textScale;
 strHeight = string_height(name) * global.textScale;
+oWidth = -1;
+oHeight = -1;
 depth = -100000;
+padding = 10;
 </string>
           </argument>
         </arguments>
@@ -57,8 +60,14 @@ depth = -100000;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>strWidth = string_width(name) * global.textScale;
-strHeight = string_height(name) * global.textScale;
+            <string>///Adjusts Width and Height and checks if mouse is over
+if oWidth == -1 &amp;&amp; oHeight == -1 {
+    strWidth = string_width(name) * global.textScale;
+    strHeight = string_height(name) * global.textScale;
+} else {
+    strWidth = oWidth;
+    strHeight = oHeight;
+}
 
 if isOver(self, 0, 0, 0, 0) {
     if mouse_check_button_pressed(mb_left) script_execute(action);
@@ -86,19 +95,28 @@ if isOver(self, 0, 0, 0, 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if sprite_get_width(spr) &lt; strWidth image_xscale = 1.2 * (strWidth / sprite_get_width(spr));
-draw_set_font(fnt_textbox);
+            <string>///Draw the button
 
-if center {
+//adjusts the box's dimensions
+if sprite_get_width(spr) &lt; strWidth image_xscale = 1.2 * (strWidth / sprite_get_width(spr));
+draw_set_font(fnt_textbox);
+draw_set_color(text_color);
+
+//draw text based on alignment
+if center == 1 {
     draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
+    draw_set_valign(fa_middle); 
+    draw_text_transformed(x, y, name, global.textScale, global.textScale, 0);
+} else if center == 0 {
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_text_transformed(x - sprite_width/2 + padding, y - sprite_height/4, name, global.textScale, global.textScale, 0);
+} else if center == 2 {
+    draw_set_halign(fa_right);
+    draw_set_valign(fa_top);    
+    draw_text_transformed(x + sprite_width/2 - padding, y - sprite_height/4, name, global.textScale, global.textScale, 0);
 }
 
-draw_set_color(text_color);
-draw_text_transformed(x, y, name, global.textScale, global.textScale, 0);
-
-draw_set_halign(fa_left);
-draw_set_valign(fa_top);
 </string>
           </argument>
         </arguments>

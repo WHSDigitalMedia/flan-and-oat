@@ -67,6 +67,7 @@
     </scripts>
     <scripts name="Menus">
       <script>scripts\create_button.gml</script>
+      <script>scripts\create_button_ext.gml</script>
       <scripts name="Main">
         <script>scripts\scr_main_menu_play.gml</script>
         <script>scripts\scr_main_menu_quit.gml</script>
@@ -79,6 +80,8 @@
         <script>scripts\scr_sim_map.gml</script>
       </scripts>
       <scripts name="Pause">
+        <script>scripts\scr_pause_inventory.gml</script>
+        <script>scripts\scr_pause_map.gml</script>
         <script>scripts\scr_pause_return.gml</script>
       </scripts>
     </scripts>
