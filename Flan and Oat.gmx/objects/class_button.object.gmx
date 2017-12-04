@@ -28,6 +28,8 @@
             <string>///Set Variables
 name = "";
 action = noone;
+isOverAction = -1;
+inaction = -1;
 text_color = c_gray;
 center = 1;
 font = fnt_textbox;
@@ -70,9 +72,13 @@ if oWidth == -1 &amp;&amp; oHeight == -1 {
 }
 
 if isOver(self, 0, 0, 0, 0) {
+    if isOverAction != -1 script_execute(isOverAction); 
     if mouse_check_button_pressed(mb_left) script_execute(action);
     if action != scr_null text_color = c_white;
-} else text_color = c_gray;
+} else {
+    if inaction != -1 script_execute(inaction);
+    text_color = c_gray;
+}
 </string>
           </argument>
         </arguments>

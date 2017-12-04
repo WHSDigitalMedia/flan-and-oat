@@ -211,6 +211,18 @@ if !instance_exists(class_textBox) {
     if room == rm_pause_menu {
         draw_text_transformed_colour(128, 64 + 72, "Paused",
         global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+        
+        draw_sprite_ext(spr_player, image_index, 812, 256, 4, 4, 0, image_blend, 1);
+        var atk = string(data_player.atk);
+        var def = string(data_player.def);
+        var acc = string(data_player.acc);
+        var spd = string(data_player.spd);
+        
+        draw_set_halign(fa_left);
+        draw_text_transformed_colour(room_width - 312, 256, 
+        "Attack:   " + atk + "#Defense:   " + def + "#Accuracy:   " + acc + 
+        "#Speed:   " + spd, global.textScale, global.textScale, 0, c_white, 
+        c_white, c_white, c_white, 1);
     }
     
     //reset the draw alignment

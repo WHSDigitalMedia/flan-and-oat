@@ -1,4 +1,4 @@
-///isOver(object, x1, x2, y1, y2)
+///isOver(object, [x1, x2, y1, y2])
 //ignores the last four arguments if a valid object is passed into 
 var over = false;
 var target = argument0;
