@@ -42,6 +42,28 @@ strDisplay = "";
 
 itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
+//placement - 0 = x coordinate, 1 = y coordinate
+main_width = 720;
+main_height = 600;
+main_right_corner[0] = 64;
+main_right_corner[1] = 64;
+main_left_corner[0] = main_right_corner[0] + main_width;
+main_left_corner[1] = main_right_corner[1] + main_height;
+main_border_radius = 10;
+
+main_to_side_padding = 32;
+
+side_width = 400;
+side_right_corner[0] = main_left_corner[0] + main_to_side_padding;
+side_right_corner[1] = main_right_corner[1];
+side_left_corner[0] = side_right_corner[0] + side_width;
+side_left_corner[1] = main_left_corner[1];
+side_border_radius = main_border_radius;
+
+//slots
+num_row = 7;
+num_col = 6;
+
 inventory_add("Stone Sword", 1);
 inventory_add("Health Pot", 1);
 inventory_add("Spitoon Hat", 1);
@@ -175,32 +197,34 @@ if room != rm_inventory {
 
     //background panel
     draw_set_color(c_dkgray);
-    draw_roundrect_ext(64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 32, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
+    draw_roundrect_ext(main_right_corner[0], main_right_corner[1], main_left_corner[0], 
+    main_left_corner[1], main_border_radius, main_border_radius, false);
     
     //side panel
-    draw_roundrect_ext(96 + (6 * 32) + (6 * 64) + 64 + 64, 64, 96 + (6 * 32) + (6 * 64) + 64 + 64 + 420, 96 + (5 * 32) + (5 * 64) + 64 + 32, 10, 10, false);
+    draw_roundrect_ext(side_right_corner[0], side_right_corner[1], side_left_corner[0], 
+    side_left_corner[1], side_border_radius, side_border_radius, false);
     
     if global.curInvSelect != noone {
         //draw the name of the item
         draw_set_color(c_white);
         draw_set_halign(fa_center);
-        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 210, 64 + 64, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
+        draw_text_transformed(1010, 128, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
     
         //draw the item description
         draw_set_halign(fa_left);
-        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128, strDisplay, global.textScale, global.textScale, 0);
+        draw_text_transformed(832, 196, strDisplay, global.textScale, global.textScale, 0);
         
         //draw the item stats
         var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 4);
         var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
         var dist = string_height(strDisplay) * global.textScale;
-        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128 + dist + 64, "Cost: " + string(cost), global.textScale, global.textScale, 0);
-        draw_text_transformed(96 + (6 * 32) + (6 * 64) + 64 + 64 + 32, 64 + 128 + dist + 128, "Amount: " + string(number), global.textScale, global.textScale, 0);
+        draw_text_transformed(832, 512 + dist, "Cost: " + string(cost), global.textScale, global.textScale, 0);
+        draw_text_transformed(832, 512 + dist, "Amount: " + string(number), global.textScale, global.textScale, 0);
     }
     
     //draws the slots
-    for (var i = 0; i &lt; 7; i++) {
-        for (var j = 0; j &lt; 6; j++) {
+    for (var i = 0; i &lt; num_row; i++) {
+        for (var j = 0; j &lt; num_col; j++) {
             draw_set_color(c_gray);
             draw_roundrect_ext(96 + (i * 32) + (i * 64), 96 + (j * 32) + (j * 64), 96 + (i * 32) + (i * 64) + 64, 96 + (j * 32) + (j * 64) + 64, 5, 5, false);         
         }
