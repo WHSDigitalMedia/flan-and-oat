@@ -81,7 +81,7 @@ prevY = y;
           <argument>
             <kind>1</kind>
             <string>//check if mouse over
-if isOver(noone, x - sprite_width/2 - padding, x + sprite_width/2 + padding, y - sprite_width/2 - padding, y + sprite_width/2 + padding) {
+if isOver(x - sprite_width/2 - padding, x + sprite_width/2 + padding, y - sprite_width/2 - padding, y + sprite_width/2 + padding) {
     //change the side panel display
     if mouse_check_button_pressed(mb_left) {
         with (data_inventory) {

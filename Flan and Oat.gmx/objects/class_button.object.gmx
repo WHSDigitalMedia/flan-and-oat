@@ -71,7 +71,7 @@ if oWidth == -1 &amp;&amp; oHeight == -1 {
     strHeight = oHeight;
 }
 
-if isOver(self, 0, 0, 0, 0) {
+if isOver(self) {
     if isOverAction != -1 script_execute(isOverAction); 
     if mouse_check_button_pressed(mb_left) script_execute(action);
     if action != scr_null text_color = c_white;

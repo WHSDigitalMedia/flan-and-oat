@@ -152,7 +152,7 @@ if global.roomPrev == room_targ || global.roomPrev == rm_level_2 {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if isOver(self, 0, 0, 0, 0) &amp;&amp; mouse_check_button_pressed(mb_left) {
+            <string>if isOver(self) &amp;&amp; mouse_check_button_pressed(mb_left) {
     save_player_loc(xtarg, ytarg, room_targ, true);
     with (class_player) {
         allowMovement = true;
@@ -184,7 +184,7 @@ if global.roomPrev == room_targ || global.roomPrev == rm_level_2 {
             <string>draw_self();
 draw_set_halign(fa_center);
 draw_set_color(c_white);
-if isOver(self, 0, 0, 0, 0) draw_text_transformed(room_width/2, room_height - 48, name, global.textScale, global.textScale, image_angle);
+if isOver(self) draw_text_transformed(room_width/2, room_height - 48, name, global.textScale, global.textScale, image_angle);
 </string>
           </argument>
         </arguments>
