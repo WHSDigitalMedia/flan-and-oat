@@ -1,21 +1,12 @@
 ///isOver(object, [x1, x2, y1, y2])
-//ignores the last four arguments if a valid object is passed into 
+var i, arg, over, x1, x2, y1, y2;
 
-var i, arg, over;
-/*for (i = 0; i < 5; i ++) {
-    if argument_count > i {
-       arg[i] = argument[i]
-    } else {
-       arg[i] = -1;
-    }
-}*/
-
-if argument_count == 4 {
+if argument_count == 4 { //for passing in coordinates
     x1 = argument[0]
     x2 = argument[1];
     y1 = argument[2];
     y2 = argument[3];    
-} else {
+} else { //for passing in an object
     var target = argument[0];
     x1 = target.bbox_left;
     x2 = target.bbox_right;
