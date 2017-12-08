@@ -13,12 +13,23 @@
   <code>view_enabled = false;
 view_visible[0] = false;
 
-create_button_ext("Main Menu", scr_pause_return, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, 128, 64 + 128, 256, 64);
-create_button_ext("Quit", scr_main_menu_quit, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, 128, 64 + 72 + 128, 256, 64);
-create_button_ext("Save", save_game, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, 128, 64 + 144 + 128, 256, 64);
+var width = 256;
+var height = 64;
+var vSpace = 144;
+var padding = 72;
+var xPos = 128;
+var yPos;
+yPos[0] = 192;
+yPos[1] = yPos[0] + vSpace;
 
-create_button_ext("Inventory", scr_pause_inventory, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, 128, 64 + 144 + 128 + 128, 256, 64);
-create_button_ext("Map", scr_pause_map, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, 128, 64 + 144 + 128 + 72 + 128, 256, 64);</code>
+create_button_ext("Main Menu", scr_pause_return, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[0], width, height);
+create_button_ext("Save", save_game, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[0] + padding, width, height);
+
+create_button_ext("Mission Log", scr_null, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[1] + padding, width, height);
+create_button_ext("Inventory", scr_pause_inventory, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[1] + padding * 2, width, height);
+create_button_ext("Map", scr_pause_map, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[1] + padding * 3, width, height);
+
+create_button_ext("&gt;", scr_null, scr_null, scr_null, c_white, 1, fnt_textbox, 1216, yPos[1] + padding/2, 32, 312);</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>

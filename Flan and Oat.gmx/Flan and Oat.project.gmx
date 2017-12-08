@@ -53,7 +53,7 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\move_step.gml</script>
-    <script>scripts\isOver.gml</script>
+    <script>scripts\mouse_check_over.gml</script>
     <scripts name="Combat">
       <script>scripts\scr_attack.gml</script>
       <script>scripts\char_select.gml</script>

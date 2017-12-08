@@ -196,7 +196,8 @@ if !instance_exists(class_textBox) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
+            <string>///Drawing text and stuff
+if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
     //draws the blurred background
     draw_sprite(spr, 0, 0, 0); 
     
@@ -209,25 +210,69 @@ if !instance_exists(class_textBox) {
     
     //draw to be toggled for the pause menu only
     if room == rm_pause_menu {
-        draw_text_transformed_colour(128, 64 + 72, "Paused",
+        draw_text_transformed_colour(128, 136, "Paused",
         global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
         
-        draw_sprite_ext(spr_player, image_index, 812, 256, 4, 4, 0, image_blend, 1);
+        //character portrait background
+        draw_set_alpha(0.67);
+        draw_roundrect_colour_ext(336, 136, 816, 616, 10, 10, c_black, c_black, false);
+        
+        //item equips background
+        draw_roundrect_colour_ext(848, 136, 848 + 312, 616, 10, 10, c_black, c_black, false);
+        draw_set_alpha(1);
+        
+        //item equips slots
+        draw_roundrect_colour_ext(848 + 16, 136 + 16, 848 + 16 + 64, 136 + 16 + 64, 10, 10, c_ltgray, c_ltgray, false); 
+        draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72, 848 + 16 + 64, 136 + 16 + 72 + 64, 10, 10, c_ltgray, c_ltgray, false);
+        draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 2, 848 + 16 + 64, 136 + 16 + 72 * 2 + 64, 10, 10, c_ltgray, c_ltgray, false);    
+        draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 3, 848 + 16 + 64, 136 + 16 + 72 * 3 + 64, 10, 10, c_ltgray, c_ltgray, false);    
+        draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 4, 848 + 16 + 64, 136 + 16 + 72 * 4 + 64, 10, 10, c_ltgray, c_ltgray, false);    
+        draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 5, 848 + 16 + 64, 136 + 16 + 72 * 5 + 64, 10, 10, c_ltgray, c_ltgray, false);    
+        
+        //draws the character
+        draw_sprite_ext(spr_player, image_index, 576, 376 - 72, 4, 4, 0, image_blend, 1);
+        
+        //gets the variables for the currently assigned object
         var atk = string(data_player.atk);
         var def = string(data_player.def);
         var acc = string(data_player.acc);
         var spd = string(data_player.spd);
         
+        //reset the draw alignment
         draw_set_halign(fa_left);
-        draw_text_transformed_colour(room_width - 312, 256, 
-        "Attack:   " + atk + "#Defense:   " + def + "#Accuracy:   " + acc + 
-        "#Speed:   " + spd, global.textScale, global.textScale, 0, c_white, 
-        c_white, c_white, c_white, 1);
+        draw_set_valign(fa_top);
+        
+        //headings
+        draw_text_transformed_colour(336 + 10, 136 - 40, "Flan", global.textScale, global.textScale,
+        0, c_white, c_white, c_white, c_white, 1);
+        draw_text_transformed_colour(848 + 10, 136 - 40, "Equipped", global.textScale, global.textScale,
+        0, c_white, c_white, c_white, c_white, 1);
+                
+        //character stats
+        draw_text_transformed_colour(336 + 24, 616 - 128, "Atk: " + atk, global.textScale,
+        global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+        draw_text_transformed_colour(336 + 24, 616 - 64, "Def: " + def, global.textScale,
+        global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+        draw_text_transformed_colour(816 - 192 , 616 - 128, "Acc: " + acc, global.textScale,
+        global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+        draw_text_transformed_colour(816 - 192, 616 - 64, "Spd: " + spd, global.textScale,
+        global.textScale, 0, c_white, c_white, c_white, c_white, 1);
+        
+        //item equip types
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 32, "Hat", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1); 
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 72 + 32, "Shirt", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1);
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 72 * 2 + 32, "Weapon", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1);
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 72 * 3 + 32, "Off-hand", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1);
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 72 * 4 + 32, "Pants", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1);
+        draw_text_transformed_colour(848 + 16 + 72, 136 + 16 + 72 * 5 + 32, "Shoes", global.textScale, global.textScale, 0, c_white, c_white, 
+        c_white, c_white, 1);
     }
     
-    //reset the draw alignment
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
 }
 </string>
           </argument>
