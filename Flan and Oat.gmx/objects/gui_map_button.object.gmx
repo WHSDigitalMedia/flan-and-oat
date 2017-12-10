@@ -34,8 +34,6 @@ text_color = c_gray;
 center = false;
 font = fnt_textbox;
 spr = sprite7;
-strWidth = string_width(name) * global.textScale;
-strHeight = string_height(name) * global.textScale;
 </string>
           </argument>
         </arguments>
