@@ -10,6 +10,11 @@ if !place_meeting(xtarg, ytarg, toCol) {
     x = xtarg;
     y = ytarg;
 } else {
+    /*
+    the player will sweep the area in front of it in 10 degree in(de)crements
+    to see if there is a way to move out. i.e. if the max_angle is set to 90
+    the player will slip around walls automatically
+    */
     var sweep_interval = 10;
     var max_angle = 80;
     for (var angle = sweep_interval; angle <= max_angle; angle += sweep_interval) {

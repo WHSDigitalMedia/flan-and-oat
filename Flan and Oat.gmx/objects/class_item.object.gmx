@@ -162,6 +162,7 @@ if global.pickup == self {
             <kind>1</kind>
             <string>draw_self();
 
+//draws an outline around the obeject if it's been picked up and being dragged
 if global.curInvSelect != noone {
     var toCheck = asset_get_index(ds_grid_get(global.inventory_grid, global.curInvSelect, 5));
     if instance_exists(toCheck) {

@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>atk = 10;
+            <string>///Stores Player Values
+atk = 10;
 def = 10;
 spd = 10;
 acc = 10;
@@ -56,7 +57,8 @@ load_player_stats();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if instance_exists(class_player) {
+            <string>///Updates position
+if instance_exists(class_player) {
     x = class_player.x;
     y = class_player.y;
     room_index = room;

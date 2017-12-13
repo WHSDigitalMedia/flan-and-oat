@@ -25,7 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle movement speed. Current speed: " + string(class_player.move_speed_max) + "#[1] halve speed#[2] double speed#[3] reset speed"
+            <string>///Initialize Variables
+
+//place # betweeen the options to manually insert linebreaks
+msg = "Toggle movement speed. Current speed: " + string(class_player.move_speed_max) + "#[1] halve speed#[2] double speed#[3] reset speed"
+
+/*
+action[n] corresponds to option[n + 1]
+and arg[n, a] corresponds to action[n]
+*/
 action[0] = noone;
 arg[0, 0] = noone;
 </string>

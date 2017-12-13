@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Initialize Variables
 global.curInvSelect = noone; 
-itemsDrawn = false; 
+itemsCreated = false; 
 
 global.max_items = 25; 
 //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
@@ -94,7 +94,8 @@ load_inventory();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.curInvSelect != noone {
+            <string>//prints the item description
+if global.curInvSelect != noone {
     desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
     if is_string(desc) {
         descLen = string_length(desc);
@@ -117,7 +118,8 @@ load_inventory();
     }
 }
 
-if room == rm_inventory &amp;&amp; !itemsDrawn {
+//Creates the Items in the inventory
+if room == rm_inventory &amp;&amp; !itemsCreated {
     for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
         //gets the sprite names
         var sprName = ds_grid_get(global.inventory_grid, k, 6);
@@ -134,15 +136,15 @@ if room == rm_inventory &amp;&amp; !itemsDrawn {
                 var padding = 64;
                 var obj = instance_create(128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding, objToCheck);
                 ds_list_add(itemDisplayList, obj);
-                //draw_sprite(sprToCheck, image_index, 128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding); //draws the sprite
             }
         }
     }
-    itemsDrawn = true;
+    itemsCreated = true;
 }
 
+//Resets itemsCreated and deletes all item instances
 if room != rm_inventory {
-    itemsDrawn = false;
+    itemsCreated = false;
     for (var i = 0; i &lt; ds_list_size(itemDisplayList); i++) {
         var objToDestroy = ds_list_find_value(itemDisplayList, i);
         if instance_exists(objToDestroy) instance_destroy(objToDestroy);
@@ -170,7 +172,8 @@ if room != rm_inventory {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>inventory_cleanup();
+            <string>///Cleanup
+inventory_cleanup();
 </string>
           </argument>
         </arguments>
@@ -193,11 +196,8 @@ if room != rm_inventory {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if room == rm_inventory {
-    /***************************************************
-      All of this is really jank code, needs to be fixed / made more efficient at a future date
-     ***************************************************/
-
+            <string>//draws the inventory
+if room == rm_inventory {
     //background panel
     draw_set_color(c_dkgray);
     draw_roundrect_ext(main_right_corner[0], main_right_corner[1], main_left_corner[0], 

@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Spawn check
+            <string>///Create instances of necessary objects
 if !instance_exists(data_player) instance_create(x, y, data_player);
 if !instance_exists(gui_camera) instance_create(x, y, gui_camera);
 if !instance_exists(controller_depth) instance_create(x, y, controller_depth);
@@ -87,30 +87,37 @@ movement_inputs[3] = ord("S");
             <kind>1</kind>
             <string>///Movement
 if allowMovement {
+    //makes sure that the movespeed is consistent across different frame rates
     var seconds_passed = delta_time/1000000;
     var move_speed_this_frame = move_speed * seconds_passed;
     
     var move_xinput = 0;
     var move_yinput = 0;
     
+    //Checks for input from any of the movement keys
     for (var i = 0; i &lt; array_length_1d(movement_inputs); i++) {
         var this_key = movement_inputs[i];
         if keyboard_check(this_key) {
             move_direction = i * 90;
             move_xinput += lengthdir_x(1, move_direction);
             move_yinput += lengthdir_y(1, move_direction);
-            move_speed += move_accel;
+            move_speed += move_accel; //so speed builds up, not instantaneous
         }
     }
     
+    //checks if the player is moving
     var moving = (point_distance(0, 0, move_xinput, move_yinput) &gt; 0);
     
+    //adds friction and sets a min/mzx move speed
     move_speed -= move_friction;
     move_speed = clamp(move_speed, 0, move_speed_max);
     
+    //if the player's speed is greater than 0
     if move_speed {
+        //if input is currently being detected
         if moving var move_angle = point_direction(0, 0, move_xinput, move_yinput);
-        else var move_angle = move_direction;
+        else var move_angle = move_direction; //otherwise set dir to be the last dir
+        //actually do the moving
         move_step(move_speed_this_frame, move_angle, class_wall);
     } 
 }
