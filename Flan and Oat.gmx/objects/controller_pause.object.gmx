@@ -25,17 +25,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.pause = false;
-global.map = false;
+            <string>///Initialize Variables
+global.pause = false;
+global.map = false; 
 global.inv = false;
 global.combat = false;
 
 intensity = 0.7; //the blur intensity
 steps = 3; //also affects intensity but it's better to change the above value
-global.draw = false; 
+global.draw = false; //has the sprite been created
 spr = -1; //the sprite the surface will draw
 
-global.roomPrev = -1;
+global.roomPrev = -1; //saves the room to return to
 </string>
           </argument>
         </arguments>
@@ -106,7 +107,8 @@ if !instance_exists(class_textBox) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if sprite_exists(spr) sprite_delete(spr);
+            <string>///Cleanup
+if sprite_exists(spr) sprite_delete(spr);
 </string>
           </argument>
         </arguments>
@@ -129,8 +131,10 @@ if !instance_exists(class_textBox) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.pause {
+            <string>///Creates a sprite from the current view
+if global.pause {
     if global.draw {
+        //blurring
         var i, surface;
         for (i = 0; i &lt;= steps; i++) {
             surface[i] = surface_create(window_get_width() * power(intensity, i), window_get_height() * power(intensity, i));
@@ -138,9 +142,13 @@ if !instance_exists(class_textBox) {
             draw_clear_alpha(c_black, 1);
             surface_reset_target();
         }
+        
+        //copies the current view onto a new surface then resets the target to the current view
         surface_set_target(surface[0]);
         draw_surface(application_surface, 0, 0);
         surface_reset_target();
+        
+        //more blurring
         for (i = 1; i &lt;= steps; i++) {
             surface_set_target(surface[i]);
             draw_surface_ext(surface[i-1], 0, 0, intensity, intensity, 0, c_white, 1);
@@ -151,9 +159,13 @@ if !instance_exists(class_textBox) {
             draw_surface_ext(surface[i+1], 0, 0, 1 / intensity, 1 / intensity, 0, c_white, 1);
             surface_reset_target();
         }
+        
+        //creates a sprite from the blurred surface to be drawn
         spr = sprite_create_from_surface(surface[0], 0, 0, window_get_width(), window_get_height(), false, false, 0, 0);
+        //cleanup surfaces
         for (i = 0; i &lt;= steps; i++) surface_free(surface[i]);
         
+        //Go to different rooms based on what's been selected
         if global.map {
             with (class_player) allowMovement = false;
             with (gui_camera) instance_destroy();
@@ -171,7 +183,7 @@ if !instance_exists(class_textBox) {
             with (gui_camera) persistent = false;
             room_goto(rm_pause_menu);
         }
-        global.draw = false;
+        global.draw = false; //so draw only runs once
     }
 }
 </string>
@@ -199,13 +211,13 @@ if !instance_exists(class_textBox) {
             <string>///Drawing text and stuff
 if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
     //draws the blurred background
-    draw_sprite(spr, 0, 0, 0); 
+    if sprite_exists(spr) draw_sprite(spr, 0, 0, 0); 
     
     //sets the draw alignment
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     
-    //no blur
+    //no blurring of text
     texture_set_interpolation(false);
     
     //draw to be toggled for the pause menu only

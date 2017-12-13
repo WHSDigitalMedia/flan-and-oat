@@ -25,16 +25,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.curInvSelect = noone;
-itemsDrawn = false;
+            <string>///Initialize Variables
+global.curInvSelect = noone; 
+itemsDrawn = false; 
 
-global.max_items = 25;
-item_params = 10; //[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
+global.max_items = 25; 
+//[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
+item_params = 10; 
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
 global.pickup = noone;
 
-//item descriptions
+//simplified version of textbox code, aligns text in real time
 outputString = "";
 lastSpace = 0;
 strPos = 1;
@@ -42,7 +44,7 @@ strDisplay = "";
 
 itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
-//placement - 0 = x coordinate, 1 = y coordinate
+//placement -&gt; 0 = x coordinate, 1 = y coordinate
 main_width = 720;
 main_height = 600;
 main_right_corner[0] = 64;
@@ -64,6 +66,7 @@ side_border_radius = main_border_radius;
 num_row = 7;
 num_col = 6;
 
+//for debugging purposes
 inventory_add("Stone Sword", 1);
 inventory_add("Health Pot", 1);
 inventory_add("Spitoon Hat", 1);

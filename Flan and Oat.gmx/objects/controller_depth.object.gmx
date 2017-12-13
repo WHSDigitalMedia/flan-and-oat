@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>with (class_nonGUI) depth = -y;
+            <string>///Depth = -y
+with (class_nonGUI) depth = -y; 
 </string>
           </argument>
         </arguments>

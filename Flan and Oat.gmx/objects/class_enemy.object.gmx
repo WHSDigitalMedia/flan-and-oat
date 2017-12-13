@@ -62,10 +62,10 @@ hp = 7;
             <kind>1</kind>
             <string>if !playerToggle || keyboard_check_pressed(ord('E')) {
     event_inherited();
-    playerToggle = true;
 }
 
 if distance_to_object(class_player) &gt; 64 playerToggle = false;
+else playerToggle = true;
 
 char_select();
 

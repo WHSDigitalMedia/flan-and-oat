@@ -31,9 +31,10 @@ padding = 16; //extra room to cover the full item
 //alarm to determine whether to pick up or not
 alarm_set(0, -1);
 
-pickupDelay = room_speed * 0.20;
+//how long the mouse needs to be held to pick this up
+pickupDelay = room_speed * 0.20;  
 gotXY = false;
-prevX = x;
+prevX = x; //to return to if dropped
 prevY = y;
 </string>
           </argument>
@@ -57,7 +58,8 @@ prevY = y;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>alarm_set(0, -1);
+            <string>//shut down the alarm
+alarm_set(0, -1);
 </string>
           </argument>
         </arguments>
@@ -82,8 +84,9 @@ prevY = y;
             <kind>1</kind>
             <string>//check if mouse over
 if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, y - sprite_width/2 - padding, y + sprite_width/2 + padding) {
-    //change the side panel display
+    //change the side panel display if clicked
     if mouse_check_button_pressed(mb_left) {
+        //sets the inventory to display nothing if item is picked up
         with (data_inventory) {
             outputString = "";
             lastSpace = 0;
@@ -97,10 +100,11 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                 i = ds_grid_width(global.inventory_grid) + 1;
             }
         }
+        //start the timer
         alarm_set(0, pickupDelay);    
     }
     
-    //pickup item
+    //pickup item only if the pickup delay has expired and nothing else is picked
     if mouse_check_button(mb_left) &amp;&amp; alarm[0] == -1 &amp;&amp; global.pickup == noone { 
         //get current X and Y coords to return if dropped
         if !gotXY {
@@ -108,7 +112,7 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             prevY = y;
             gotXY = true;
         }
-        global.pickup = self;
+        global.pickup = self; 
     } 
     
     //drop item

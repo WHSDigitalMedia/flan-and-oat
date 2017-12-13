@@ -27,9 +27,9 @@
             <kind>1</kind>
             <string>///Initalize Variables
 barHeight = room_height/4;
-initMoves = false;
+initMoves = false; //initialize selectedm moves
 
-global.charSelected = noone;
+global.charSelected = noone; //who is currently selected
 curTurn = -1; //who is currently doing a thing
 </string>
           </argument>
@@ -77,7 +77,7 @@ curTurn = -1; //who is currently doing a thing
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Attacks
+            <string>///Enemy attacks, will be revised later
 if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy {
     with (data_player) {
         hp--;
@@ -110,6 +110,9 @@ if instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy {
           <argument>
             <kind>1</kind>
             <string>///Return to overworld after battle
+
+//checks to see if all enemies are dead
+//still need to make it work for if you die
 if !instance_exists(class_enemy) {
     with (controller_pause) {
         global.combat = false;
@@ -136,12 +139,15 @@ if !instance_exists(class_enemy) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///set who goes next
+            <string>///Set who goes next
+
+//next in line based on speed
 curTurn = ds_priority_find_max(global.combatQueue);
 
+//set attack alarm if it's an enemy
 if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_enemy &amp;&amp; alarm[0] == -1 alarm_set(0, room_speed);
 
-//reset the queue
+//once the queue is clear (everyone has gone), reset based on speed again
 if ds_priority_empty(global.combatQueue) {
     global.charSelected = noone;
     for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
@@ -299,28 +305,35 @@ for (var i = 0; i &lt; ds_list_size(enemyList); i++) {
           <argument>
             <kind>1</kind>
             <string>///Select a Move
+
+//checks to see if it's currently the player's turn
+//will need to be fixed when allies are added
 if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.object_index == class_player {
-    var move;
     
+    //draws the ring on which the moves will be displayed
     if global.charSelected == data_player {
         draw_ellipse(class_player.x - 64, class_player.y - 64, class_player.x + 64, class_player.y + 64, true);
-    
+
         if !initMoves {    
-            //move array
+            //temporary array move
+            var move;
             move[0] = instance_create(class_player.x - 64, class_player.y + 64, class_move);
             move[1] = instance_create(class_player.x - 64, class_player.y - 64, class_move);
             move[2] = instance_create(class_player.x + 64, class_player.y + 64, class_move);
             move[3] = instance_create(class_player.x + 64, class_player.y - 64, class_move);
             
+            //set all the moves to have the same action
             for (var i = 0; i &lt; array_length_1d(move); i++) {
                 with (move[i]) {
                     action = scr_attack;
                 }
             }
+            //so it only creates the moves once            
             initMoves = true;
         }
     } 
     
+    //after the player has selected a move, reset
     if !instance_exists(class_move) initMoves = false;
 }
 </string>
@@ -366,6 +379,8 @@ if is_real(curTurn) &amp;&amp; instance_exists(curTurn) &amp;&amp; curTurn.objec
           <argument>
             <kind>1</kind>
             <string>///Main HUD
+
+//background panel across the bottom of the screen
 draw_set_alpha(0.5);
 draw_rectangle_colour(0, room_height - barHeight, room_width, room_height, c_gray, c_gray, c_gray, c_gray, false);
 draw_set_alpha(1);
@@ -377,16 +392,20 @@ if instance_exists(global.charSelected) {
     def = string(global.charSelected.def);
     acc = string(global.charSelected.acc);
     spd = string(global.charSelected.spd);
-    
+
+    //creates a temporary object     
     var obj;
-    if global.charSelected == data_player obj = class_player.id;
+    //because data_player actually holds the player's vars
+    if global.charSelected == data_player obj = class_player.id; 
     else obj = global.charSelected.id;
     
+    //draws the currently selected object
     draw_set_halign(fa_center);
     draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.9,
             obj, global.textScale, global.textScale, 0, c_white, c_white, c_white, 
             c_white, 1);
     
+    //draws the stats of the currently selected object
     draw_set_halign(fa_left);
     draw_text_transformed_colour(room_width - 256, room_height - barHeight * 0.60, 
         "Attack: " + atk + "#Defense: " + def + "#Accuracy: " + acc + "#Speed: " + spd, 
