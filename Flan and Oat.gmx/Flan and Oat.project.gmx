@@ -148,7 +148,6 @@
     </objects>
     <objects name="NPCs">
       <object>objects\class_npc</object>
-      <object>objects\class_playerPrompt</object>
       <object>objects\npc_1</object>
       <object>objects\npc_2</object>
       <objects name="Allies">

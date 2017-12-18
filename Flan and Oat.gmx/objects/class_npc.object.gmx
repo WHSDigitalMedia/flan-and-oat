@@ -36,6 +36,8 @@ and arg[n, a] corresponds to action[n]
 */
 action[0] = noone;
 arg[0, 0] = noone;
+
+player_interact = false;
 </string>
           </argument>
         </arguments>
@@ -58,7 +60,7 @@ arg[0, 0] = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if distance_to_object(class_player) &lt; 64 &amp;&amp; !instance_exists(class_textBox) {
+            <string>if player_interact &amp;&amp; !instance_exists(class_textBox) {
     create_textbox_message(msg);
     
     switch (array_length_1d(action)) {
@@ -187,7 +189,8 @@ arg[0, 0] = noone;
             break;
         default: break;
     }
-
+    
+    player_interact = false;
 }
 </string>
           </argument>

@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>class_playerPrompt</parentName>
+  <parentName>class_npc</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+            <string>event_inherited();
+
+msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
 action[0] = scr_text1;
 action[1] = scr_text2;
 action[2] = scr_text3;

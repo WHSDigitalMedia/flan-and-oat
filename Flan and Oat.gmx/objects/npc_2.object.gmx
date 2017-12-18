@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>class_playerPrompt</parentName>
+  <parentName>class_npc</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Got any secret stuff?#[4] Nope."
+            <string>event_inherited();
+
+msg = "I have a sword. You want it or what?#[1] Heck yeah, give me that sword!#[2] How 'bout a health potion instead?#[3] Got any secret stuff?#[4] Nope."
 action[0] = inventory_add;
 action[1] = inventory_add;
 action[2] = inventory_add;

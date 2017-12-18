@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Hey there! What can I help you with?#[1] Nothing#[2] Nothing (but in a teenage angst kind of way)#[3] Nothing (but in a wistful sorta of tone)";
+            <string>event_inherited();
+
+msg = "Hey there! What can I help you with?#[1] Nothing#[2] Nothing (but in a teenage angst kind of way)#[3] Nothing (but in a wistful sorta of tone)";
 action[0] = scr_null;
 action[1] = scr_null;
 action[2] = scr_null;

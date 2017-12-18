@@ -25,13 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Hey, you! Let's battle!#[1] Alright, but prepare to have your butt kicked!#[2] What? No way!";
+            <string>event_inherited();
+
+player_toggle = 0;
+
+msg = "Hey, you! Let's battle!#[1] Alright, but prepare to have your butt kicked!#[2] What? No way!";
 action[0] = init_combat;
 action[1] = scr_null;
 arg[0, 0] = id;
 arg[1, 0] = noone;
-
-playerToggle = false;
 
 atk = 5;
 def = 5;
@@ -60,14 +62,46 @@ hp = 7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if !playerToggle || keyboard_check_pressed(ord('E')) {
-    event_inherited();
+            <string>///Distance Checks to player
+
+//when player_toggle = 0, the player is too far away
+//when player_toggle = 1, the player has triggered the interaction event, which
+//then sets player_toggle = 2, which disables any futher interaction
+//unless toggled again by keyboard events
+if distance_to_object(class_player) &gt; 64 player_toggle = 0;
+else if player_toggle == 0 player_toggle = 1;
+
+if player_toggle == 1 {
+    player_interact = true;
+    player_toggle = 2;
 }
 
-if distance_to_object(class_player) &gt; 64 playerToggle = false;
-else playerToggle = true;
+event_inherited();
 
-char_select();
+if player_toggle == 2 {
+    player_interact = false;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>char_select();
 
 if hp &lt;= 0 instance_destroy();
 </string>

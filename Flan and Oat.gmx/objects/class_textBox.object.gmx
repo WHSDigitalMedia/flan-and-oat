@@ -171,6 +171,7 @@ if done {
                 default: break;
             }
             class_player.allowMovement = true;
+            class_player.move_speed = 0;
             instance_destroy();
         }    
     }
