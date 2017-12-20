@@ -138,9 +138,10 @@
         <object>objects\data_inventory</object>
       </objects>
       <object>objects\class_item</object>
-      <object>objects\obj_healthPot</object>
-      <object>objects\obj_sword</object>
-      <object>objects\obj_spitoonHat</object>
+      <object>objects\class_equip</object>
+      <object>objects\item_healthPot</object>
+      <object>objects\item_sword</object>
+      <object>objects\item_spitoonHat</object>
     </objects>
     <objects name="Player">
       <object>objects\data_player</object>

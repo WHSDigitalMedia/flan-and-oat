@@ -13,7 +13,6 @@
   <code>//Draw settings
 draw_texture_flush();
 texture_set_interpolation(false);
-window_set_size(display_get_width(), display_get_height());
 window_set_fullscreen(true);
 
 var a = application_get_position();

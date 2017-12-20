@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-3</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -32,7 +32,7 @@ padding = 16; //extra room to cover the full item
 alarm_set(0, -1);
 
 //how long the mouse needs to be held to pick this up
-pickupDelay = room_speed * 0.20;  
+pickupDelay = room_speed * 0.1;  
 gotXY = false;
 prevX = x; //to return to if dropped
 prevY = y;
@@ -121,13 +121,17 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             //return to intial slot
             x = prevX;
             y = prevY;
-            global.pickup = noone;
-            gotXY = false;
         } else {
-            inventory_switch(); 
-            global.pickup = noone;
-            gotXY = false;
+            var inst = instance_position(x, y, class_equip);
+            if inst {
+                x = inst.x;
+                y = inst.y;   
+                data_player.atk += ds_grid_get(global.inventory_grid, global.curInvSelect, 7);
+                with (inst) instance_destroy();         
+            } else inventory_switch(); 
         }
+        global.pickup = noone;
+        gotXY = false;
     }
 }
 

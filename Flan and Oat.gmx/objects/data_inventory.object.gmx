@@ -45,26 +45,61 @@ strDisplay = "";
 itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
 //placement -&gt; 0 = x coordinate, 1 = y coordinate
-main_width = 720;
-main_height = 600;
-main_right_corner[0] = 64;
-main_right_corner[1] = 64;
+border_padding = 32;
+box_padding = 16;
+
+//main box
+main_right_corner[0] = border_padding;
+main_right_corner[1] = border_padding;
+main_width = room_width * 2/3 - main_right_corner[0];
+main_height = room_height * 0.75 - main_right_corner[1];
 main_left_corner[0] = main_right_corner[0] + main_width;
 main_left_corner[1] = main_right_corner[1] + main_height;
 main_border_radius = 10;
+main_to_side_padding = box_padding;
+main_to_bottom_padding = box_padding;
 
-main_to_side_padding = 32;
-
-side_width = 400;
+//side box
 side_right_corner[0] = main_left_corner[0] + main_to_side_padding;
-side_right_corner[1] = main_right_corner[1];
+side_right_corner[1] = border_padding;
+side_width = room_width * 1/3 - border_padding * 2;
+side_height = room_height - border_padding * 2;
 side_left_corner[0] = side_right_corner[0] + side_width;
-side_left_corner[1] = main_left_corner[1];
+side_left_corner[1] = side_right_corner[1] + side_height;
 side_border_radius = main_border_radius;
+side_left = side_right_corner[0] + 64;
+side_vcenter = mean(side_right_corner[1], side_left_corner[1]);
+
+//bottom box
+bottom_right_corner[0] = border_padding;
+bottom_right_corner[1] = main_left_corner[1] + main_to_bottom_padding;
+bottom_width = room_width * 2/3 - bottom_right_corner[0];
+bottom_height = side_left_corner[1] - bottom_right_corner[1];
+bottom_left_corner[0] = bottom_right_corner[0] + bottom_width;
+bottom_left_corner[1] = bottom_right_corner[1] + bottom_height;
+bottom_border_radius = main_border_radius;
 
 //slots
-num_row = 7;
-num_col = 6;
+slot_width = 64;
+slot_height = 64;
+slot_padding = 16;
+slot_hborder_padding = 3;
+slot_vborder_padding = 5;
+slot_border_radius = 5;
+side_slot_hborder_padding = 52;
+side_slot_vborder_padding = 1/2 * mean(side_right_corner[1], side_left_corner[1]) + string_height('1') * global.textScale * 2;
+
+//rows and cols of inventory slots
+num_row = floor(main_width / (slot_width + slot_padding));
+num_col = floor(main_height / (slot_height + slot_padding));
+
+//text
+textScale = 0.15;
+largeTextHeight = string_height('1') * global.textScale;
+smallTextHeight = string_height('1') * textScale;
+
+//equips
+equipInit = false;
 
 //for debugging purposes
 inventory_add("Stone Sword", 1);
@@ -107,7 +142,7 @@ if global.curInvSelect != noone {
             
             strDisplay += nextChar;
             
-            if string_width(strDisplay) * global.textScale &gt; 420 - 64 {
+            if string_width(strDisplay) * textScale &gt; bottom_width {
                 strDisplay = string_delete(strDisplay, lastSpace, descLen);
                 strDisplay += "#";
                 strPos = lastSpace;
@@ -133,8 +168,11 @@ if room == rm_inventory &amp;&amp; !itemsCreated {
             if sprite_exists(sprToCheck) &amp;&amp; object_exists(objToCheck) {
                 var sprWidth = sprite_get_width(sprToCheck);
                 var sprHeight = sprite_get_height(sprToCheck);
-                var padding = 64;
-                var obj = instance_create(128 + (k * sprWidth) + (k * padding), 32 + sprHeight + padding, objToCheck);
+                var ycoord = floor(k/6);
+                var obj = instance_create(
+                mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+                mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (ycoord + 1)) + (slot_height * ycoord), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (ycoord + 1)),
+                objToCheck);
                 ds_list_add(itemDisplayList, obj);
             }
         }
@@ -150,6 +188,60 @@ if room != rm_inventory {
         if instance_exists(objToDestroy) instance_destroy(objToDestroy);
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///create equip placeholders in the equip slots
+if !equipInit {
+    for (var i = 1; i &lt;= 3 ; i++) {
+        for (var j = 1; j &lt;= 2; j++) {
+            instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
+            mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j),
+            class_equip);
+        }
+    }
+    equipInit = true;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>equipInit = false;
 </string>
           </argument>
         </arguments>
@@ -207,30 +299,80 @@ if room == rm_inventory {
     draw_roundrect_ext(side_right_corner[0], side_right_corner[1], side_left_corner[0], 
     side_left_corner[1], side_border_radius, side_border_radius, false);
     
+    //bottom panel
+    draw_roundrect_ext(bottom_right_corner[0], bottom_right_corner[1], bottom_left_corner[0],
+    bottom_left_corner[1], bottom_border_radius, bottom_border_radius, false);
+    
+    //draws the inventory slots
+    draw_set_color(c_gray);
+    for (var i = 1; i &lt;= num_row; i++) {
+        for (var j = 1; j &lt;= num_col; j++) {
+            draw_roundrect_ext(slot_hborder_padding + main_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
+            slot_vborder_padding + main_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
+            slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * i, 
+            slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * j,
+            slot_border_radius, slot_border_radius, false);
+        }
+    }
+    
+    //draws the character's name
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_text_transformed(mean(side_right_corner[0], side_left_corner[0]), side_right_corner[1] + 64, "Flan", global.textScale, 
+    global.textScale, 0);
+    
+    //draws the character
+    draw_sprite_ext(spr_player, 0, mean(side_right_corner[0], side_left_corner[0]), 
+    1/2 * side_vcenter + largeTextHeight, 4, 4, 0, image_blend, 1);
+    
+    //draws the character's stats
+    draw_set_color(c_white);
+    draw_set_halign(fa_left);
+    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3, 
+    "Attack: " + string(data_player.atk), textScale, textScale, 0);
+    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight, 
+    "Defense: " + string(data_player.def), textScale, textScale, 0);
+    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 2, 
+    "Accuracy: " + string(data_player.acc), textScale, textScale, 0);
+    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 3, 
+    "Speed: " + string(data_player.spd), textScale, textScale, 0);
+    
+    //draws equip slots
+    draw_set_color(c_gray);
+    for (var i = 1; i &lt;= 3 ; i++) {
+        for (var j = 1; j &lt;= 2; j++) {
+            draw_roundrect_ext(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
+            side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
+            side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i, 
+            side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j,
+            slot_border_radius, slot_border_radius, false);
+        }
+    }
+    
+    //draw stuff if an item is selected
     if global.curInvSelect != noone {
-        //draw the name of the item
+        
         draw_set_color(c_white);
-        draw_set_halign(fa_center);
-        draw_text_transformed(1010, 128, ds_grid_get(global.inventory_grid, global.curInvSelect, 0), global.textScale, global.textScale, 0);
+        draw_set_halign(fa_left);
+        
+        //draw the name of the item
+        draw_text_transformed(bottom_right_corner[0] + 16, 
+        bottom_right_corner[1] + (smallTextHeight),
+        ds_grid_get(global.inventory_grid, global.curInvSelect, 0), textScale, textScale, 0);
     
         //draw the item description
-        draw_set_halign(fa_left);
-        draw_text_transformed(832, 196, strDisplay, global.textScale, global.textScale, 0);
+        draw_text_transformed(bottom_right_corner[0] + 16, 
+        bottom_right_corner[1] + 2 * (smallTextHeight), 
+        strDisplay, textScale, textScale, 0);
         
         //draw the item stats
         var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 4);
         var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
-        var dist = string_height(strDisplay) * global.textScale;
-        draw_text_transformed(832, 512 + dist, "Cost: " + string(cost), global.textScale, global.textScale, 0);
-        draw_text_transformed(832, 512 + dist, "Amount: " + string(number), global.textScale, global.textScale, 0);
-    }
-    
-    //draws the slots
-    for (var i = 0; i &lt; num_row; i++) {
-        for (var j = 0; j &lt; num_col; j++) {
-            draw_set_color(c_gray);
-            draw_roundrect_ext(96 + (i * 32) + (i * 64), 96 + (j * 32) + (j * 64), 96 + (i * 32) + (i * 64) + 64, 96 + (j * 32) + (j * 64) + 64, 5, 5, false);         
-        }
+        var dist = smallTextHeight * 4;
+        draw_text_transformed(bottom_right_corner[0] + 16, 
+        bottom_right_corner[1] + dist, "Cost: " + string(cost), textScale, textScale, 0);
+        draw_text_transformed(bottom_right_corner[0] + string_width("Cost:                      ") * textScale, 
+        bottom_right_corner[1] + dist, "Amount: " + string(number), textScale, textScale, 0);
     }
 }
 </string>
