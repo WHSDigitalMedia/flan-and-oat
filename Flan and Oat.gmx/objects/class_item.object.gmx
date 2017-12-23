@@ -28,38 +28,14 @@
             <string>depth = -3;
 padding = 16; //extra room to cover the full item
 
-//alarm to determine whether to pick up or not
-alarm_set(0, -1);
+//deadband (in pixels) to determine whether to pick up or not
+mouse_deadband = 6;
+init_mx = 0;
+init_my = 0;
 
-//how long the mouse needs to be held to pick this up
-pickupDelay = room_speed * 0.1;  
 gotXY = false;
 prevX = x; //to return to if dropped
 prevY = y;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>//shut down the alarm
-alarm_set(0, -1);
 </string>
           </argument>
         </arguments>
@@ -100,12 +76,13 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                 i = ds_grid_width(global.inventory_grid) + 1;
             }
         }
-        //start the timer
-        alarm_set(0, pickupDelay);    
+        init_mx = mouse_x;
+        init_my = mouse_y;
     }
     
-    //pickup item only if the pickup delay has expired and nothing else is picked
-    if mouse_check_button(mb_left) &amp;&amp; alarm[0] == -1 &amp;&amp; global.pickup == noone { 
+    //pickup item only if the deadband has been crossed and nothing else is picked
+    var mouse_dist = point_distance(init_mx, init_my, mouse_x, mouse_y);
+    if mouse_dist &gt; mouse_deadband &amp;&amp; mouse_check_button(mb_left) &amp;&amp; global.pickup == noone { 
         //get current X and Y coords to return if dropped
         if !gotXY {
             prevX = x;
@@ -117,7 +94,7 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
     
     //drop item
     if mouse_check_button_released(mb_left) &amp;&amp; global.pickup == self {
-        if place_empty(x, y) {
+        if place_empty(x, y) || ds_grid_get(global.inventory_grid, global.curInvSelect, 2) == 0 {
             //return to intial slot
             x = prevX;
             y = prevY;
@@ -125,8 +102,25 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             var inst = instance_position(x, y, class_equip);
             if inst {
                 x = inst.x;
-                y = inst.y;   
-                data_player.atk += ds_grid_get(global.inventory_grid, global.curInvSelect, 7);
+                y = inst.y; 
+                var stat = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
+                var effect = ds_grid_get(global.inventory_grid, global.curInvSelect, 7);
+                switch (stat) {
+                    case "atk": 
+                        data_player.atk += effect; 
+                        break;
+                    case "def": 
+                        data_player.def += effect; 
+                        break;
+                    case "spd": 
+                        data_player.spd += effect; 
+                        break;
+                    case "acc": 
+                        data_player.acc += effect; 
+                        break;
+                    default: break;
+                }
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 10, true);
                 with (inst) instance_destroy();         
             } else inventory_switch(); 
         }

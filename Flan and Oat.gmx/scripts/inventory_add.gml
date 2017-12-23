@@ -7,7 +7,7 @@ var foundMatch = false;
 //checks for matching item first
 for (var i = 0; i < ds_grid_width(global.inventory_grid); i++) {
     if ds_grid_get(global.inventory_grid, i, 0) == name {
-        ds_grid_add(global.inventory_grid, i, 8, amount);
+        ds_grid_add(global.inventory_grid, i, 9, amount);
         var item_desc = ds_grid_get(global.inventory_grid, i, 3);
         foundMatch = true;
     }
@@ -27,8 +27,9 @@ if !foundMatch {
                 ds_grid_set(global.inventory_grid, i, 5, ini_read_string(name, "id", "error 404"));
                 ds_grid_set(global.inventory_grid, i, 6, ini_read_string(name, "sprite", "error 404"));
                 ds_grid_set(global.inventory_grid, i, 7, ini_read_real(name, "effect", 0));
-                ds_grid_set(global.inventory_grid, i, 8, amount);
-                ds_grid_set(global.inventory_grid, i, 9, false);
+                ds_grid_set(global.inventory_grid, i, 8, ini_read_string(name, "stat", "atk"));
+                ds_grid_set(global.inventory_grid, i, 9, amount);
+                ds_grid_set(global.inventory_grid, i, 10, false);
                 i = ds_grid_width(global.inventory_grid) + 1;
             }
         }

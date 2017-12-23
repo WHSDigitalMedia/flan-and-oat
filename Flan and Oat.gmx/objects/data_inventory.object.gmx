@@ -30,8 +30,8 @@ global.curInvSelect = noone;
 itemsCreated = false; 
 
 global.max_items = 25; 
-//[name, type, canEquip, desc, cost, id, sprite, effect], number, curEquip
-item_params = 10; 
+//[name, type, canEquip, desc, cost, id, sprite, effect, stat], number, curEquip
+item_params = 11; 
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
 
 global.pickup = noone;
@@ -129,6 +129,37 @@ load_inventory();
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///create equip placeholders in the equip slots
+if !equipInit &amp;&amp; room == rm_inventory {
+    for (var i = 1; i &lt;= 3 ; i++) {
+        for (var j = 1; j &lt;= 2; j++) {
+            instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
+            mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j),
+            class_equip);
+        }
+    }
+    equipInit = true;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>//prints the item description
 if global.curInvSelect != noone {
     desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
@@ -169,10 +200,15 @@ if room == rm_inventory &amp;&amp; !itemsCreated {
                 var sprWidth = sprite_get_width(sprToCheck);
                 var sprHeight = sprite_get_height(sprToCheck);
                 var ycoord = floor(k/6);
-                var obj = instance_create(
-                mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-                mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (ycoord + 1)) + (slot_height * ycoord), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (ycoord + 1)),
-                objToCheck);
+                if ds_grid_get(global.inventory_grid, k, 10) == false { 
+                    var obj = instance_create(
+                    mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+                    mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (ycoord + 1)) + (slot_height * ycoord), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (ycoord + 1)),
+                    objToCheck);
+                } else {
+                    var equip = instance_nearest(0, 0, class_equip);
+                    var obj = instance_create(equip.x, equip.y, objToCheck);
+                }
                 ds_list_add(itemDisplayList, obj);
             }
         }
@@ -187,37 +223,6 @@ if room != rm_inventory {
         var objToDestroy = ds_list_find_value(itemDisplayList, i);
         if instance_exists(objToDestroy) instance_destroy(objToDestroy);
     }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///create equip placeholders in the equip slots
-if !equipInit {
-    for (var i = 1; i &lt;= 3 ; i++) {
-        for (var j = 1; j &lt;= 2; j++) {
-            instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
-            mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j),
-            class_equip);
-        }
-    }
-    equipInit = true;
 }
 </string>
           </argument>
@@ -367,7 +372,7 @@ if room == rm_inventory {
         
         //draw the item stats
         var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 4);
-        var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
+        var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 9);
         var dist = smallTextHeight * 4;
         draw_text_transformed(bottom_right_corner[0] + 16, 
         bottom_right_corner[1] + dist, "Cost: " + string(cost), textScale, textScale, 0);
