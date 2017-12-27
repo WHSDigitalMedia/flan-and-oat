@@ -23,7 +23,7 @@ yPos[0] = 192;
 yPos[1] = yPos[0] + vSpace;
 
 create_button_ext("Main Menu", scr_pause_return, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[0], width, height);
-create_button_ext("Save", save_game, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[0] + padding, width, height);
+create_button_ext("Save", scr_null, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[0] + padding, width, height);
 
 create_button_ext("Mission Log", scr_null, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[1] + padding, width, height);
 create_button_ext("Inventory", scr_pause_inventory, scr_extend_button, scr_retract_button, c_white, 2, fnt_textbox, xPos, yPos[1] + padding * 2, width, height);

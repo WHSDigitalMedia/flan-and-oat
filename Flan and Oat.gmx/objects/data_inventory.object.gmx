@@ -27,22 +27,15 @@
             <kind>1</kind>
             <string>///Initialize Variables
 global.curInvSelect = noone; 
-itemsCreated = false; 
-
-global.max_items = 25; 
-//[name, type, canEquip, desc, cost, id, sprite, effect, stat], number, curEquip
-item_params = 11; 
-global.inventory_grid = ds_grid_create(global.max_items, item_params); 
-
 global.pickup = noone;
+global.itemDisplayList = ds_list_create(); //objects created by the inventory stored here
+itemsCreated = false; 
 
 //simplified version of textbox code, aligns text in real time
 outputString = "";
 lastSpace = 0;
 strPos = 1;
 strDisplay = "";
-
-itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
 //placement -&gt; 0 = x coordinate, 1 = y coordinate
 border_padding = 32;
@@ -93,19 +86,32 @@ side_slot_vborder_padding = 1/2 * mean(side_right_corner[1], side_left_corner[1]
 num_row = floor(main_width / (slot_width + slot_padding));
 num_col = floor(main_height / (slot_height + slot_padding));
 
+//actual inventory grid
+global.max_items = num_row * num_col;
+//name, type, desc, cost, object ID, stat/effect, amount
+item_params = 7;
+global.inventory_grid = ds_grid_create(global.max_items, item_params); 
+
+//equips
+equipInit = false;
+//equip grid
+//hat, shirt, weapon, off-hand, pants, shoes
+global.max_equips = 6;
+global.equip_grid = ds_grid_create(global.max_equips, item_params);
+equip_initialize();
+global.equipList = ds_list_create();
+
 //text
 textScale = 0.15;
 largeTextHeight = string_height('1') * global.textScale;
 smallTextHeight = string_height('1') * textScale;
 
-//equips
-equipInit = false;
-
 //for debugging purposes
+inventory_initialize();
 inventory_add("Stone Sword", 1);
 inventory_add("Health Pot", 1);
 inventory_add("Spitoon Hat", 1);
-load_inventory();
+//load_inventory();
 
 </string>
           </argument>
@@ -132,11 +138,22 @@ load_inventory();
             <string>///create equip placeholders in the equip slots
 if !equipInit &amp;&amp; room == rm_inventory {
     for (var i = 1; i &lt;= 3 ; i++) {
-        for (var j = 1; j &lt;= 2; j++) {
-            instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
-            mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j),
-            class_equip);
-        }
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.equip_grid, i, 4)));     
+        
+        var inst = instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
+        mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * 1) + (slot_height * (1 - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * 1),
+        obj);
+        ds_list_add(global.equipList, inst);
+    }
+    for (var i = 1; i &lt;= 3 ; i++) {
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, i + 3, 4)));     
+        
+        var inst = instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
+        mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * 2) + (slot_height * (2 - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * 2),
+        obj);
+        ds_list_add(global.equipList, inst);
     }
     equipInit = true;
 }
@@ -162,7 +179,7 @@ if !equipInit &amp;&amp; room == rm_inventory {
             <kind>1</kind>
             <string>//prints the item description
 if global.curInvSelect != noone {
-    desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
+    desc = ds_grid_get(global.inventory_grid, global.curInvSelect, 2);
     if is_string(desc) {
         descLen = string_length(desc);
         
@@ -186,43 +203,86 @@ if global.curInvSelect != noone {
 
 //Creates the Items in the inventory
 if room == rm_inventory &amp;&amp; !itemsCreated {
-    for (var k = 0; k &lt; ds_grid_width(global.inventory_grid); k++) {  
-        //gets the sprite names
-        var sprName = ds_grid_get(global.inventory_grid, k, 6);
-        //gets the object
-        var objName = ds_grid_get(global.inventory_grid, k, 5);
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k, 4)));      
         
-        //finds the object index
-        if is_string(sprName) &amp;&amp; is_string(objName) {
-            var sprToCheck = asset_get_index(sprName);
-            var objToCheck = asset_get_index(objName);
-            if sprite_exists(sprToCheck) &amp;&amp; object_exists(objToCheck) {
-                var sprWidth = sprite_get_width(sprToCheck);
-                var sprHeight = sprite_get_height(sprToCheck);
-                var ycoord = floor(k/6);
-                if ds_grid_get(global.inventory_grid, k, 10) == false { 
-                    var obj = instance_create(
-                    mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-                    mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (ycoord + 1)) + (slot_height * ycoord), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (ycoord + 1)),
-                    objToCheck);
-                } else {
-                    var equip = instance_nearest(0, 0, class_equip);
-                    var obj = instance_create(equip.x, equip.y, objToCheck);
-                }
-                ds_list_add(itemDisplayList, obj);
-            }
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (0 + 1)) + (slot_height * 0), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (0 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
         }
     }
-    itemsCreated = true;
-}
-
-//Resets itemsCreated and deletes all item instances
-if room != rm_inventory {
-    itemsCreated = false;
-    for (var i = 0; i &lt; ds_list_size(itemDisplayList); i++) {
-        var objToDestroy = ds_list_find_value(itemDisplayList, i);
-        if instance_exists(objToDestroy) instance_destroy(objToDestroy);
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row, 4)));      
+        
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (1 + 1)) + (slot_height * 1), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (1 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+        }
     }
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 2, 4)));      
+        
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (2 + 1)) + (slot_height * 2), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (2 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+        }
+    }
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 3, 4)));      
+        
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (3 + 1)) + (slot_height * 3), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (3 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+        }
+    }
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 4, 4)));      
+        
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (4 + 1)) + (slot_height * 4), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (4 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+        }
+    }
+    for (var k = 0; k &lt; num_row; k++) {  
+        //gets the object id
+        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 5, 4)));      
+        
+        //creates the object
+        if object_exists(obj) {
+            var inst = instance_create(
+            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (5 + 1)) + (slot_height * 5), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (5 + 1)),
+            obj);
+            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+        }
+    }
+    
+    itemsCreated = true;
 }
 </string>
           </argument>
@@ -246,7 +306,11 @@ if room != rm_inventory {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>equipInit = false;
+            <string>itemsCreated = false;
+equipInit = false;
+ds_list_clear(global.itemDisplayList);
+ds_list_clear(global.equipList);
+//ds_grid_destroy(display_grid);
 </string>
           </argument>
         </arguments>
@@ -371,8 +435,8 @@ if room == rm_inventory {
         strDisplay, textScale, textScale, 0);
         
         //draw the item stats
-        var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 4);
-        var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 9);
+        var cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
+        var number = ds_grid_get(global.inventory_grid, global.curInvSelect, 6);
         var dist = smallTextHeight * 4;
         draw_text_transformed(bottom_right_corner[0] + 16, 
         bottom_right_corner[1] + dist, "Cost: " + string(cost), textScale, textScale, 0);

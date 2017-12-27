@@ -52,13 +52,18 @@
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\move_step.gml</script>
-    <script>scripts\mouse_check_over.gml</script>
+    <scripts name="Utility">
+      <script>scripts\round_to_nearest.gml</script>
+      <script>scripts\mouse_check_over.gml</script>
+      <script>scripts\move_step.gml</script>
+    </scripts>
     <scripts name="Combat">
       <script>scripts\scr_attack.gml</script>
       <script>scripts\char_select.gml</script>
     </scripts>
     <scripts name="Inventory">
+      <script>scripts\inventory_initialize.gml</script>
+      <script>scripts\equip_initialize.gml</script>
       <script>scripts\inventory_add.gml</script>
       <script>scripts\inventory_cleanup.gml</script>
       <script>scripts\inventory_trash.gml</script>
@@ -138,6 +143,7 @@
         <object>objects\data_inventory</object>
       </objects>
       <object>objects\class_item</object>
+      <object>objects\class_null_item</object>
       <object>objects\class_equip</object>
       <object>objects\item_healthPot</object>
       <object>objects\item_sword</object>

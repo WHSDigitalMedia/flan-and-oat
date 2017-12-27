@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-3</depth>
+  <depth>-5</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>depth = -3;
+            <string>depth = -5;
 padding = 16; //extra room to cover the full item
 
 //deadband (in pixels) to determine whether to pick up or not
@@ -36,6 +36,8 @@ init_my = 0;
 gotXY = false;
 prevX = x; //to return to if dropped
 prevY = y;
+
+show_debug_message(string(x) + ", " + string(y));
 </string>
           </argument>
         </arguments>
@@ -71,7 +73,7 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
         } 
         //set the currently selected item
         for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
-            if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 5) {
+            if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
                 global.curInvSelect = i;
                 i = ds_grid_width(global.inventory_grid) + 1;
             }
@@ -94,17 +96,20 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
     
     //drop item
     if mouse_check_button_released(mb_left) &amp;&amp; global.pickup == self {
-        if place_empty(x, y) || ds_grid_get(global.inventory_grid, global.curInvSelect, 2) == 0 {
-            //return to intial slot
-            x = prevX;
-            y = prevY;
-        } else {
-            var inst = instance_position(x, y, class_equip);
-            if inst {
-                x = inst.x;
-                y = inst.y; 
-                var stat = ds_grid_get(global.inventory_grid, global.curInvSelect, 8);
-                var effect = ds_grid_get(global.inventory_grid, global.curInvSelect, 7);
+//        var inst = instance_position(x, y, class_equip);
+        var to_switch = instance_place(x, y, class_item);
+        //if place_empty(x, y) || string(ds_grid_get(global.inventory_grid, global.curInvSelect, 1)) == "consumable" {
+        if ((mouse_x &lt; 52 || mouse_x &gt; 840) || (mouse_y &lt; 52 || mouse_y &gt; 520)) {
+            if to_switch &amp;&amp; string(ds_grid_get(global.inventory_grid, global.curInvSelect, 1)) != "consumable" {
+                x = to_switch.x;
+                y = to_switch.y; 
+                var raw_data = string(ds_grid_get(global.inventory_grid, global.curInvSelect, 5));
+                var stat = string_letters(raw_data);
+                var effect = real(string_digits(raw_data));
+                show_debug_message(raw_data);
+                show_debug_message(stat);
+                show_debug_message(effect);
+                
                 switch (stat) {
                     case "atk": 
                         data_player.atk += effect; 
@@ -120,9 +125,41 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                         break;
                     default: break;
                 }
-                ds_grid_set(global.inventory_grid, global.curInvSelect, 10, true);
-                with (inst) instance_destroy();         
-            } else inventory_switch(); 
+                
+                with (to_switch) instance_destroy(); //item = other.id;       
+                instance_create(prevX, prevY, class_null_item);
+                
+                var pos = ds_list_find_index(global.equipList, to_switch);  
+                ds_grid_set_grid_region(global.equip_grid, global.inventory_grid, global.curInvSelect, 0, global.curInvSelect, ds_grid_height(global.inventory_grid), pos, 0);
+                
+                ini_open("item_data.ini");
+
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 0, ini_read_string("Null", "name", ""));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 1, ini_read_string("Null", "type", ""));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 2, ini_read_string("Null", "desc", ""));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 3, ini_read_real("Null", "cost", 0));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 4, ini_read_string("Null", "id", ""));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 5, ini_read_string("Null", "stat", ""));
+                ds_grid_set(global.inventory_grid, global.curInvSelect, 6, 1);
+                
+                ini_close();
+                
+                show_debug_message(global.equip_grid);
+            } else { //return to intial slot
+                x = prevX;
+                y = prevY;
+            }
+        } else {            
+            if to_switch {
+                inventory_switch(to_switch);
+            } else {
+                x = prevX;
+                y = prevY;
+            }
+            
+            /*if inst &amp;&amp; inst.item == noone {
+
+            }*/ 
         }
         global.pickup = noone;
         gotXY = false;
@@ -139,6 +176,22 @@ if global.pickup == self {
 </string>
           </argument>
         </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>203</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_kill_object</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
       </action>
     </event>
     <event eventtype="8" enumb="0">
@@ -162,7 +215,7 @@ if global.pickup == self {
 
 //draws an outline around the obeject if it's been picked up and being dragged
 if global.curInvSelect != noone {
-    var toCheck = asset_get_index(ds_grid_get(global.inventory_grid, global.curInvSelect, 5));
+    var toCheck = asset_get_index(ds_grid_get(global.inventory_grid, global.curInvSelect, 4));
     if instance_exists(toCheck) {
         if object_index == toCheck.object_index {
             draw_roundrect_colour(x - sprite_width/2 - 16, y - sprite_height/2 - 16, x + sprite_width/2 + 16, y + sprite_width/2 + 16, c_white, c_white, true);
