@@ -6,7 +6,6 @@ var tempArray;
 for (var j = 0; j < ds_grid_height(global.inventory_grid); j++) {
     tempArray[j] = ds_grid_get(global.inventory_grid, global.curInvSelect, j);    
 }
-//show_debug_message(tempArray);
 
 //get the name and drawing location of the item we're switching with
 var newX = inst.x;

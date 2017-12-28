@@ -25,7 +25,17 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited();
+            <string>///READ ME
+
+/***************************************************
+  This object is literally just a place holder. Turn the depth to 
+  -5 and you'll see them show up in the inventory. However, they aren't
+  "actual" items. They're just there so switched items can quickly grab new
+  coordinates and a location in the inventory DS grid.
+  
+  This Create Event consists only of a comment to override the depth set by 
+  its parent, class_item.
+ ***************************************************/
 </string>
           </argument>
         </arguments>
@@ -48,7 +58,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string></string>
+            <string>///SEE CREATE EVENT
+</string>
           </argument>
         </arguments>
       </action>

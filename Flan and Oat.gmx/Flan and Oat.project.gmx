@@ -137,6 +137,7 @@
       <object>objects\controller_depth</object>
       <object>objects\controller_combat</object>
       <object>objects\controller_pause</object>
+      <object>objects\controller_inventory</object>
     </objects>
     <objects name="Items">
       <objects name="Inventory">
@@ -144,7 +145,6 @@
       </objects>
       <object>objects\class_item</object>
       <object>objects\class_null_item</object>
-      <object>objects\class_equip</object>
       <object>objects\item_healthPot</object>
       <object>objects\item_sword</object>
       <object>objects\item_spitoonHat</object>
