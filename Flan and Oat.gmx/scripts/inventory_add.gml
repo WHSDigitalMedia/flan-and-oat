@@ -7,8 +7,8 @@ var foundMatch = false;
 //checks for matching item first
 for (var i = 0; i < ds_grid_width(global.inventory_grid); i++) {
     if ds_grid_get(global.inventory_grid, i, 0) == name {
-        ds_grid_add(global.inventory_grid, i, 9, amount);
-        var item_desc = ds_grid_get(global.inventory_grid, i, 3);
+        ds_grid_add(global.inventory_grid, i, 6, amount);
+        var item_desc = ds_grid_get(global.inventory_grid, i, 2);
         foundMatch = true;
     }
 }

@@ -83,8 +83,12 @@ side_slot_hborder_padding = 52;
 side_slot_vborder_padding = 1/2 * mean(side_right_corner[1], side_left_corner[1]) + string_height('1') * global.textScale * 2;
 
 //rows and cols of inventory slots
-num_row = floor(main_width / (slot_width + slot_padding));
-num_col = floor(main_height / (slot_height + slot_padding));
+inv_num_row = floor(main_width / (slot_width + slot_padding));
+inv_num_col = floor(main_height / (slot_height + slot_padding));
+
+//rows and cols of equip slots
+equip_num_row = 2;
+equip_num_col = 3;
 
 //text
 textScale = 0.15;
@@ -122,85 +126,21 @@ item_type[5] = "shoes";
             <kind>1</kind>
             <string>///Creates the Items in the inventory
 if room == rm_inventory &amp;&amp; !itemsCreated {
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (0 + 1)) + (slot_height * 0), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (0 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+    for (var i = 0; i &lt; inv_num_col; i++) {
+        for (var k = 0; k &lt; inv_num_row; k++) {  
+            //gets the object id
+            var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + inv_num_row * i, 4)));      
+            
+            //creates the object
+            if object_exists(obj) {
+                var inst = instance_create(
+                mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
+                mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (i + 1)) + (slot_height * i), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (i + 1)),
+                obj);
+                if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
+            }
         }
     }
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (1 + 1)) + (slot_height * 1), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (1 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
-        }
-    }
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 2, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (2 + 1)) + (slot_height * 2), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (2 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
-        }
-    }
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 3, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (3 + 1)) + (slot_height * 3), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (3 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
-        }
-    }
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 4, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (4 + 1)) + (slot_height * 4), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (4 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
-        }
-    }
-    for (var k = 0; k &lt; num_row; k++) {  
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, k + num_row * 5, 4)));      
-        
-        //creates the object
-        if object_exists(obj) {
-            var inst = instance_create(
-            mean(slot_hborder_padding + main_right_corner[0] + (slot_padding * (k + 1)) + (slot_width * k), slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * (k + 1)),
-            mean(slot_vborder_padding + main_right_corner[1] + (slot_padding * (5 + 1)) + (slot_height * 5), slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * (5 + 1)),
-            obj);
-            if ds_exists(global.itemDisplayList, ds_type_list) ds_list_add(global.itemDisplayList, inst);
-        }
-    }
-    
     itemsCreated = true;
 }
 </string>
@@ -225,30 +165,22 @@ if room == rm_inventory &amp;&amp; !itemsCreated {
             <kind>1</kind>
             <string>///create equip placeholders in the equip slots
 if !equipInit &amp;&amp; room == rm_inventory {
-    //draws the first row
-    for (var i = 1; i &lt;= 3 ; i++) {
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.equip_grid, i - 1, 4)));     
-        
-        var inst = instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
-        mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * 1) + (slot_height * (1 - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * 1),
-        obj);
-        ds_list_add(global.equipList, inst);
+    for (var j = 0; j &lt; equip_num_row; j++) {
+        //draws the rows
+        for (var i = 0; i &lt; equip_num_col ; i++) {
+            //gets the object id
+            var obj = asset_get_index(string(ds_grid_get(global.equip_grid, i + equip_num_col * j, 4)));     
+            
+            var inst = instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * (i + 1)) + (slot_width * i), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * (i + 1)),
+            mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * (j + 1)) + (slot_height * j), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * (j + 1)),
+            obj);
+            ds_list_add(global.equipList, inst);
+        }
     }
-    //draws the second row
-    for (var i = 1; i &lt;= 3 ; i++) {
-        //gets the object id
-        var obj = asset_get_index(string(ds_grid_get(global.inventory_grid, i + 2, 4)));     
-        
-        var inst = instance_create(mean(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i),
-        mean(side_slot_vborder_padding + side_right_corner[1] + (slot_padding * 2) + (slot_height * (2 - 1)), side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * 2),
-        obj);
-        ds_list_add(global.equipList, inst);
-    }
-    
+
     //sets the types they accept
-    for (var i = 0; i &lt; ds_grid_width(global.equip_grid); i++) {
-        if ds_grid_get(global.equip_grid, i, 0) == "Null" ds_grid_set(global.equip_grid, i, 1, item_type[i]);
+    for (var k = 0; k &lt; ds_grid_width(global.equip_grid); k++) {
+        if ds_grid_get(global.equip_grid, k, 0) == "Null" ds_grid_set(global.equip_grid, k, 1, item_type[k]);
     }
     
     equipInit = true;
@@ -362,8 +294,8 @@ if room == rm_inventory {
     
     //draws the inventory slots
     draw_set_color(c_gray);
-    for (var i = 1; i &lt;= num_row; i++) {
-        for (var j = 1; j &lt;= num_col; j++) {
+    for (var i = 1; i &lt;= inv_num_row; i++) {
+        for (var j = 1; j &lt;= inv_num_col; j++) {
             draw_roundrect_ext(slot_hborder_padding + main_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
             slot_vborder_padding + main_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
             slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * i, 
@@ -396,8 +328,8 @@ if room == rm_inventory {
     
     //draws equip slots
     draw_set_color(c_gray);
-    for (var i = 1; i &lt;= 3 ; i++) {
-        for (var j = 1; j &lt;= 2; j++) {
+    for (var i = 1; i &lt;= equip_num_col ; i++) {
+        for (var j = 1; j &lt;= equip_num_row; j++) {
             draw_roundrect_ext(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
             side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
             side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i, 

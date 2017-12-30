@@ -32,7 +32,7 @@ global.pickup = noone;
 global.itemDisplayList = ds_list_create(); //objects created by the inventory stored here
 
 //actual inventory grid
-global.max_items = controller_inventory.num_row * controller_inventory.num_col;
+global.max_items = controller_inventory.inv_num_row * controller_inventory.inv_num_col;
 //name, type, desc, cost, object ID, stat/effect, amount
 item_params = 7;
 global.inventory_grid = ds_grid_create(global.max_items, item_params); 
