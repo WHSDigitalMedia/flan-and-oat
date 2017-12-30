@@ -3,7 +3,7 @@
   <spriteName>spr_wall</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-5</depth>
+  <depth>0</depth>
   <persistent>0</persistent>
   <parentName>class_item</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -32,9 +32,6 @@
   -5 and you'll see them show up in the inventory. However, they aren't
   "actual" items. They're just there so switched items can quickly grab new
   coordinates and a location in the inventory DS grid.
-  
-  This Create Event consists only of a comment to override the depth set by 
-  its parent, class_item.
  ***************************************************/
 </string>
           </argument>
@@ -59,6 +56,17 @@
           <argument>
             <kind>1</kind>
             <string>///SEE CREATE EVENT
+
+//sets the sprite for the equip placeholders
+var pos = ds_list_find_index(global.equipList, id);
+if pos != -1 {
+    var type = ds_grid_get(global.equip_grid, pos, 1);
+    var spr = asset_get_index("spr_" + string(type));
+    if sprite_exists(spr) {
+        sprite_index = spr;
+        depth = -4;
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -78,6 +86,34 @@
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var alpha;
+
+if place_meeting(x, y, class_item) alpha = 1;
+else alpha = 0.5;
+
+draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, c_black, alpha);
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>

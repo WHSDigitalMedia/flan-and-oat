@@ -216,10 +216,20 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             
             //removes the item slot placeholder
             with (to_switch) instance_destroy();
-            //create an instance at the previous location   
+            //create an equip placeholder instance at the previous location   
             var inst = instance_create(prevX, prevY, class_null_item);
+            //adds it to the equip list
             var loc = ds_list_find_index(global.equipList, id);
             ds_list_replace(global.equipList, loc, inst);
+            //sets its sprite
+            with (inst) {
+                var type = ds_grid_get(global.equip_grid, global.curEquipSelect, 1);
+                var spr = asset_get_index("spr_" + string(type));
+                if sprite_exists(spr) {
+                    sprite_index = spr;
+                    depth = -4;
+                }
+            }
             
             //find the item you want to switch with
             var pos = ds_list_find_index(global.itemDisplayList, to_switch);

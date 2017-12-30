@@ -45,6 +45,14 @@
       <sprite>sprites\spr_sword</sprite>
       <sprite>sprites\spr_healthPot</sprite>
     </sprites>
+    <sprites name="Equip Placeholders">
+      <sprite>sprites\spr_shoes</sprite>
+      <sprite>sprites\spr_pants</sprite>
+      <sprite>sprites\spr_offhand</sprite>
+      <sprite>sprites\spr_weapon</sprite>
+      <sprite>sprites\spr_shirt</sprite>
+      <sprite>sprites\spr_hat</sprite>
+    </sprites>
     <sprites name="NPCs">
       <sprite>sprites\spr_npc</sprite>
     </sprites>

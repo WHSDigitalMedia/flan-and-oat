@@ -99,7 +99,7 @@ smallTextHeight = string_height('1') * textScale;
 item_type[0] = "hat";
 item_type[1] = "shirt";
 item_type[2] = "weapon";
-item_type[3] = "off-hand";
+item_type[3] = "offhand";
 item_type[4] = "pants";
 item_type[5] = "shoes";
 </string>
@@ -263,6 +263,48 @@ global.curEquipSelect = noone;
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
+        <id>612</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>-1</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_if_variable</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>room</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>rm_inventory</string>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>422</id>
+        <kind>1</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>603</id>
         <kind>7</kind>
         <userelative>0</userelative>
@@ -277,105 +319,173 @@ global.curEquipSelect = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///draws the inventory
-if room == rm_inventory {
-    //background panel
-    draw_set_color(c_dkgray);
-    draw_roundrect_ext(main_right_corner[0], main_right_corner[1], main_left_corner[0], 
-    main_left_corner[1], main_border_radius, main_border_radius, false);
-    
-    //side panel
-    draw_roundrect_ext(side_right_corner[0], side_right_corner[1], side_left_corner[0], 
-    side_left_corner[1], side_border_radius, side_border_radius, false);
-    
-    //bottom panel
-    draw_roundrect_ext(bottom_right_corner[0], bottom_right_corner[1], bottom_left_corner[0],
-    bottom_left_corner[1], bottom_border_radius, bottom_border_radius, false);
-    
-    //draws the inventory slots
-    draw_set_color(c_gray);
-    for (var i = 1; i &lt;= inv_num_row; i++) {
-        for (var j = 1; j &lt;= inv_num_col; j++) {
-            draw_roundrect_ext(slot_hborder_padding + main_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
-            slot_vborder_padding + main_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
-            slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * i, 
-            slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * j,
-            slot_border_radius, slot_border_radius, false);
-        }
+            <string>///draws the inventory panels and slots
+
+//background panel
+draw_set_color(c_dkgray);
+draw_roundrect_ext(main_right_corner[0], main_right_corner[1], main_left_corner[0], 
+main_left_corner[1], main_border_radius, main_border_radius, false);
+
+//side panel
+draw_roundrect_ext(side_right_corner[0], side_right_corner[1], side_left_corner[0], 
+side_left_corner[1], side_border_radius, side_border_radius, false);
+
+//bottom panel
+draw_roundrect_ext(bottom_right_corner[0], bottom_right_corner[1], bottom_left_corner[0],
+bottom_left_corner[1], bottom_border_radius, bottom_border_radius, false);
+
+//draws the inventory slots
+draw_set_color(c_gray);
+for (var i = 1; i &lt;= inv_num_row; i++) {
+    for (var j = 1; j &lt;= inv_num_col; j++) {
+        draw_roundrect_ext(slot_hborder_padding + main_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
+        slot_vborder_padding + main_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
+        slot_hborder_padding + main_right_corner[0] + (slot_padding + slot_width) * i, 
+        slot_vborder_padding + main_right_corner[1] + (slot_padding + slot_height) * j,
+        slot_border_radius, slot_border_radius, false);
     }
-    
-    //draws the character's name
-    draw_set_color(c_white);
-    draw_set_halign(fa_center);
-    draw_text_transformed(mean(side_right_corner[0], side_left_corner[0]), side_right_corner[1] + 64, "Flan", global.textScale, 
-    global.textScale, 0);
-    
-    //draws the character
-    draw_sprite_ext(spr_player, 0, mean(side_right_corner[0], side_left_corner[0]), 
-    1/2 * side_vcenter + largeTextHeight, 4, 4, 0, image_blend, 1);
-    
-    //draws the character's stats
-    draw_set_color(c_white);
-    draw_set_halign(fa_left);
-    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3, 
-    "Attack: " + string(data_player.atk), textScale, textScale, 0);
-    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight, 
-    "Defense: " + string(data_player.def), textScale, textScale, 0);
-    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 2, 
-    "Accuracy: " + string(data_player.acc), textScale, textScale, 0);
-    draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 3, 
-    "Speed: " + string(data_player.spd), textScale, textScale, 0);
-    
-    //draws equip slots
-    draw_set_color(c_gray);
-    for (var i = 1; i &lt;= equip_num_col ; i++) {
-        for (var j = 1; j &lt;= equip_num_row; j++) {
-            draw_roundrect_ext(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
-            side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
-            side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i, 
-            side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j,
-            slot_border_radius, slot_border_radius, false);
-        }
-    }
-    
-    //draw stuff if an item is selected
-    if global.curInvSelect != noone || global.curEquipSelect != noone {
-        
-        draw_set_color(c_white);
-        draw_set_halign(fa_left);
-        
-        //draw the name of the item
-        var name;
-        if global.curInvSelect != noone name = ds_grid_get(global.inventory_grid, global.curInvSelect, 0); 
-        else if global.curEquipSelect != noone name = ds_grid_get(global.equip_grid, global.curEquipSelect, 0);
-        draw_text_transformed(bottom_right_corner[0] + 16, 
-        bottom_right_corner[1] + (smallTextHeight), name,
-        textScale, textScale, 0);
-    
-        //draw the item description
-        draw_text_transformed(bottom_right_corner[0] + 16, 
-        bottom_right_corner[1] + 2 * (smallTextHeight), 
-        strDisplay, textScale, textScale, 0);
-        
-        //draw the item stats
-        var cost, number;
-        if global.curInvSelect != noone {
-            cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
-            number = ds_grid_get(global.inventory_grid, global.curInvSelect, 6);
-        } else if global.curEquipSelect != noone {
-            cost = ds_grid_get(global.equip_grid, global.curEquipSelect, 3);
-            number = ds_grid_get(global.equip_grid, global.curEquipSelect, 6);
-        }
-        var dist = smallTextHeight * 4;
-        draw_text_transformed(bottom_right_corner[0] + 16, 
-        bottom_right_corner[1] + dist, "Cost: " + string(cost), textScale, textScale, 0);
-        draw_text_transformed(bottom_right_corner[0] + string_width("Cost:                      ") * textScale, 
-        bottom_right_corner[1] + dist, "Amount: " + string(number), textScale, textScale, 0);
+}
+
+//draws equip slots
+draw_set_color(c_gray);
+for (var i = 1; i &lt;= equip_num_col ; i++) {
+    for (var j = 1; j &lt;= equip_num_row; j++) {
+        draw_roundrect_ext(side_slot_hborder_padding + side_right_corner[0] + (slot_padding * i) + (slot_width * (i - 1)), 
+        side_slot_vborder_padding + side_right_corner[1] + (slot_padding * j) + (slot_height * (j - 1)),
+        side_slot_hborder_padding + side_right_corner[0] + (slot_padding + slot_width) * i, 
+        side_slot_vborder_padding + side_right_corner[1] + (slot_padding + slot_height) * j,
+        slot_border_radius, slot_border_radius, false);
     }
 }
 </string>
           </argument>
         </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///draws the character
+draw_sprite_ext(spr_player, 0, mean(side_right_corner[0], side_left_corner[0]), 
+1/2 * side_vcenter + largeTextHeight, 4, 4, 0, image_blend, 1);
+
+//draws the character's name
+draw_set_color(c_white);
+draw_set_halign(fa_center);
+draw_text_transformed(mean(side_right_corner[0], side_left_corner[0]), side_right_corner[1] + 64, "Flan", global.textScale, 
+global.textScale, 0);
+
+//draws the character's stats
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3, 
+"Attack: " + string(data_player.atk), textScale, textScale, 0);
+draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight, 
+"Defense: " + string(data_player.def), textScale, textScale, 0);
+draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 2, 
+"Accuracy: " + string(data_player.acc), textScale, textScale, 0);
+draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 3, 
+"Speed: " + string(data_player.spd), textScale, textScale, 0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///draws item text
+if global.curInvSelect != noone || global.curEquipSelect != noone {
+    
+    draw_set_color(c_white);
+    draw_set_halign(fa_left);
+    
+    //draw the name of the item
+    var name;
+    if global.curInvSelect != noone name = ds_grid_get(global.inventory_grid, global.curInvSelect, 0); 
+    else if global.curEquipSelect != noone name = ds_grid_get(global.equip_grid, global.curEquipSelect, 0);
+    draw_text_transformed(bottom_right_corner[0] + 16, 
+    bottom_right_corner[1] + (smallTextHeight), name,
+    textScale, textScale, 0);
+
+    //draw the item description
+    draw_text_transformed(bottom_right_corner[0] + 16, 
+    bottom_right_corner[1] + 2 * (smallTextHeight), 
+    strDisplay, textScale, textScale, 0);
+    
+    //draw the item stats
+    var cost, number, raw_data, stat, effect;
+    if global.curInvSelect != noone {
+        cost = ds_grid_get(global.inventory_grid, global.curInvSelect, 3);
+        number = ds_grid_get(global.inventory_grid, global.curInvSelect, 6);
+        raw_data = ds_grid_get(global.inventory_grid, global.curInvSelect, 5);        
+    } else if global.curEquipSelect != noone {
+        cost = ds_grid_get(global.equip_grid, global.curEquipSelect, 3);
+        number = ds_grid_get(global.equip_grid, global.curEquipSelect, 6);
+        raw_data = ds_grid_get(global.equip_grid, global.curEquipSelect, 5);
+    }
+    stat = string_letters(raw_data);
+    effect = string_digits(raw_data);
+    
+    //converts stat from its abbreivation to the full word(s)
+    switch (stat) {
+        case "atk": stat = "Attack"; break;
+        case "def": stat = "Defense"; break;
+        case "spd": stat = "Speed"; break;
+        case "acc": stat = "Accuracy"; break;
+        case "hp": stat = "Restores Hit Points"; break;
+        default: break;
+    }
+    
+    var dist = smallTextHeight * 4;
+    draw_text_transformed(bottom_right_corner[0] + 16, 
+    bottom_right_corner[1] + dist, "Cost: " + string(cost), textScale, textScale, 0);
+    draw_text_transformed(bottom_right_corner[0] + string_width("Cost:                      ") * textScale, 
+    bottom_right_corner[1] + dist, "Amount: " + string(number), textScale, textScale, 0);
+    draw_text_transformed(bottom_right_corner[0] + string_width("Cost:                      ") * textScale * 2, 
+    bottom_right_corner[1] + dist, stat + ": +" + effect, textScale, textScale, 0);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>424</id>
+        <kind>2</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
       </action>
     </event>
   </events>
