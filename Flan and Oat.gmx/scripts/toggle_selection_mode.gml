@@ -2,3 +2,4 @@
 global.selection_mode = true;
 global.selected_move = self;
 show_debug_message("select toggled");
+show_debug_message(type);

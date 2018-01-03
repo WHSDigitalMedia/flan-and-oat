@@ -26,35 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>event_inherited();
-
-if instance_exists(target) {
-    switch (type) {
-        case move_types.damage:
-            with (class_enemy) {
-                hp -= other.amount;
-            } 
-            break;
-        case move_types.heal: 
-            with (class_enemy) {
-                hp += other.amount;
-            }
-            break;
-        case move_types.buff:
-            break;
-        case move_types.dot: 
-            break;
-        case move_types.immobile:
-            break;
-        case move_types.invulnerable:
-            break;
-        default: break;
-    }
-    global.selection_mode = false;
-    global.charSelect = noone;
-    for (var i = 0; i &lt; instance_number(class_button); i++) {
-        with (instance_find(class_button, i)) instance_destroy();
-    }
-}
+use_move(false);
 </string>
           </argument>
         </arguments>

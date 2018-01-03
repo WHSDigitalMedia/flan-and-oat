@@ -75,6 +75,7 @@ spd = 10;
 acc = 10;
 hp = 10;
 max_hp = 10;
+immobile = 0;
 
 move[0, 0] = move_single;
 move[0, 1] = move_types.damage;
@@ -86,9 +87,9 @@ move[1, 2] = 3;
 
 move[2, 0] = move_single;
 move[2, 1] = move_types.buff;
-move[2, 2] = 2;
+move[2, 2] = "atk2";
 
-move[3, 0] = move_multi;
+move[3, 0] = move_single;
 move[3, 1] = move_types.immobile;
 move[3, 2] = 2;
 </string>

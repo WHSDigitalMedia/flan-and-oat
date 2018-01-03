@@ -37,7 +37,7 @@ action = toggle_selection_mode;
 target = noone;
 
 //Move-specific things
-type = move_types.damage;
+type = move_types.heal;
 amount = 0; //amount of (turns, health points, etc.) the move applies
 </string>
           </argument>

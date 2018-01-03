@@ -14,7 +14,6 @@
 draw_texture_flush();
 texture_set_interpolation(false);
 window_set_fullscreen(true);
-
 var a = application_get_position();
 var xx = a[0];
 var yy = a[1];

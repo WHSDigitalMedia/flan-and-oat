@@ -66,6 +66,8 @@
     </scripts>
     <scripts name="Combat">
       <script>scripts\toggle_selection_mode.gml</script>
+      <script>scripts\use_move.gml</script>
+      <script>scripts\init_combat_list.gml</script>
       <script>scripts\select_target.gml</script>
     </scripts>
     <scripts name="Inventory">

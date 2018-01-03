@@ -27,11 +27,15 @@
             <kind>1</kind>
             <string>///Initalize Variables
 initMoves = false; //initialize selected moves
+roomInit = false; //for use in returning to the overworld after combat
 
 global.charSelect = noone; //who is currently selected
 global.curTurn = -1; //who is currently doing a thing
 global.selection_mode = false;
 global.selected_move = noone;
+
+global.prev_enemy_x = x;
+global.prev_enemy_y = y;
 
 //possible move types
 enum move_types {
@@ -129,18 +133,23 @@ char_box_height = options_box_height;
           <argument>
             <kind>1</kind>
             <string>///Selecting a character   
-if !global.selection_mode {
-    for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
-        if mouse_check_button_pressed(mb_left) &amp;&amp; mouse_check_over(instance_find(class_nonGUI, i)) {
-            global.charSelect = instance_find(class_nonGUI, i);
-            initMoves = false;
-        } /*else if mouse_check_button_pressed(mb_left) &amp;&amp; !mouse_check_over(instance_find(class_nonGUI, i)) {
-            for (var j = 0; j &lt; instance_number(class_button); j++) {
-                if !mouse_check_over(instance_find(class_button, j)) {
-                    global.charSelect = noone;
-                    global.selection_mode = false;
-                }
-            }
+if instance_exists(global.curTurn) {
+    if !global.selection_mode &amp;&amp; global.curTurn.object_index != class_enemy {
+        for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
+            if mouse_check_button_pressed(mb_left) &amp;&amp; mouse_check_over(instance_find(class_nonGUI, i)) {
+                global.charSelect = instance_find(class_nonGUI, i);
+                initMoves = false;
+            } /*else if mouse_check_button_pressed(mb_left) &amp;&amp; !mouse_check_over(instance_find(class_nonGUI, i)) {
+                global.charSelect = noone
+                initMoves = false;
+            } */
+        }
+    } else {
+        /*for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
+            if mouse_check_button_pressed(mb_left) &amp;&amp; !mouse_check_over(instance_find(class_nonGUI, i)) {
+                global.charSelect = noone
+                initMoves = false;
+            } 
         }*/
     }
 }
@@ -169,26 +178,85 @@ if instance_exists(global.charSelect) {
     if global.charSelect.object_index != class_enemy &amp;&amp; !initMoves {
         with (global.charSelect) {
             //creates the moves of the character
-            with (instance_create(x - 64, y, move[0, 0])) {
-                type = other.move[0, 1];
-                amount = other.move[0, 2];    
-            }   
-            with (instance_create(x, y + 64, move[1, 0])) {
-                type = other.move[1, 1];
-                amount = other.move[1, 2];        
-            }
-            with (instance_create(x + 64, y, move[2, 0])) {
-                type = other.move[2, 1];
-                amount = other.move[2, 2];
-            }
-            with (instance_create(x, y - 64, move[3, 0])) {
-                type = other.move[3, 1];
-                amount = other.move[3, 2];
+            var inst;
+            inst[0] = instance_create(x - 64, y + 64, move[0, 0]);
+            inst[1] = instance_create(x + 64, y + 64, move[1, 0]);
+            inst[2] = instance_create(x - 64, y - 64, move[2, 0]);
+            inst[3] = instance_create(x + 64, y - 64, move[3, 0]);
+            for (var i = 0; i &lt; array_length_1d(inst); i++) {
+                with (inst[i]) {
+                    type = other.move[i, 1];
+                    amount = other.move[i, 2];    
+                }   
             }
         }
-        
         initMoves = true;
     }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///List checks
+
+//removes peeps if they're deaderinos
+if ds_exists(global.allyQueue, ds_type_priority) &amp;&amp; !ds_priority_empty(global.allyQueue) {
+    var inst = ds_priority_find_max(global.allyQueue);
+    if object_exists(inst.object_index) {
+        while !instance_exists(inst) {
+            ds_priority_delete_max(global.allyQueue);
+        }
+    }
+}
+
+if ds_exists(global.enemyQueue, ds_type_priority) &amp;&amp; !ds_priority_empty(global.enemyQueue) {
+    var inst = ds_priority_find_max(global.enemyQueue);
+    if object_exists(inst.object_index) {
+        while !instance_exists(inst) {
+            ds_priority_delete_max(global.enemyQueue);
+        }
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Return to overworld
+//if no more enemies/player exist
+if roomInit &amp;&amp; !instance_exists(class_enemy) || class_player.hp &lt;= 0 {
+    pause_game();
 }
 </string>
           </argument>
@@ -228,27 +296,12 @@ if instance_exists(global.charSelect) {
             <kind>1</kind>
             <string>///Populate and sort combat queue
 if room == rm_combat {    
-    var ally_num = instance_number(class_ally);
-    var enemy_num = instance_number(class_enemy);
-    
-    var ally_inst, enemy_inst;
-    for (var i = 0; i &lt; ally_num; i++) {
-        ally_inst = instance_find(class_ally, i);
-        ds_priority_add(global.allyQueue, ally_inst, ally_inst.spd);
-    }
-    for (var j = 0; j &lt; enemy_num; j++) {
-        enemy_inst = instance_find(class_enemy, j);
-        ds_priority_add(global.enemyQueue, enemy_inst, enemy_inst.spd);
-    }
-    
-    //add the player too!
-    ds_priority_add(global.allyQueue, class_player.id, class_player.spd);
-    
-    global.curTurn = ds_priority_find_max(global.allyQueue);
-    global.charSelect = ds_priority_delete_max(global.allyQueue);    
+    init_combat_list();
+    roomInit = true;
 } else { //clears the queues after we're done
     if ds_exists(global.allyQueue, ds_type_priority) ds_priority_clear(global.allyQueue);
     if ds_exists(global.enemyQueue, ds_type_priority) ds_priority_clear(global.enemyQueue);
+    roomInit = false;
 }
 </string>
           </argument>
@@ -316,7 +369,7 @@ if room == rm_combat {
             <kind>1</kind>
             <string>///Drawing stuffs
 //draws the little ring around the currently selected character
-if instance_exists(global.charSelect) draw_circle_colour(global.charSelect.x, global.charSelect.y, 64, c_white, c_white, true);
+if instance_exists(global.charSelect) draw_circle_colour(global.charSelect.x, global.charSelect.y, 96, c_white, c_white, true);
 
 draw_set_alpha(0.67);
 //Draws the options panel
@@ -426,6 +479,12 @@ for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
         draw_roundrect_colour(x + sprite_width/2 - 64, y + sprite_height * 0.75, 
         x + sprite_width/2 - 64 + (hp * 64 / max_hp), 
         y + sprite_height, c_red, c_red, false);
+        if immobile &gt; 0 {
+            draw_set_halign(fa_center);
+            draw_text_transformed_colour(x + sprite_width/2, y - sprite_height * 0.75, 
+            "Immobile: " + string(immobile) + " turns", other.textScale, other.textScale, 0, 
+            c_white, c_white, c_white, c_white, 1);
+        }
     }
 }
 </string>

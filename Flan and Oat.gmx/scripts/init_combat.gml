@@ -6,6 +6,8 @@ with (argument0) { //makes sure the enemy makes it to the battle screen
 
 //actually transition to combat stage
 global.combat = true;
+global.prev_enemy_x = x;
+global.prev_enemy_y = y;
 pause_game();
 
 with (class_player) { //repos player

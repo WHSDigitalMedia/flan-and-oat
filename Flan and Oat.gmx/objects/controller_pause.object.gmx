@@ -84,6 +84,7 @@ if !instance_exists(class_textBox) {
         pause_game();
         global.map = false;
         global.inv = false;
+        global.combat = false;
     }
 }
 </string>

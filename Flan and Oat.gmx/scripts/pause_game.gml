@@ -7,13 +7,14 @@ if !global.pause {
     global.pause = true;
     global.draw = true;
 } else {
-    if instance_exists(class_button) with (class_button) instance_destroy();
+    if instance_exists(class_button) with (class_button) {instance_destroy();}
+    if instance_exists(class_enemy) with (class_enemy) {instance_destroy();}
     if !instance_exists(gui_camera) instance_create(class_player.x, class_player.y, gui_camera);
     with (class_player) {
         class_player.visible = true;
         move_speed = 0;
     }
-    with (controller_pause) if sprite_exists(spr) sprite_delete(spr);
+    with (controller_pause) {if sprite_exists(spr) sprite_delete(spr);}
     
     global.pause = false;
     load_player_loc(true);        //return to previous room
