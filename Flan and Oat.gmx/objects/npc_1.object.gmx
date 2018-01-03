@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>event_inherited();
 
-msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+msg = "Toggle attack. Current attack: " + string(class_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
 action[0] = scr_text1;
 action[1] = scr_text2;
 action[2] = scr_text3;
@@ -56,7 +56,7 @@ arg[2, 0] = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle attack. Current attack: " + string(data_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+            <string>msg = "Toggle attack. Current attack: " + string(class_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
 
 event_inherited();
 </string>

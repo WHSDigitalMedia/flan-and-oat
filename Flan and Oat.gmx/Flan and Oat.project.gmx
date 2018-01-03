@@ -61,13 +61,12 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <scripts name="Utility">
-      <script>scripts\round_to_nearest.gml</script>
       <script>scripts\mouse_check_over.gml</script>
       <script>scripts\move_step.gml</script>
     </scripts>
     <scripts name="Combat">
-      <script>scripts\scr_attack.gml</script>
-      <script>scripts\char_select.gml</script>
+      <script>scripts\toggle_selection_mode.gml</script>
+      <script>scripts\select_target.gml</script>
     </scripts>
     <scripts name="Inventory">
       <script>scripts\inventory_initialize.gml</script>
@@ -158,7 +157,6 @@
       <object>objects\item_spitoonHat</object>
     </objects>
     <objects name="Player">
-      <object>objects\data_player</object>
       <object>objects\class_player</object>
     </objects>
     <objects name="NPCs">
@@ -199,14 +197,16 @@
     <objects name="GUI">
       <object>objects\class_textBox</object>
       <object>objects\gui_camera</object>
+      <objects name="Moves">
+        <object>objects\class_move</object>
+        <object>objects\move_single</object>
+        <object>objects\move_multi</object>
+      </objects>
       <objects name="Buttons">
         <object>objects\class_button</object>
         <object>objects\gui_pause_button</object>
         <object>objects\gui_map_button</object>
         <object>objects\gui_inv_button</object>
-        <objects name="Moves">
-          <object>objects\class_move</object>
-        </objects>
       </objects>
     </objects>
   </objects>

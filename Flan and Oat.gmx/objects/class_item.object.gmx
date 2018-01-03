@@ -136,16 +136,16 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                     
                     switch (stat) {
                         case "atk": 
-                            data_player.atk += effect; 
+                            class_player.atk += effect; 
                             break;
                         case "def": 
-                            data_player.def += effect; 
+                            class_player.def += effect; 
                             break;
                         case "spd": 
-                            data_player.spd += effect; 
+                            class_player.spd += effect; 
                             break;
                         case "acc": 
-                            data_player.acc += effect; 
+                            class_player.acc += effect; 
                             break;
                         default: break;
                     }
@@ -200,16 +200,16 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             
             switch (stat) {
                 case "atk": 
-                    data_player.atk -= effect; 
+                    class_player.atk -= effect; 
                     break;
                 case "def": 
-                    data_player.def -= effect; 
+                    class_player.def -= effect; 
                     break;
                 case "spd": 
-                    data_player.spd -= effect; 
+                    class_player.spd -= effect; 
                     break;
                 case "acc": 
-                    data_player.acc -= effect; 
+                    class_player.acc -= effect; 
                     break;
                 default: break;
             }

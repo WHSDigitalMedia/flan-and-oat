@@ -14,7 +14,7 @@ if file_exists(global.game_mainDir + "\save.txt") {
     ds_list_read(player_stats_list, str64);
     
     //Set Player vars
-    with (data_player) {
+    with (class_player) {
         atk = ds_list_find_value(player_stats_list, 0);
         def = ds_list_find_value(player_stats_list, 1);
         spd = ds_list_find_value(player_stats_list, 2);

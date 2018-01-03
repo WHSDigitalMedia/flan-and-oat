@@ -2,7 +2,7 @@
 var player_stats_list, str, file;
 
 player_stats_list = ds_list_create();
-ds_list_add(player_stats_list, data_player.atk, data_player.def, data_player.spd, data_player.acc);
+ds_list_add(player_stats_list, atk, def, spd, acc);
 str = ds_list_write(player_stats_list);
 
 //Writing to the file

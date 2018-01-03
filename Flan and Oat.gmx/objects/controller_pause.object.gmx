@@ -59,7 +59,8 @@ global.roomPrev = -1; //saves the room to return to
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//check to see if the gui buttons exist
+            <string>///toggling the pause
+//check to see if the gui buttons exist
 if room != rm_pause_menu &amp;&amp; room != rm_map &amp;&amp; room != rm_inventory &amp;&amp; room != rm_combat {
     if !instance_exists(gui_pause_button) instance_create(x, y, gui_pause_button);
     if !instance_exists(gui_map_button) instance_create(x, y, gui_map_button);
@@ -171,16 +172,22 @@ if global.pause {
             with (gui_camera) instance_destroy();
             room_goto(rm_map);
         } else if global.inv {
-            with (class_player) persistent = false;
-            with (gui_camera) persistent = false;
+            with (class_player) {
+                allowMovement = false;
+                visible = false;
+            }
+            with (gui_camera) instance_destroy();
             room_goto(rm_inventory);
         } else if global.combat {
             with (class_player) allowMovement = false;
             with (gui_camera) instance_destroy();
             room_goto(rm_combat);
         } else {
-            with (class_player) persistent = false;
-            with (gui_camera) persistent = false;
+            with (class_player) {
+                allowMovement = false;
+                visible = false;
+            }
+            with (gui_camera) instance_destroy();
             room_goto(rm_pause_menu);
         }
         global.draw = false; //so draw only runs once
@@ -245,10 +252,10 @@ if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
         draw_sprite_ext(spr_player, image_index, 576, 376 - 72, 4, 4, 0, image_blend, 1);
         
         //gets the variables for the currently assigned object
-        var atk = string(data_player.atk);
-        var def = string(data_player.def);
-        var acc = string(data_player.acc);
-        var spd = string(data_player.spd);
+        var atk = string(class_player.atk);
+        var def = string(class_player.def);
+        var acc = string(class_player.acc);
+        var spd = string(class_player.spd);
         
         //reset the draw alignment
         draw_set_halign(fa_left);

@@ -391,13 +391,13 @@ global.textScale, 0);
 draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3, 
-"Attack: " + string(data_player.atk), textScale, textScale, 0);
+"Attack: " + string(class_player.atk), textScale, textScale, 0);
 draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight, 
-"Defense: " + string(data_player.def), textScale, textScale, 0);
+"Defense: " + string(class_player.def), textScale, textScale, 0);
 draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 2, 
-"Accuracy: " + string(data_player.acc), textScale, textScale, 0);
+"Accuracy: " + string(class_player.acc), textScale, textScale, 0);
 draw_text_transformed(side_left, side_right_corner[1] + side_vcenter + largeTextHeight * 3 + smallTextHeight * 3, 
-"Speed: " + string(data_player.spd), textScale, textScale, 0);
+"Speed: " + string(class_player.spd), textScale, textScale, 0);
 </string>
           </argument>
         </arguments>

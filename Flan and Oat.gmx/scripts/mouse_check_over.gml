@@ -1,5 +1,4 @@
 ///mouse_check_over(object, [x1, x2, y1, y2])
-
 //accepts either an object, or four coordinates
 var i, arg, over, x1, x2, y1, y2;
 

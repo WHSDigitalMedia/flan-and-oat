@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Initialize Variables
+name = "NPC";
 
 //place # betweeen the options to manually insert linebreaks
 msg = "Toggle movement speed. Current speed: " + string(class_player.move_speed_max) + "#[1] halve speed#[2] double speed#[3] reset speed"
