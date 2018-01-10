@@ -198,6 +198,11 @@ if distance_to_object(class_npc) &lt; 64 &amp;&amp; !instance_exists(class_textB
             <kind>1</kind>
             <string>///Animation
 depth = -y;
+image_xscale = 1;
+image_yscale = 1;
+mask_index = spr_flan_up;
+
+//if moving in overworld
 if !move_speed {
     sprite_index = spr_flan_idle;
     image_speed = 0;
@@ -212,6 +217,19 @@ if !move_speed {
     else if keyboard_check(movement_inputs[1]) sprite_index = spr_flan_up;
     else if keyboard_check(movement_inputs[2]) sprite_index = spr_flan_left;
     else if keyboard_check(movement_inputs[3]) sprite_index = spr_flan_down;
+}
+
+//changes the sprite to just the head in the map screen
+if room == rm_map {
+    sprite_index = spr_flan_head;
+    image_xscale = 3;
+    image_yscale = 3;
+}
+
+if room == rm_combat {
+    mask_index = spr_flan_idle;
+    image_xscale = 2;
+    image_yscale = 2;
 }
 </string>
           </argument>

@@ -217,19 +217,21 @@ if global.pause {
           <argument>
             <kind>1</kind>
             <string>///Drawing text and stuff
-if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
-    //draws the blurred background
-    if sprite_exists(spr) draw_sprite(spr, 0, 0, 0); 
-    
-    //sets the draw alignment
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    
+if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory || room == rm_combat || room == rm_map {
     //no blurring of text
     texture_set_interpolation(false);
     
+    //draws the blurred background
+    if room == rm_pause_menu || room == rm_inventory {
+        if sprite_exists(spr) draw_sprite(spr, 0, 0, 0); 
+    }
+    
     //draw to be toggled for the pause menu only
     if room == rm_pause_menu {
+        //sets the draw alignment
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_middle);
+        
         draw_text_transformed_colour(128, 136, "Paused",
         global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
         

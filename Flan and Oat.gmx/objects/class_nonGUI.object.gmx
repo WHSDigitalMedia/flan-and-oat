@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>///Image scaling 
 draw_self();
+depth = -y;
 
 if room == rm_combat {
     image_xscale = 2;

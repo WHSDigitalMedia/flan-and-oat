@@ -423,13 +423,14 @@ if global.curInvSelect != noone || global.curEquipSelect != noone {
     
     draw_set_color(c_white);
     draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
     
     //draw the name of the item
     var name;
     if global.curInvSelect != noone name = ds_grid_get(global.inventory_grid, global.curInvSelect, 0); 
     else if global.curEquipSelect != noone name = ds_grid_get(global.equip_grid, global.curEquipSelect, 0);
     draw_text_transformed(bottom_right_corner[0] + 16, 
-    bottom_right_corner[1] + (smallTextHeight), name,
+    bottom_right_corner[1] + (smallTextHeight) * 0.5, name,
     textScale, textScale, 0);
 
     //draw the item description

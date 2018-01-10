@@ -10,7 +10,10 @@
   <persistent>0</persistent>
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
-  <code>//Draw settings
+  <code>//Version number
+global.version = "v1.0.0-20180109"
+
+//Draw settings
 draw_texture_flush();
 texture_set_interpolation(false);
 window_set_fullscreen(true);

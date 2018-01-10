@@ -40,8 +40,12 @@
       <sprite>sprites\spr_flan_left</sprite>
       <sprite>sprites\spr_flan_down</sprite>
       <sprite>sprites\spr_flan_idle</sprite>
+      <sprite>sprites\spr_flan_head</sprite>
     </sprites>
     <sprites name="Buttons">
+      <sprite>sprites\spr_backpack</sprite>
+      <sprite>sprites\spr_map</sprite>
+      <sprite>sprites\spr_pause_button</sprite>
       <sprite>sprites\spr_main_menu_start</sprite>
       <sprite>sprites\spr_move</sprite>
     </sprites>
@@ -219,7 +223,6 @@
       </objects>
     </objects>
   </objects>
-  <timelines name="timelines"/>
   <rooms name="rooms">
     <room>rooms\rm_initialize</room>
     <room>rooms\rm_main_menu</room>

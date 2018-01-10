@@ -297,8 +297,13 @@ if roomInit &amp;&amp; !instance_exists(class_enemy) || class_player.hp &lt;= 0 
             <string>///Populate and sort combat queue
 if room == rm_combat {    
     init_combat_list();
-    //resets texture interpolation
-    texture_set_interpolation(false);
+    var middle = mean(options_box_left_corner[1], options_box_left_corner[1] + options_box_height);
+    create_button("Items", scr_null, c_white, 1, fnt_textbox, 
+    mean(options_box_left_corner[0], options_box_left_corner[0] + options_box_width), 
+    middle - 32);
+    create_button("Run", scr_null, c_white, 1, fnt_textbox, 
+    mean(options_box_left_corner[0], options_box_left_corner[0] + options_box_width), 
+    middle + 40);
     roomInit = true;
 } else { //clears the queues after we're done
     if ds_exists(global.allyQueue, ds_type_priority) ds_priority_clear(global.allyQueue);
@@ -392,12 +397,13 @@ draw_roundrect_colour_ext(char_box_left_corner[0], char_box_left_corner[1],
 draw_set_alpha(1.0);
 
 //Draws the options menu
-draw_set_halign(fa_left);
+/*draw_set_halign(fa_left);
 draw_text_transformed(options_box_left_corner[0] + text_padding,
     options_box_left_corner[1] + text_padding, 
     "Sorry! Inventory#not available#in this demo.",
-    textScale, textScale, 0);
+    textScale, textScale, 0);*/
 
+draw_set_colour(c_white);
 //Draws the stats of the selected character
 if instance_exists(global.charSelect) {
     draw_set_halign(fa_center);
