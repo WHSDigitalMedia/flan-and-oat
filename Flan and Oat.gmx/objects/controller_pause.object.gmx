@@ -234,11 +234,11 @@ if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
         global.textScale, global.textScale, 0, c_white, c_white, c_white, c_white, 1);
         
         //character portrait background
-        draw_set_alpha(0.67);
-        draw_roundrect_colour_ext(336, 136, 816, 616, 10, 10, c_black, c_black, false);
+        draw_set_alpha(0.9);
+        draw_roundrect_colour_ext(336, 136, 816, 616, 10, 10, c_gray, c_gray, false);
         
         //item equips background
-        draw_roundrect_colour_ext(848, 136, 848 + 312, 616, 10, 10, c_black, c_black, false);
+        draw_roundrect_colour_ext(848, 136, 848 + 312, 616, 10, 10, c_gray, c_gray, false);
         draw_set_alpha(1);
         
         //item equips slots
@@ -249,8 +249,23 @@ if global.pause &amp;&amp; room == rm_pause_menu || room == rm_inventory {
         draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 4, 848 + 16 + 64, 136 + 16 + 72 * 4 + 64, 10, 10, c_ltgray, c_ltgray, false);    
         draw_roundrect_colour_ext(848 + 16, 136 + 16 + 72 * 5, 848 + 16 + 64, 136 + 16 + 72 * 5 + 64, 10, 10, c_ltgray, c_ltgray, false);    
         
+        //draws the equipped items
+        if ds_exists(global.equip_grid, ds_type_grid) {
+            for (var i = 0; i &lt; ds_grid_width(global.equip_grid); i++) {
+                var itemID;
+                itemID = ds_grid_get(global.equip_grid, i, 4);
+                if itemID != "class_null_item" {
+                    var obj = asset_get_index(itemID);
+                    if object_exists(obj) {
+                        draw_sprite(object_get_sprite(obj), 0, mean(862, 926), 
+                        mean(152 + 72 * i, 152 + 72 * i + 64));
+                    }
+                }
+            }
+        }
+        
         //draws the character
-        draw_sprite_ext(spr_player, image_index, 576, 376 - 72, 4, 4, 0, image_blend, 1);
+        draw_sprite_ext(spr_flan_idle, 3, 576, 376 - 72, 4, 4, 0, image_blend, 1);
         
         //gets the variables for the currently assigned object
         var atk = string(class_player.atk);

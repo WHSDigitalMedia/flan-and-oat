@@ -378,7 +378,7 @@ for (var i = 1; i &lt;= equip_num_col ; i++) {
           <argument>
             <kind>1</kind>
             <string>///draws the character
-draw_sprite_ext(spr_player, 0, mean(side_right_corner[0], side_left_corner[0]), 
+draw_sprite_ext(spr_flan_idle, 3, mean(side_right_corner[0], side_left_corner[0]), 
 1/2 * side_vcenter + largeTextHeight, 4, 4, 0, image_blend, 1);
 
 //draws the character's name

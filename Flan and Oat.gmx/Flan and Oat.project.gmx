@@ -27,6 +27,7 @@
   <sprites name="sprites">
     <sprites name="Environment">
       <sprite>sprites\spr_wall</sprite>
+      <sprite>sprites\spr_brush</sprite>
       <sprite>sprites\mask_wall_top</sprite>
       <sprite>sprites\mask_wall_bottom</sprite>
       <sprite>sprites\sprite7</sprite>
@@ -34,7 +35,11 @@
       <sprite>sprites\spr_door</sprite>
     </sprites>
     <sprites name="Player">
-      <sprite>sprites\spr_player</sprite>
+      <sprite>sprites\spr_flan_up</sprite>
+      <sprite>sprites\spr_flan_right</sprite>
+      <sprite>sprites\spr_flan_left</sprite>
+      <sprite>sprites\spr_flan_down</sprite>
+      <sprite>sprites\spr_flan_idle</sprite>
     </sprites>
     <sprites name="Buttons">
       <sprite>sprites\spr_main_menu_start</sprite>
@@ -54,10 +59,13 @@
       <sprite>sprites\spr_hat</sprite>
     </sprites>
     <sprites name="NPCs">
+      <sprite>sprites\spr_robocop</sprite>
       <sprite>sprites\spr_npc</sprite>
     </sprites>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\bg_tile_grass</background>
+  </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
     <scripts name="Utility">
@@ -143,7 +151,6 @@
     <object>objects\class_nonGUI</object>
     <objects name="Controllers">
       <object>objects\controller_main_menu</object>
-      <object>objects\controller_depth</object>
       <object>objects\controller_combat</object>
       <object>objects\controller_pause</object>
       <object>objects\controller_inventory</object>
@@ -174,7 +181,7 @@
     </objects>
     <objects name="Environment">
       <object>objects\class_solid</object>
-      <object>objects\class_wall</object>
+      <object>objects\env_brush</object>
       <objects name="Doors">
         <object>objects\class_door</object>
         <objects name="Level 1">
@@ -212,6 +219,7 @@
       </objects>
     </objects>
   </objects>
+  <timelines name="timelines"/>
   <rooms name="rooms">
     <room>rooms\rm_initialize</room>
     <room>rooms\rm_main_menu</room>
