@@ -7,6 +7,7 @@ if !global.pause {
     global.pause = true;
     global.draw = true;
 } else {
+    texture_set_interpolation(false);
     if instance_exists(class_button) with (class_button) {instance_destroy();}
     if instance_exists(class_enemy) with (class_enemy) {instance_destroy();}
     if !instance_exists(gui_camera) instance_create(class_player.x, class_player.y, gui_camera);

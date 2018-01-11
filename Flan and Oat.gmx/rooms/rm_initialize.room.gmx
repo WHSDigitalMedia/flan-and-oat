@@ -10,19 +10,17 @@
   <persistent>0</persistent>
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
-  <code>//Version number
-global.version = "v1.0.0-20180109"
-
-//Draw settings
+  <code>//Draw settings
 draw_texture_flush();
 texture_set_interpolation(false);
-window_set_fullscreen(true);
+window_set_fullscreen(false);
 var a = application_get_position();
 var xx = a[0];
 var yy = a[1];
 var ww = a[2] - a[0];
 var hh = a[3] - a[1];
-display_set_gui_maximise(display_get_width()/room_width, display_get_height()/room_height, xx, yy);
+if window_get_fullscreen() display_set_gui_maximise(display_get_width()/room_width, display_get_height()/room_height, xx, yy);
+else display_set_gui_maximise(window_get_width()/room_width, window_get_height()/room_height, xx, yy);
 
 //Global variables
 global.keyUp = ord("W");

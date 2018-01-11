@@ -120,8 +120,9 @@ if allowMovement {
     var seconds_passed = delta_time/1000000;
     var move_speed_this_frame = move_speed * seconds_passed;
     
-    var move_xinput = 0;
-    var move_yinput = 0;
+    move_xinput = 0;
+    move_yinput = 0;
+    move_angle = 0;
     
     //Checks for input from any of the movement keys
     for (var i = 0; i &lt; array_length_1d(movement_inputs); i++) {
@@ -135,17 +136,16 @@ if allowMovement {
     }
     
     //checks if the player is moving
-    var moving = (point_distance(0, 0, move_xinput, move_yinput) &gt; 0);
+    moving = (point_distance(0, 0, move_xinput, move_yinput) &gt; 0);
     
     //adds friction and sets a min/mzx move speed
     move_speed -= move_friction;
     move_speed = clamp(move_speed, 0, move_speed_max);
     
-    //if the player's speed is greater than 0
-    if move_speed {
-        //if input is currently being detected
-        if moving var move_angle = point_direction(0, 0, move_xinput, move_yinput);
-        else var move_angle = move_direction; //otherwise set dir to be the last dir
+    //if the player's speed is greater than 0 and if input is detected
+    if move_speed &amp;&amp; moving {
+        move_angle = point_direction(0, 0, move_xinput, move_yinput);
+        //else move_angle = move_direction; //otherwise set dir to be the last dir
         //actually do the moving
         move_step(move_speed_this_frame, move_angle, class_solid);
     } 
@@ -203,7 +203,7 @@ image_yscale = 1;
 mask_index = spr_flan_up;
 
 //if moving in overworld
-if !move_speed {
+if !moving {
     sprite_index = spr_flan_idle;
     image_speed = 0;
     for (var i = 0; i &lt; array_length_1d(movement_inputs); i++) {
@@ -214,9 +214,9 @@ if !move_speed {
 } else {
     image_speed = 10/room_speed;
     if keyboard_check(movement_inputs[0]) sprite_index = spr_flan_right;
-    else if keyboard_check(movement_inputs[1]) sprite_index = spr_flan_up;
-    else if keyboard_check(movement_inputs[2]) sprite_index = spr_flan_left;
-    else if keyboard_check(movement_inputs[3]) sprite_index = spr_flan_down;
+    if keyboard_check(movement_inputs[2]) sprite_index = spr_flan_left;
+    if keyboard_check(movement_inputs[1]) sprite_index = spr_flan_up;
+    if keyboard_check(movement_inputs[3]) sprite_index = spr_flan_down;
 }
 
 //changes the sprite to just the head in the map screen
@@ -255,6 +255,71 @@ if room == rm_combat {
             <kind>1</kind>
             <string>///updates the room index
 room_index = room;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/*draw_set_halign(fa_left);
+draw_set_colour(c_white);
+draw_text_transformed(32, 128, "X-Input: " + string(move_xinput), global.textScale, 
+    global.textScale, 0); 
+draw_text_transformed(32, 128 + string_height("X") * global.textScale, 
+    "Y-Input: " + string(move_yinput), global.textScale, global.textScale, 0);
+draw_text_transformed(32, 128 + string_height("X") * global.textScale * 2, 
+    "Direction: " + string(move_direction), global.textScale, global.textScale, 0);
+draw_text_transformed(32, 128 + string_height("X") * global.textScale * 3, 
+    "Angle: " + string(move_angle), global.textScale, global.textScale, 0);
+draw_text_transformed(32, 128 + string_height("X") * global.textScale * 4, 
+    "Moving: " + string(moving), global.textScale, global.textScale, 0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>event_inherited();
+/*draw_text_transformed(x - 64, y, keyboard_check(ord("A")), global.textScale, 
+    global.textScale, 0);
+draw_text_transformed(x + 64, y, keyboard_check(ord("D")), global.textScale, 
+    global.textScale, 0);
+draw_text_transformed(x, y - 64, keyboard_check(ord("W")), global.textScale, 
+    global.textScale, 0);
+draw_text_transformed(x, y + 64, keyboard_check(ord("S")), global.textScale, 
+    global.textScale, 0);
 </string>
           </argument>
         </arguments>

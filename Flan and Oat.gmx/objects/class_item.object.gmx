@@ -158,8 +158,10 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                     ds_list_replace(global.itemDisplayList, loc, inst);
                     
                     //copies over the stats into the equip grid then erases the inventory grid            
+                    //also changes the equipDisplayList
                     var pos = ds_list_find_index(global.equipList, to_switch);  
                     ds_grid_set_grid_region(global.equip_grid, global.inventory_grid, global.curInvSelect, 0, global.curInvSelect, ds_grid_height(global.inventory_grid), pos, 0);
+                    ds_list_replace(global.equipList, pos, self);
                     
                     ini_open("item_data.ini");
         
@@ -234,6 +236,7 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             //find the item you want to switch with
             var pos = ds_list_find_index(global.itemDisplayList, to_switch);
             ds_grid_set_grid_region(global.inventory_grid, global.equip_grid, global.curEquipSelect, 0, global.curEquipSelect, ds_grid_height(global.equip_grid), pos, 0);
+            ds_list_replace(global.itemDisplayList, pos, self);
             
             ini_open("item_data.ini");
 

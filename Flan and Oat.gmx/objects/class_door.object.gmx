@@ -56,18 +56,15 @@ load_door_state(id);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var inst = instance_position(x, y, class_player);
-if inst {
-    if keyboard_check_pressed(ord('E')) &amp;&amp; !instance_exists(class_textBox) {
-        if !lock {
-            room_goto(room_targ);
-            with (inst) {
-                x = other.xtarg;
-                y = other.ytarg;
-            }
-        } else {
-            create_textbox_main("The door is locked.#[1] okay#[2] use key", scr_null, scr_unlock, noone, noone, noone, noone);
+            <string>if distance_to_object(class_player) &lt;= 16 &amp;&amp; keyboard_check_pressed(ord('E')) &amp;&amp; !instance_exists(class_textBox) {
+    if !lock {
+        room_goto(room_targ);
+        with (class_player) {
+            x = other.xtarg;
+            y = other.ytarg;
         }
+    } else {
+        create_textbox_main("The door is locked.#[1] okay#[2] use key", scr_null, scr_unlock, noone, noone, noone, noone);
     }
 }
 
