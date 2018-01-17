@@ -66,6 +66,8 @@
       <sprite>sprites\spr_robocop</sprite>
       <sprite>sprites\spr_npc</sprite>
     </sprites>
+    <sprite>sprites\spr_white_square</sprite>
+    <sprite>sprites\spr_menu_splash</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_tile_grass</background>
@@ -153,6 +155,9 @@
   </fonts>
   <objects name="objects">
     <object>objects\class_nonGUI</object>
+    <objects name="FX">
+      <object>objects\fx_dust</object>
+    </objects>
     <objects name="Controllers">
       <object>objects\controller_main_menu</object>
       <object>objects\controller_combat</object>

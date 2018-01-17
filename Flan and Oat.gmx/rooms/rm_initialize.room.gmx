@@ -54,6 +54,9 @@ if global.saveNumber == 1 {
     global.game_mainDir = working_directory + "\saveData3";
 }
 
+//set the mouse to the center of the screen
+display_mouse_set(display_get_width()/2, display_get_height()/2);
+
 //Randomize
 randomize();
 //Next room
