@@ -193,8 +193,11 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             }
         } else if prevX &gt; 840 { //what to do if the item is being un-equipped
         
-            x = to_switch.x;
-            y = to_switch.y; 
+            if instance_exists(class_item) 
+                {
+                x = to_switch.x ;
+                y = to_switch.y; 
+                }
             
             var raw_data = string(ds_grid_get(global.equip_grid, global.curEquipSelect, 5));
             var stat = string_letters(raw_data);
