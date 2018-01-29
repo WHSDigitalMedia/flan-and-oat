@@ -170,6 +170,8 @@ if done {
                         acceptArg[i, 4], acceptArg[i, 5], acceptArg[i, 6], acceptArg[i, 7], acceptArg[i, 8], acceptArg[i, 9],
                         acceptArg[i, 10], acceptArg[i, 11]); break;
                 default: break;
+                
+                i = array_length_1d(accept);
             }
             class_player.allowMovement = true;
             class_player.move_speed = 0;

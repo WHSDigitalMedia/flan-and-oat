@@ -191,14 +191,8 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                 x = prevX;
                 y = prevY;
             }
-        } else if prevX &gt; 840 { //what to do if the item is being un-equipped
-        
-            if instance_exists(class_item) 
-                {
-                x = to_switch.x ;
-                y = to_switch.y; 
-                }
-            
+        } else if prevX &gt; 840 { //what to do if the item is being un-equipped     
+            if to_switch {     
             var raw_data = string(ds_grid_get(global.equip_grid, global.curEquipSelect, 5));
             var stat = string_letters(raw_data);
             var effect = real(string_digits(raw_data));
@@ -254,6 +248,10 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             ini_close();
 
             global.curEquipSelect = noone;
+            } else {
+                x = prevX;
+                y = prevY;
+            }
         }
         
         //set the currently picked up item to noone, and reset the 'grabbed x and y coords' variable
