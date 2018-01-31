@@ -25,6 +25,13 @@ for (var i = 0; i < ds_list_size(global.itemDisplayList); i++) {
     }
 }
 
+//switches itemDisplayList positions
+var loc = ds_list_find_index(global.itemDisplayList, inst); //location of the item to switch with
+var temp_val = ds_list_find_value(global.itemDisplayList, loc); //that item's current ID
+var pos = ds_list_find_index(global.itemDisplayList, id); //location of self
+ds_list_replace(global.itemDisplayList, loc, id);
+ds_list_replace(global.itemDisplayList, pos, temp_val);
+
 //swaps the positions
 with (inst) {
     x = other.prevX;

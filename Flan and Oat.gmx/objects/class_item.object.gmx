@@ -38,6 +38,8 @@ init_my = 0;
 gotXY = false; //boolean to grab current x and y coords when initially picked up
 prevX = x; //to return to if dropped
 prevY = y;
+
+drawOther = false;
 </string>
           </argument>
         </arguments>
@@ -64,7 +66,8 @@ prevY = y;
 
 //check if mouse over
 if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, y - sprite_width/2 - padding, y + sprite_width/2 + padding) {
-    //change the bottom panel display if clicked
+    
+    //what to do when clicked
     if mouse_check_button_pressed(mb_left) {
         //sets the inventory to display nothing if item is picked up
         with (controller_inventory) {
@@ -74,18 +77,16 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             strDisplay = "";
         } 
         //set the currently selected item
-        var foundinInv = false;
-        for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
-            if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
-                global.curInvSelect = i;
-                global.curEquipSelect = noone;
-                foundinInv = true;
-                i = ds_grid_width(global.inventory_grid) + 1;
+        if (mouse_x &lt; 840) {
+            for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+                if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
+                    global.curInvSelect = i;
+                    global.curEquipSelect = noone;
+                    foundinInv = true;
+                    i = ds_grid_width(global.inventory_grid) + 1;
+                }
             }
-        }
-        
-        //searches the equip grid if not found in the inventory grid
-        if !foundinInv {
+        } else { //searches the equip grid if not found in the inventory grid
             for (var i = 0; i &lt; ds_grid_width(global.equip_grid); i++) {
                 if object_get_name(object_index) == ds_grid_get(global.equip_grid, i, 4) {
                     global.curEquipSelect = i;
@@ -94,7 +95,6 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                 }
             }
         }
-        
         //sets the initial mouse coordinates on click
         init_mx = mouse_x;
         init_my = mouse_y;
@@ -110,11 +110,11 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
             prevY = y;
             gotXY = true;
         }
-        global.pickup = self; 
+        global.pickup = id; 
     } 
     
     //drop item
-    if mouse_check_button_released(mb_left) &amp;&amp; global.pickup == self {
+    if mouse_check_button_released(mb_left) &amp;&amp; global.pickup == id {    
         //sees if meeting another item
         var to_switch = instance_place(x, y, class_item);
         
@@ -152,10 +152,26 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                     
                     //removes the equip slot so another item can't be dropped on top
                     with (to_switch) instance_destroy();
+                    
                     //create an instance at the previous location and set new value in list
-                    var inst = instance_create(prevX, prevY, class_null_item);
+                    var foundinInv = false;
+                    var amount = 0;
+                    for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+                        if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
+                            amount = ds_grid_get(global.inventory_grid, i, 6);
+                            foundinInv = true;
+                            i = ds_grid_width(global.inventory_grid) + 1;
+                        }
+                    }
+                    //if you pulled out the only item
+                    if amount == 1 {
+                        var inst = instance_create(prevX, prevY, class_null_item);
+                    } else { //if there's more
+                        var inst = instance_create(prevX, prevY, object_index);
+                    }
                     var loc = ds_list_find_index(global.itemDisplayList, id);
                     ds_list_replace(global.itemDisplayList, loc, inst);
+                    //drawOther = false;
                     
                     //copies over the stats into the equip grid then erases the inventory grid            
                     //also changes the equipDisplayList
@@ -163,17 +179,23 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                     ds_grid_set_grid_region(global.equip_grid, global.inventory_grid, global.curInvSelect, 0, global.curInvSelect, ds_grid_height(global.inventory_grid), pos, 0);
                     ds_list_replace(global.equipList, pos, self);
                     
-                    ini_open("item_data.ini");
-        
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 0, ini_read_string("Null", "name", ""));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 1, ini_read_string("Null", "type", ""));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 2, ini_read_string("Null", "desc", ""));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 3, ini_read_real("Null", "cost", 0));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 4, ini_read_string("Null", "id", ""));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 5, ini_read_string("Null", "stat", ""));
-                    ds_grid_set(global.inventory_grid, global.curInvSelect, 6, 1);
-                    
-                    ini_close();
+                    if amount == 1 {
+                        ini_open("item_data.ini");
+            
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 0, ini_read_string("Null", "name", ""));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 1, ini_read_string("Null", "type", ""));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 2, ini_read_string("Null", "desc", ""));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 3, ini_read_real("Null", "cost", 0));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 4, ini_read_string("Null", "id", ""));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 5, ini_read_string("Null", "stat", ""));
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 6, 1);
+                        
+                        ini_close();
+                    } else {
+                        //manual override of the amount values
+                        ds_grid_set(global.inventory_grid, global.curInvSelect, 6, amount - 1);
+                        ds_grid_set(global.equip_grid, pos, 6, 1); 
+                    }
                     
                     global.curInvSelect = noone;
                 } else { //return to intial slot
@@ -192,62 +214,125 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
                 y = prevY;
             }
         } else if prevX &gt; 840 { //what to do if the item is being un-equipped     
+            //first see if this thing exists in the inventory so we can stack
+            for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+                if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
+                    var raw_data = string(ds_grid_get(global.equip_grid, global.curEquipSelect, 5));
+                    var stat = string_letters(raw_data);
+                    var effect = real(string_digits(raw_data));
+                    
+                    switch (stat) {
+                        case "atk": 
+                            class_player.atk -= effect; 
+                            break;
+                        case "def": 
+                            class_player.def -= effect; 
+                            break;
+                        case "spd": 
+                            class_player.spd -= effect; 
+                            break;
+                        case "acc": 
+                            class_player.acc -= effect; 
+                            break;
+                        default: break;
+                    }
+                    
+                    ds_grid_set(global.inventory_grid, i, 6, ds_grid_get(global.inventory_grid, i, 6) + 1);
+                    i = ds_grid_width(global.inventory_grid);
+                    to_switch = -1; //so the next code block doesn't run
+                    
+                    ini_open("item_data.ini");
+        
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 0, ini_read_string("Null", "name", ""));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 1, ds_grid_get(global.equip_grid, global.curEquipSelect, 1));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 2, ini_read_string("Null", "desc", ""));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 3, ini_read_real("Null", "cost", 0));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 4, ini_read_string("Null", "id", ""));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 5, ini_read_string("Null", "stat", ""));
+                    ds_grid_set(global.equip_grid, global.curEquipSelect, 6, 1);
+                    
+                    ini_close();
+        
+                    //create an equip placeholder instance at the previous location   
+                    var inst = instance_create(prevX, prevY, class_null_item);
+                    //adds it to the equip list
+                    var loc = ds_list_find_index(global.equipList, id);
+                    ds_list_replace(global.equipList, loc, inst);
+                    //sets its sprite
+                    with (inst) {
+                        var type = ds_grid_get(global.equip_grid, global.curEquipSelect, 1);
+                        var spr = asset_get_index("spr_" + string(type));
+                        if sprite_exists(spr) {
+                            sprite_index = spr;
+                            depth = -4;
+                        }
+                    }
+                    global.curEquipSelect = noone;
+                    
+                    instance_destroy();
+                }  
+            }
+            //what to do if no other instances exist to stack with
             if to_switch {     
-            var raw_data = string(ds_grid_get(global.equip_grid, global.curEquipSelect, 5));
-            var stat = string_letters(raw_data);
-            var effect = real(string_digits(raw_data));
-            
-            switch (stat) {
-                case "atk": 
-                    class_player.atk -= effect; 
-                    break;
-                case "def": 
-                    class_player.def -= effect; 
-                    break;
-                case "spd": 
-                    class_player.spd -= effect; 
-                    break;
-                case "acc": 
-                    class_player.acc -= effect; 
-                    break;
-                default: break;
-            }
-            
-            //removes the item slot placeholder
-            with (to_switch) instance_destroy();
-            //create an equip placeholder instance at the previous location   
-            var inst = instance_create(prevX, prevY, class_null_item);
-            //adds it to the equip list
-            var loc = ds_list_find_index(global.equipList, id);
-            ds_list_replace(global.equipList, loc, inst);
-            //sets its sprite
-            with (inst) {
-                var type = ds_grid_get(global.equip_grid, global.curEquipSelect, 1);
-                var spr = asset_get_index("spr_" + string(type));
-                if sprite_exists(spr) {
-                    sprite_index = spr;
-                    depth = -4;
+                var raw_data = string(ds_grid_get(global.equip_grid, global.curEquipSelect, 5));
+                var stat = string_letters(raw_data);
+                var effect = real(string_digits(raw_data));
+                
+                switch (stat) {
+                    case "atk": 
+                        class_player.atk -= effect; 
+                        break;
+                    case "def": 
+                        class_player.def -= effect; 
+                        break;
+                    case "spd": 
+                        class_player.spd -= effect; 
+                        break;
+                    case "acc": 
+                        class_player.acc -= effect; 
+                        break;
+                    default: break;
                 }
-            }
-            
-            //find the item you want to switch with
-            var pos = ds_list_find_index(global.itemDisplayList, to_switch);
-            ds_grid_set_grid_region(global.inventory_grid, global.equip_grid, global.curEquipSelect, 0, global.curEquipSelect, ds_grid_height(global.equip_grid), pos, 0);
-            ds_list_replace(global.itemDisplayList, pos, self);
-            
-            ini_open("item_data.ini");
-
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 0, ini_read_string("Null", "name", ""));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 1, ds_grid_get(global.equip_grid, global.curEquipSelect, 1));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 2, ini_read_string("Null", "desc", ""));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 3, ini_read_real("Null", "cost", 0));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 4, ini_read_string("Null", "id", ""));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 5, ini_read_string("Null", "stat", ""));
-            ds_grid_set(global.equip_grid, global.curEquipSelect, 6, 1);
-            
-            ini_close();
-
-            global.curEquipSelect = noone;
+                
+                //change positions
+                x = to_switch.x;
+                y = to_switch.y;
+                
+                //removes the item slot placeholder
+                with (to_switch) instance_destroy();
+                //create an equip placeholder instance at the previous location   
+                var inst = instance_create(prevX, prevY, class_null_item);
+                //adds it to the equip list
+                var loc = ds_list_find_index(global.equipList, id);
+                ds_list_replace(global.equipList, loc, inst);
+                //sets its sprite
+                with (inst) {
+                    var type = ds_grid_get(global.equip_grid, global.curEquipSelect, 1);
+                    var spr = asset_get_index("spr_" + string(type));
+                    if sprite_exists(spr) {
+                        sprite_index = spr;
+                        depth = -4;
+                    }
+                }
+                
+                //find the item you want to switch with
+                var pos = ds_list_find_index(global.itemDisplayList, to_switch);
+                ds_grid_set_grid_region(global.inventory_grid, global.equip_grid, global.curEquipSelect, 0, global.curEquipSelect, ds_grid_height(global.equip_grid), pos, 0);
+                ds_list_replace(global.itemDisplayList, pos, self);
+                
+                ini_open("item_data.ini");
+    
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 0, ini_read_string("Null", "name", ""));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 1, ds_grid_get(global.equip_grid, global.curEquipSelect, 1));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 2, ini_read_string("Null", "desc", ""));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 3, ini_read_real("Null", "cost", 0));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 4, ini_read_string("Null", "id", ""));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 5, ini_read_string("Null", "stat", ""));
+                ds_grid_set(global.equip_grid, global.curEquipSelect, 6, 1);
+                
+                ini_close();
+    
+                global.curEquipSelect = noone;
             } else {
                 x = prevX;
                 y = prevY;
@@ -261,7 +346,28 @@ if mouse_check_over(x - sprite_width/2 - padding, x + sprite_width/2 + padding, 
 }
 
 //drag items
-if global.pickup == self {
+if global.pickup == id {
+    //check to see how many there are and draws a sprite as neceessary
+    var foundinInv = false;
+    var amount = 0;
+    for (var i = 0; i &lt; ds_grid_width(global.inventory_grid); i++) {
+        if object_get_name(object_index) == ds_grid_get(global.inventory_grid, i, 4) {
+            amount = ds_grid_get(global.inventory_grid, i, 6);
+            foundinInv = true;
+            i = ds_grid_width(global.inventory_grid) + 1;
+        }
+    }
+    //searches the equip grid if not found in the inventory grid
+    if !foundinInv {
+        for (var i = 0; i &lt; ds_grid_width(global.equip_grid); i++) {
+            if object_get_name(object_index) == ds_grid_get(global.equip_grid, i, 4) {
+                amount = ds_grid_get(global.equip_grid, i, 6);
+                i = ds_grid_width(global.equip_grid) + 1;
+            }
+        }
+    }
+    /*if amount &gt; 1 drawOther = true;
+    else drawOther = false;*/
     x = mouse_x;
     y = mouse_y;
 }
@@ -310,15 +416,18 @@ draw_self();
 
 //draws an outline around the obeject if it's been picked up and being dragged
 if global.curInvSelect != noone || global.curEquipSelect != noone {
-    var toCheck;
-    if global.curInvSelect != noone toCheck = asset_get_index(ds_grid_get(global.inventory_grid, global.curInvSelect, 4));
-    else if global.curEquipSelect != noone toCheck = asset_get_index(ds_grid_get(global.equip_grid, global.curEquipSelect, 4));
-    if instance_exists(toCheck) {
-        if object_index == toCheck.object_index {
-            draw_roundrect_colour(x - sprite_width/2 - 16, y - sprite_height/2 - 16, x + sprite_width/2 + 16, y + sprite_width/2 + 16, c_white, c_white, true);
-        }
+    var item_id;
+    if global.curInvSelect != noone {
+        item_id = ds_list_find_value(global.itemDisplayList, global.curInvSelect);
+    } else if global.curEquipSelect != noone {
+        item_id = ds_list_find_value(global.equipList, global.curEquipSelect);
+    }
+    if instance_exists(item_id) &amp;&amp; id == item_id {
+        draw_roundrect_colour(x - sprite_width/2 - 16, y - sprite_height/2 - 16, x + sprite_width/2 + 16, y + sprite_width/2 + 16, c_white, c_white, true);
     }
 }
+
+//if drawOther draw_sprite(sprite_index, 0, prevX, prevY);
 </string>
           </argument>
         </arguments>
