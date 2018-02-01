@@ -5,9 +5,11 @@ var msg = argument0;
 class_player.allowMovement = false;
 
 //set textbox up
-global.openText = instance_create(32, 32, class_textBox);
+
+//these x/y and width/height values work because the textbox draws based off GUI
+global.openText = instance_create(30, 480, class_textBox);
 with (global.openText) {
-    width = 1200;
-    height = 700;
+    width = 1220;
+    height = 240;
     message = msg;
 }

@@ -10,7 +10,7 @@ var arg2 = argument6;
 //disable player movement
 class_player.allowMovement = false;
 
-with (instance_create(32, 32, class_textBox)) {
+with (instance_create(30, 480, class_textBox)) {
     message = msg;
     accept[0] = scr0;
     accept[1] = scr1;
@@ -18,6 +18,6 @@ with (instance_create(32, 32, class_textBox)) {
     acceptArg[0, 0] = arg0;
     acceptArg[1, 0] = arg1;
     acceptArg[2, 0] = arg2; 
-    width = 1200;
-    height = 700;
+    width = 1220;
+    height = 240;
 }

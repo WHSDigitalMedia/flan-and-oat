@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>event_inherited();
 
-msg = "Toggle attack. Current attack: " + string(class_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+msg = "To be fair, you have to have a very high IQ to understand Rick and Morty. The humour is extremely subtle, and without a solid grasp of theoretical physics most of the jokes will go over a typical viewers head. There's also Rick's nihilistic outlook, which is deftly woven into his characterisation- his personal philosophy draws heavily from Narodnaya Volya literature, for instance. The fans understand this stuff; they have the intellectual capacity to truly appreciate the depths of these jokes, to realise that they're not just funny- they say something deep about LIFE. As a consequence people who dislike Rick &amp; Morty truly ARE idiots- of course they wouldn't appreciate, for instance, the humour in Rick's existential catchphrase 'Wubba Lubba Dub Dub,' which itself is a cryptic reference to Turgenevs Russian epic Fathers and Sons. I'm smirking right now just imagining one of those addlepated simpletons scratching their heads in confusion as Dan Harmon's genius wit unfolds itself on their television screens. What fools.. how I pity them.";
 action[0] = scr_text1;
 action[1] = scr_text2;
 action[2] = scr_text3;
@@ -56,7 +56,7 @@ arg[2, 0] = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>msg = "Toggle attack. Current attack: " + string(class_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
+            <string>//msg = "Toggle attack. Current attack: " + string(class_player.atk) + "#[1] halve attack#[2] double attack#[3] reset attack";
 
 event_inherited();
 </string>
