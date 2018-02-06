@@ -25,52 +25,109 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Initalize Variables
-initMoves = false; //initialize selected moves
-roomInit = false; //for use in returning to the overworld after combat
-
-global.charSelect = noone; //who is currently selected
-global.curTurn = -1; //who is currently doing a thing
-global.selection_mode = false;
-global.selected_move = noone;
-
-global.prev_enemy_x = x;
-global.prev_enemy_y = y;
-
-//possible move types
-enum move_types {
-    damage, heal, buff, dot, immobile, invulnerable
+            <string>original = noone;
+for (var i = 0; i &lt; 14; i++) {
+    add_enemy[i] = noone;
 }
+first = false; //true means enemies go first
+cur_active = noone;
+select_mode = false;
+move_to_use = "";
+targ = noone;
+init_moves = false;
 
-//Create combat queues
-global.allyQueue = ds_priority_create();
-global.enemyQueue = ds_priority_create();
-
-//placement of stuffs, 0 -&gt; x, 1 -&gt; y
-box_padding = 16;
-text_padding = 16;
-corner_rad = 5;
-actual_width = room_width - 4 * box_padding;
-textScale = 0.15;
-
-//Description Boxes
-options_box_left_corner[0] = 16;
-options_box_left_corner[1] = room_height * 0.75;
-options_box_width = actual_width * 0.2;
-options_box_height = room_height * 0.25;
-
-desc_box_left_corner[0] = options_box_left_corner[0] + options_box_width + box_padding;
-desc_box_left_corner[1] = options_box_left_corner[1];
-desc_box_width = actual_width * 0.6;
-desc_box_height = options_box_height;
-
-char_box_left_corner[0] = desc_box_left_corner[0] + desc_box_width + box_padding;
-char_box_left_corner[1] = options_box_left_corner[1];
-char_box_width = options_box_width;
-char_box_height = options_box_height;
+enemy_queue = ds_priority_create();
+player_queue = ds_priority_create();
 </string>
           </argument>
         </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>612</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>-1</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_if_variable</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>room</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>rm_combat</string>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>422</id>
+        <kind>1</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///check to see if anyone died
+for (var i = 0; i &lt; instance_number(class_enemy); i++) {
+    var inst = instance_find(class_enemy, i);
+    if inst.hp &lt;= 0 {
+        with (inst) {
+            instance_destroy();
+        }
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>424</id>
+        <kind>2</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
       </action>
     </event>
     <event eventtype="3" enumb="0">
@@ -132,106 +189,36 @@ char_box_height = options_box_height;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Selecting a character   
-if instance_exists(global.curTurn) {
-    if !global.selection_mode &amp;&amp; global.curTurn.object_index != class_enemy {
-        for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
-            if mouse_check_button_pressed(mb_left) &amp;&amp; mouse_check_over(instance_find(class_nonGUI, i)) {
-                global.charSelect = instance_find(class_nonGUI, i);
-                initMoves = false;
-            } /*else if mouse_check_button_pressed(mb_left) &amp;&amp; !mouse_check_over(instance_find(class_nonGUI, i)) {
-                global.charSelect = noone
-                initMoves = false;
-            } */
-        }
-    } else {
-        /*for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
-            if mouse_check_button_pressed(mb_left) &amp;&amp; !mouse_check_over(instance_find(class_nonGUI, i)) {
-                global.charSelect = noone
-                initMoves = false;
-            } 
-        }*/
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Creates moves
-if instance_exists(global.charSelect) {
-    if global.charSelect.object_index != class_enemy &amp;&amp; !initMoves {
-        with (global.charSelect) {
-            //creates the moves of the character
-            var inst;
-            inst[0] = instance_create(x - 64, y + 64, move[0, 0]);
-            inst[1] = instance_create(x + 64, y + 64, move[1, 0]);
-            inst[2] = instance_create(x - 64, y - 64, move[2, 0]);
-            inst[3] = instance_create(x + 64, y - 64, move[3, 0]);
-            for (var i = 0; i &lt; array_length_1d(inst); i++) {
-                with (inst[i]) {
-                    type = other.move[i, 1];
-                    amount = other.move[i, 2];    
-                }   
-            }
-        }
-        initMoves = true;
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///List checks
+            <string>///Enemy combat
+if instance_exists(cur_active) &amp;&amp; cur_active.object_index == class_enemy {
+    //selects a move at random then uses it
+    var move_no = string(irandom_range(1, 2));
+    var section = object_get_name(cur_active.object_index);
+    
+    ini_open("move_data.ini")
+    
+    var move_type = ini_read_string(section, "m" + move_no + "_type", "Damage");
+    var move_amt = ini_read_real(section, "m" + move_no + "_amount", 0);
+    switch (move_type) {
+        case "Damage":
+            with (class_player) {
+                hp -= move_amt;
+            }        
+            break;
+        case "Heal":
+            with (cur_active) {
+                if hp &lt; max_hp hp += move_amt;
+            }            
+            break;
+        default: break;
+    }        
+    ini_close();    
 
-//removes peeps if they're deaderinos
-if ds_exists(global.allyQueue, ds_type_priority) &amp;&amp; !ds_priority_empty(global.allyQueue) {
-    var inst = ds_priority_find_max(global.allyQueue);
-    if object_exists(inst.object_index) {
-        while !instance_exists(inst) {
-            ds_priority_delete_max(global.allyQueue);
-        }
-    }
-}
-
-if ds_exists(global.enemyQueue, ds_type_priority) &amp;&amp; !ds_priority_empty(global.enemyQueue) {
-    var inst = ds_priority_find_max(global.enemyQueue);
-    if object_exists(inst.object_index) {
-        while !instance_exists(inst) {
-            ds_priority_delete_max(global.enemyQueue);
-        }
-    }
+    //sets the next person in line unless empty in which case, player time!
+    if !ds_priority_empty(enemy_queue) cur_active = ds_priority_delete_max(enemy_queue);
+    else cur_active = ds_priority_find_max(player_queue);
+} else {
+    cur_active = ds_priority_find_max(player_queue);
 }
 </string>
           </argument>
@@ -253,10 +240,71 @@ if ds_exists(global.enemyQueue, ds_type_priority) &amp;&amp; !ds_priority_empty(
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Return to overworld
-//if no more enemies/player exist
-if roomInit &amp;&amp; !instance_exists(class_enemy) || class_player.hp &lt;= 0 {
-    pause_game();
+            <string>///player combat
+if instance_exists(cur_active) &amp;&amp; cur_active.object_index == class_player || cur_active.object_index == class_ally {
+    //selects a target first
+    if select_mode {
+        combat_select_target();
+        show_debug_message("selecting a target");
+    } else if instance_exists(targ) {
+        //uses move on the target
+        ini_open("move_data.ini");
+        var type = ini_read_string("class_player", move_to_use + "_type", "Damage");
+        var amt = ini_read_real("class_player", move_to_use + "_amount", 1);
+        
+        switch (type) {
+            case "Damage":
+                with (targ) {
+                    hp -= amt;
+                }
+                break;
+            case "Heal":
+                with (class_player) {
+                    hp += amt;
+                }
+                break;
+            default: break;
+        }
+        
+        ini_close();
+        
+        //repeat
+        with (class_button) {
+            instance_destroy();
+        }
+        ds_priority_delete_max(player_queue);
+        cur_active = ds_priority_find_max(player_queue);
+        show_debug_message('attack targ!');
+        
+    } else if !init_moves { //create moves
+        instance_create(x - 64, y, stab_attack);
+        instance_create(x + 64, y, bandage_heal);
+        init_moves = true;
+        show_debug_message('moves making');
+    }
+}
+
+if ds_priority_empty(player_queue) {
+    show_debug_message('enemies turn');
+    targ = noone;
+    init_moves = false;
+    //organize priority queues
+    for (var i = 0; i &lt; instance_number(class_enemy); i++) {
+        //adds all enemies except for the immobilized ones
+        var inst = instance_find(class_enemy, i);
+        if inst.immobile == 0 ds_priority_add(enemy_queue, inst, inst.spd);
+    }
+    
+    for (var j = 0; j &lt; instance_number(class_ally); j++) {
+        var inst = instance_find(class_ally, j);
+        if inst.immobile == 0 ds_priority_add(player_queue, inst, inst.spd);
+    }
+
+    var player_inst = instance_find(class_player, 0);
+    ds_priority_add(player_queue, player_inst, player_inst.spd);
+    
+    //sets who goes first
+    cur_active = ds_priority_delete_max(enemy_queue);
 }
 </string>
           </argument>
@@ -278,44 +326,6 @@ if roomInit &amp;&amp; !instance_exists(class_enemy) || class_player.hp &lt;= 0 
       </action>
     </event>
     <event eventtype="7" enumb="4">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Populate and sort combat queue
-if room == rm_combat {    
-    init_combat_list();
-    var middle = mean(options_box_left_corner[1], options_box_left_corner[1] + options_box_height);
-    create_button("Items", scr_null, c_white, 1, fnt_textbox, 
-    mean(options_box_left_corner[0], options_box_left_corner[0] + options_box_width), 
-    middle - 32);
-    create_button("Run", scr_null, c_white, 1, fnt_textbox, 
-    mean(options_box_left_corner[0], options_box_left_corner[0] + options_box_width), 
-    middle + 40);
-    roomInit = true;
-} else { //clears the queues after we're done
-    if ds_exists(global.allyQueue, ds_type_priority) ds_priority_clear(global.allyQueue);
-    if ds_exists(global.enemyQueue, ds_type_priority) ds_priority_clear(global.enemyQueue);
-    roomInit = false;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>612</id>
@@ -374,89 +384,24 @@ if room == rm_combat {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Drawing stuffs
-//draws the little ring around the currently selected character
-if instance_exists(global.charSelect) draw_circle_colour(global.charSelect.x, global.charSelect.y, 96, c_white, c_white, true);
-
-draw_set_alpha(0.67);
-//Draws the options panel
-draw_roundrect_colour_ext(options_box_left_corner[0], options_box_left_corner[1], 
-    options_box_left_corner[0] + options_box_width, 
-    options_box_left_corner[1] + options_box_height, corner_rad, corner_rad, c_gray,
-    c_gray, false);
-//Draws the description panel
-draw_roundrect_colour_ext(desc_box_left_corner[0], desc_box_left_corner[1], 
-    desc_box_left_corner[0] + desc_box_width, 
-    desc_box_left_corner[1] + desc_box_height, corner_rad, corner_rad, c_gray,
-    c_gray, false);
-//Draws the character desc panel
-draw_roundrect_colour_ext(char_box_left_corner[0], char_box_left_corner[1], 
-    char_box_left_corner[0] + char_box_width, 
-    char_box_left_corner[1] + char_box_height, corner_rad, corner_rad, c_gray,
-    c_gray, false);
-draw_set_alpha(1.0);
-
-//Draws the options menu
-/*draw_set_halign(fa_left);
-draw_text_transformed(options_box_left_corner[0] + text_padding,
-    options_box_left_corner[1] + text_padding, 
-    "Sorry! Inventory#not available#in this demo.",
-    textScale, textScale, 0);*/
-
-draw_set_colour(c_white);
-//Draws the stats of the selected character
-if instance_exists(global.charSelect) {
-    draw_set_halign(fa_center);
-    draw_text_transformed(char_box_left_corner[0] + char_box_width/2, 
-        char_box_left_corner[1] + text_padding,
-        global.charSelect.name, textScale, textScale, 0);
-    draw_set_halign(fa_left);
-    draw_text_transformed(char_box_left_corner[0] + text_padding,
-        char_box_left_corner[1] + text_padding * 1.5 + string_height('l') * textScale,
-        "Attack: " + string(global.charSelect.atk) + "#Defense: " + string(global.charSelect.def) +
-        "#Accuracy: " + string(global.charSelect.acc) + "#Speed: " + string(global.charSelect.spd) +
-        "#HP: " + string(global.charSelect.hp) + "/" + string(global.charSelect.max_hp),
-        textScale, textScale, 0);
-} else {
-    draw_set_halign(fa_center);
-    draw_text_transformed(char_box_left_corner[0] + char_box_width/2, 
-        char_box_left_corner[1] + text_padding,
-        "No#character#selected.", global.textScale, global.textScale, 0);
+            <string>///spawns in all the enemies
+if object_exists(original) {
+    instance_create(992, 256, original); //arbitray values, change later
 }
-    
-//Draws the desc of the selected move
-if global.selection_mode {
-    draw_set_halign(fa_left);
-    var name;
-    switch (global.selected_move.type) {
-        case move_types.damage: 
-            name = "Deals instant damage to a target#enemy";
-            break;
-        case move_types.heal:
-            name = "Heals you or an ally";
-            break;
-        case move_types.buff:
-            name = "Raises your attack stat";
-            break;
-        case move_types.dot:
-            name = "Applies damage over time to an enemy";
-            break;
-        case move_types.immobile:
-            name = "Renders an enemy immobile";
-            break;
-        case move_types.invulnerable:
-            name = "Grants temporary invulnerability";
-            break;
-        default:
-            name = "Unknown";
-            break;
+
+for (var i = 0; i &lt; array_length_1d(add_enemy); i++) {
+    if object_exists(add_enemy[i]) {
+        //ensures that the enemies don't spawn on top of or too close to each other
+        var rand_x = irandom_range(992, 1200);
+        var rand_y = irandom_range(64, 480);
+        var inst = instance_nearest(rand_x, rand_y, class_enemy);
+        
+        if point_distance(inst.x, inst.y, rand_x, rand_y) &gt; 64 {
+            instance_create(rand_x, rand_y, add_enemy[i]);
+        } else {
+            i--;
+        }
     }
-    draw_text_transformed(desc_box_left_corner[0] + text_padding, 
-        desc_box_left_corner[1] + text_padding, name,
-        global.textScale, global.textScale, 0);
-    /*draw_text_transformed(desc_box_left_corner[0] + text_padding,
-        desc_box_left_corner[1] + text_padding + string_height('l') * global.textScale,
-        global.selected_move.amount, textScale, textScale, 0);*/
 }
 </string>
           </argument>
@@ -478,23 +423,24 @@ if global.selection_mode {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Drawing more stuffs
-for (var i = 0; i &lt; instance_number(class_nonGUI); i++) {
-    with (instance_find(class_nonGUI, i)) {
-        draw_roundrect_colour(x + sprite_width/2 - 64, y + sprite_height * 0.75, 
-        x + sprite_width/2 - 64 + (max_hp * 64 / max_hp), 
-        y + sprite_height, c_dkgray, c_dkgray, false);
-        draw_roundrect_colour(x + sprite_width/2 - 64, y + sprite_height * 0.75, 
-        x + sprite_width/2 - 64 + (hp * 64 / max_hp), 
-        y + sprite_height, c_red, c_red, false);
-        if immobile &gt; 0 {
-            draw_set_halign(fa_center);
-            draw_text_transformed_colour(x + sprite_width/2, y - sprite_height * 0.75, 
-            "Immobile: " + string(immobile) + " turns", other.textScale, other.textScale, 0, 
-            c_white, c_white, c_white, c_white, 1);
-        }
-    }
+            <string>///organize priority queues
+for (var i = 0; i &lt; instance_number(class_enemy); i++) {
+    //adds all enemies except for the immobilized ones
+    var inst = instance_find(class_enemy, i);
+    if inst.immobile == 0 ds_priority_add(enemy_queue, inst, inst.spd);
 }
+
+for (var j = 0; j &lt; instance_number(class_ally); j++) {
+    var inst = instance_find(class_ally, j);
+    if inst.immobile == 0 ds_priority_add(player_queue, inst, inst.spd);
+}
+
+var player_inst = instance_find(class_player, 0);
+ds_priority_add(player_queue, player_inst, player_inst.spd);
+
+//sets who goes first
+if first cur_active = ds_priority_delete_max(enemy_queue);
+else cur_active = ds_priority_find_max(player_queue);
 </string>
           </argument>
         </arguments>
