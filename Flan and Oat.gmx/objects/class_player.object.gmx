@@ -296,6 +296,12 @@ draw_text_transformed(32, 128 + string_height("X") * global.textScale * 4,
           <argument>
             <kind>1</kind>
             <string>event_inherited();
+
+if room == rm_combat {
+    draw_roundrect(x, y + sprite_height, x + max_hp * 5, y + sprite_height * 1.5, true);
+    draw_roundrect_colour(x, y + sprite_height, x + hp * 5, y + sprite_height * 1.5, c_green, c_green, false);
+    //draw_text(x, y, string(hp) + "/" + string(max_hp));
+}
 /*draw_text_transformed(x - 64, y, keyboard_check(ord("A")), global.textScale, 
     global.textScale, 0);
 draw_text_transformed(x + 64, y, keyboard_check(ord("D")), global.textScale, 
