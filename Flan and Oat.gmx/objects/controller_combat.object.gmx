@@ -38,6 +38,20 @@ init_moves = false;
 
 enemy_queue = ds_priority_create();
 player_queue = ds_priority_create();
+
+//creates enemy combat grid
+e_left = 928; //horizontally
+e_right = 1056;
+e_init = 96; //vertically
+e_space = 96;
+e_rows = 4;
+
+//creates player combat grid
+p_left = 192;
+p_right = 256;
+p_init = 160;
+p_space = 64;
+p_rows = 3;
 </string>
           </argument>
         </arguments>
@@ -386,23 +400,36 @@ if ds_priority_empty(player_queue) {
             <kind>1</kind>
             <string>///spawns in all the enemies
 if object_exists(original) {
-    instance_create(992, 256, original); //arbitray values, change later
+    combat_spawn_objects(original);
 }
 
 for (var i = 0; i &lt; array_length_1d(add_enemy); i++) {
     if object_exists(add_enemy[i]) {
-        //ensures that the enemies don't spawn on top of or too close to each other
-        var rand_x = irandom_range(992, 1200);
-        var rand_y = irandom_range(64, 480);
-        var inst = instance_nearest(rand_x, rand_y, class_enemy);
-        
-        if point_distance(inst.x, inst.y, rand_x, rand_y) &gt; 64 {
-            instance_create(rand_x, rand_y, add_enemy[i]);
-        } else {
-            i--;
-        }
+        combat_spawn_objects(add_enemy[i]);
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///spawns in player and allies
+combat_spawn_objects(class_player);
 </string>
           </argument>
         </arguments>

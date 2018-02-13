@@ -47,6 +47,8 @@ acc = 5;
 hp = irandom_range(4, 7);
 max_hp = hp;
 immobile = 0;
+
+image_speed = 0;
 </string>
           </argument>
         </arguments>

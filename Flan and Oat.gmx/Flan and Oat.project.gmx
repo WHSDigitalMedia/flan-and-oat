@@ -87,6 +87,7 @@
     <sprite>sprites\spr_menu_splash</sprite>
   </sprites>
   <backgrounds name="background">
+    <background>background\bg_map</background>
     <background>background\bg_tile_grass</background>
   </backgrounds>
   <paths name="paths"/>
@@ -99,6 +100,7 @@
       <script>scripts\combat_select_target.gml</script>
       <script>scripts\combat_toggle_select.gml</script>
       <script>scripts\combat_attack.gml</script>
+      <script>scripts\combat_spawn_objects.gml</script>
     </scripts>
     <scripts name="Inventory">
       <script>scripts\inventory_initialize.gml</script>
