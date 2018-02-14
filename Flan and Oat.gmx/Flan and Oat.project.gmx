@@ -49,6 +49,8 @@
       <sprite>sprites\mask_wall_bottom</sprite>
       <sprite>sprites\sprite7</sprite>
       <sprite>sprites\sprite8</sprite>
+      <sprite>sprites\spr_bed_covers</sprite>
+      <sprite>sprites\spr_bed_frame</sprite>
       <sprite>sprites\spr_door</sprite>
     </sprites>
     <sprites name="Player">
@@ -64,6 +66,8 @@
       <sprite>sprites\spr_map</sprite>
       <sprite>sprites\spr_pause_button</sprite>
       <sprite>sprites\spr_main_menu_start</sprite>
+      <sprite>sprites\sprite34</sprite>
+      <sprite>sprites\sprite33</sprite>
       <sprite>sprites\spr_move</sprite>
     </sprites>
     <sprites name="Items">
@@ -88,7 +92,9 @@
   </sprites>
   <backgrounds name="background">
     <background>background\bg_map</background>
+    <background>background\bg_tile_grass_2</background>
     <background>background\bg_tile_grass</background>
+    <background>background\bg_house_floor_1</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -207,6 +213,7 @@
       </objects>
     </objects>
     <objects name="Environment">
+      <object>objects\env_bed</object>
       <object>objects\class_solid</object>
       <object>objects\env_brush</object>
       <objects name="Doors">
@@ -253,6 +260,9 @@
     <room>rooms\rm_inventory</room>
     <room>rooms\rm_map</room>
     <room>rooms\rm_combat</room>
+    <rooms name="Flan's House">
+      <room>rooms\rm_flan_bedroom</room>
+    </rooms>
     <rooms name="Area 1">
       <room>rooms\rm_level_1</room>
       <room>rooms\rm_level_2</room>

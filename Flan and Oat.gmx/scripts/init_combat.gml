@@ -29,4 +29,5 @@ with (controller_combat) {
 global.combat = true;
 with (class_player) allowMovement = false;
 with (gui_camera) instance_destroy();
+pause_game();
 room_goto(rm_combat);
