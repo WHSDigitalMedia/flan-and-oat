@@ -296,8 +296,11 @@ if instance_exists(cur_active) {
                     }
                     break;
                 case "Heal":
-                    with (class_player) {
-                        hp += amt;
+                    if (targ.object_index != class_enemy) {
+                        with (targ) {
+                            hp += amt;
+                            hp = clamp(hp, 0, max_hp);
+                        }
                     }
                     break;
                 default: break;

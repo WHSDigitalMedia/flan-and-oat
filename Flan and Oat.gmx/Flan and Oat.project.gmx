@@ -49,7 +49,6 @@
       <sprite>sprites\mask_wall_bottom</sprite>
       <sprite>sprites\sprite7</sprite>
       <sprite>sprites\sprite8</sprite>
-      <sprite>sprites\spr_bed_covers</sprite>
       <sprite>sprites\spr_bed_frame</sprite>
       <sprite>sprites\spr_door</sprite>
     </sprites>

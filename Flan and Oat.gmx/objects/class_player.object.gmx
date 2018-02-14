@@ -155,7 +155,7 @@ if allowMovement {
           <argument>
             <kind>1</kind>
             <string>///NPC Interaction
-if distance_to_object(class_npc) &lt; 64 &amp;&amp; !instance_exists(class_textBox) &amp;&amp; !place_meeting(x, y, class_door) {
+if distance_to_object(class_npc) &lt; 16 &amp;&amp; !instance_exists(class_textBox) &amp;&amp; !place_meeting(x, y, class_door) {
     with (instance_nearest(x, y, class_npc)) {
         player_interact = keyboard_check_pressed(ord("E"));
     }
