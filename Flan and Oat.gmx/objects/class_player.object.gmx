@@ -61,6 +61,7 @@ move_friction = 7;
 move_direction = 0;
 allowMovement = true;
 allowInput = true;
+moving = 0;
 
 movement_inputs[0] = ord("D");
 movement_inputs[1] = ord("W");

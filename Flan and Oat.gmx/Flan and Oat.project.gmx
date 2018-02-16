@@ -88,6 +88,7 @@
     </sprites>
     <sprite>sprites\spr_white_square</sprite>
     <sprite>sprites\spr_menu_splash</sprite>
+    <sprite>sprites\spr_bed_top</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_map</background>
@@ -179,6 +180,8 @@
   <objects name="objects">
     <object>objects\class_nonGUI</object>
     <objects name="FX">
+      <object>objects\fx_fadeToBlack</object>
+      <object>objects\fx_fadeFromBlack</object>
       <object>objects\fx_dust</object>
     </objects>
     <objects name="Controllers">
@@ -212,6 +215,7 @@
       </objects>
     </objects>
     <objects name="Environment">
+      <object>objects\env_sheets</object>
       <object>objects\env_bed</object>
       <object>objects\class_solid</object>
       <object>objects\env_brush</object>
