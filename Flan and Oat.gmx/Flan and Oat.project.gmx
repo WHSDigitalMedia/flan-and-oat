@@ -243,6 +243,7 @@
     <objects name="GUI">
       <object>objects\class_textBox</object>
       <object>objects\gui_camera</object>
+      <object>objects\gui_healthbar</object>
       <objects name="Buttons">
         <object>objects\class_button</object>
         <object>objects\gui_pause_button</object>

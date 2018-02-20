@@ -1,4 +1,4 @@
-///init_combat(backdrop, first, enemy object ID, enemy 2, enemy 3...)
+///init_combat(backdrop, enemy object ID, enemy 2, enemy 3...)
 
 //what background to use
 var backdrop = argument[0];
@@ -12,16 +12,11 @@ switch (backdrop) {
     default: break;
 }
 
-//sets who goes first
-with (controller_combat) {
-    first = argument[1];
-}
-
 //sets variables in controller_combat to be used later
 with (controller_combat) {
-    original = argument[2];    
-    for (var i = 3; i < argument_count; i++) {
-        add_enemy[i - 3] = argument[i];
+    original = argument[1];    
+    for (var i = 2; i < argument_count; i++) {
+        add_enemy[i - 2] = argument[i];
     }
 }
 

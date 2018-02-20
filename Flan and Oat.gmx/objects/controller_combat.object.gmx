@@ -29,7 +29,6 @@
 for (var i = 0; i &lt; 14; i++) {
     add_enemy[i] = noone;
 }
-first = false; //true means enemies go first
 cur_active = noone;
 select_mode = false;
 move_to_use = "";
@@ -238,12 +237,12 @@ if instance_exists(cur_active) &amp;&amp; cur_active.object_index == class_enemy
     switch (move_type) {
         case "Damage":
             with (class_player) {
-                hp -= move_amt;
+                hp -= move_amt * class_enemy.atk;
             }        
             break;
         case "Heal":
             with (cur_active) {
-                if hp &lt; max_hp hp += move_amt;
+                if hp &lt; max_hp hp += move_amt * class_enemy.def;
             }            
             break;
         default: break;
@@ -292,13 +291,13 @@ if instance_exists(cur_active) {
             switch (type) {
                 case "Damage":
                     with (targ) {
-                        hp -= amt;
+                        hp -= amt * class_player.atk;
                     }
                     break;
                 case "Heal":
                     if (targ.object_index != class_enemy) {
                         with (targ) {
-                            hp += amt;
+                            hp += amt * class_player.def;
                             hp = clamp(hp, 0, max_hp);
                         }
                     }
@@ -476,23 +475,72 @@ combat_spawn_objects(class_player);
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///create health bars
+for (var i = 0; i &lt; instance_number(class_enemy); i++) {
+    with (instance_create(x, y, gui_healthbar)) {
+        owner = instance_find(class_enemy, i);
+    }
+}
+for (var j = 0; j &lt; instance_number(class_ally); j++) {
+    with (instance_create(x, y, gui_healthbar)) {
+        owner = instance_find(class_ally, i);
+    }
+}
+with (instance_create(x, y, gui_healthbar)) {
+    owner = instance_find(class_player, 0);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///organize priority queues
+var eSpeedTotal = 0;
+var pSpeedTotal = 0;
+var eSpeedAvg = 0;
+var pSpeedAvg = 0;
+
 for (var i = 0; i &lt; instance_number(class_enemy); i++) {
     //adds all enemies except for the immobilized ones
     var inst = instance_find(class_enemy, i);
-    if inst.immobile == 0 ds_priority_add(enemy_queue, inst, inst.spd);
+    if inst.immobile == 0 {
+        ds_priority_add(enemy_queue, inst, inst.spd);
+        eSpeedTotal += inst.spd;
+    }
 }
 
 for (var j = 0; j &lt; instance_number(class_ally); j++) {
     var inst = instance_find(class_ally, j);
-    if inst.immobile == 0 ds_priority_add(player_queue, inst, inst.spd);
+    if inst.immobile == 0 {
+        ds_priority_add(player_queue, inst, inst.spd);
+        pSpeedTotal += inst.spd;
+    }
 }
 
 var player_inst = instance_find(class_player, 0);
 ds_priority_add(player_queue, player_inst, player_inst.spd);
+pSpeedTotal += player_inst.spd;
 
 //sets who goes first
-if first cur_active = ds_priority_delete_max(enemy_queue);
+eSpeedAvg = eSpeedTotal/instance_number(class_enemy);
+pSpeedAvg = pSpeedTotal/(instance_number(class_ally) + instance_number(class_player));
+
+if eSpeedAvg &gt; pSpeedAvg cur_active = ds_priority_delete_max(enemy_queue);
 else cur_active = ds_priority_find_max(player_queue);
 </string>
           </argument>
