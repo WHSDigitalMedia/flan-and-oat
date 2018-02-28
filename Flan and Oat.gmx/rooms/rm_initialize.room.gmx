@@ -31,6 +31,9 @@ global.keyLeft = ord("A");
 global.textScale = .25;
 global.doorList = ds_list_create();
 global.openText = noone;
+global.cameraEnable = false;
+global.cameraX = room_width/2;
+global.cameraY = room_height/2;
 
 //Save &amp; Load data
 if file_exists("saveNumber.txt") {
