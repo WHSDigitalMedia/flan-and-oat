@@ -61,7 +61,6 @@ move_friction = 7;
 move_direction = 0;
 allowMovement = true;
 allowInput = true;
-moving = 0;
 
 movement_inputs[0] = ord("D");
 movement_inputs[1] = ord("W");
@@ -74,9 +73,25 @@ atk = 10;
 def = 10;
 spd = 10;
 acc = 10;
-max_hp = 25;
-hp = max_hp;
+hp = 10;
+max_hp = 10;
 immobile = 0;
+
+move[0, 0] = move_single;
+move[0, 1] = move_types.damage;
+move[0, 2] = 5;
+
+move[1, 0] = move_single;
+move[1, 1] = move_types.heal;
+move[1, 2] = 3;
+
+move[2, 0] = move_single;
+move[2, 1] = move_types.buff;
+move[2, 2] = "atk2";
+
+move[3, 0] = move_single;
+move[3, 1] = move_types.immobile;
+move[3, 2] = 2;
 </string>
           </argument>
         </arguments>
@@ -156,7 +171,7 @@ if allowMovement {
           <argument>
             <kind>1</kind>
             <string>///NPC Interaction
-if distance_to_object(class_npc) &lt; 16 &amp;&amp; !instance_exists(class_textBox) &amp;&amp; !place_meeting(x, y, class_door) {
+if distance_to_object(class_npc) &lt; 64 &amp;&amp; !instance_exists(class_textBox) &amp;&amp; !place_meeting(x, y, class_door) {
     with (instance_nearest(x, y, class_npc)) {
         player_interact = keyboard_check_pressed(ord("E"));
     }

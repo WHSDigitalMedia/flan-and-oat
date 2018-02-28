@@ -3,24 +3,7 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="5" name="datafiles">
-    <datafile>
-      <name>move_data.ini</name>
-      <exists>-1</exists>
-      <size>0</size>
-      <exportAction>2</exportAction>
-      <exportDir></exportDir>
-      <overwrite>0</overwrite>
-      <freeData>-1</freeData>
-      <removeEnd>0</removeEnd>
-      <store>0</store>
-      <ConfigOptions>
-        <Config name="Default">
-          <CopyToMask>9223372036854775807</CopyToMask>
-        </Config>
-      </ConfigOptions>
-      <filename>move_data.ini</filename>
-    </datafile>
+  <datafiles number="4" name="datafiles">
     <datafile>
       <name>item_data.ini</name>
       <exists>-1</exists>
@@ -49,7 +32,6 @@
       <sprite>sprites\mask_wall_bottom</sprite>
       <sprite>sprites\sprite7</sprite>
       <sprite>sprites\sprite8</sprite>
-      <sprite>sprites\spr_bed_frame</sprite>
       <sprite>sprites\spr_door</sprite>
     </sprites>
     <sprites name="Player">
@@ -65,8 +47,6 @@
       <sprite>sprites\spr_map</sprite>
       <sprite>sprites\spr_pause_button</sprite>
       <sprite>sprites\spr_main_menu_start</sprite>
-      <sprite>sprites\sprite34</sprite>
-      <sprite>sprites\sprite33</sprite>
       <sprite>sprites\spr_move</sprite>
     </sprites>
     <sprites name="Items">
@@ -88,13 +68,9 @@
     </sprites>
     <sprite>sprites\spr_white_square</sprite>
     <sprite>sprites\spr_menu_splash</sprite>
-    <sprite>sprites\spr_bed_top</sprite>
   </sprites>
   <backgrounds name="background">
-    <background>background\bg_map</background>
-    <background>background\bg_tile_grass_2</background>
     <background>background\bg_tile_grass</background>
-    <background>background\bg_house_floor_1</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -103,10 +79,10 @@
       <script>scripts\move_step.gml</script>
     </scripts>
     <scripts name="Combat">
-      <script>scripts\combat_select_target.gml</script>
-      <script>scripts\combat_toggle_select.gml</script>
-      <script>scripts\combat_attack.gml</script>
-      <script>scripts\combat_spawn_objects.gml</script>
+      <script>scripts\toggle_selection_mode.gml</script>
+      <script>scripts\use_move.gml</script>
+      <script>scripts\init_combat_list.gml</script>
+      <script>scripts\select_target.gml</script>
     </scripts>
     <scripts name="Inventory">
       <script>scripts\inventory_initialize.gml</script>
@@ -180,8 +156,6 @@
   <objects name="objects">
     <object>objects\class_nonGUI</object>
     <objects name="FX">
-      <object>objects\fx_fadeToBlack</object>
-      <object>objects\fx_fadeFromBlack</object>
       <object>objects\fx_dust</object>
     </objects>
     <objects name="Controllers">
@@ -215,8 +189,6 @@
       </objects>
     </objects>
     <objects name="Environment">
-      <object>objects\env_sheets</object>
-      <object>objects\env_bed</object>
       <object>objects\class_solid</object>
       <object>objects\env_brush</object>
       <objects name="Doors">
@@ -243,17 +215,16 @@
     <objects name="GUI">
       <object>objects\class_textBox</object>
       <object>objects\gui_camera</object>
-      <object>objects\gui_healthbar</object>
+      <objects name="Moves">
+        <object>objects\class_move</object>
+        <object>objects\move_single</object>
+        <object>objects\move_multi</object>
+      </objects>
       <objects name="Buttons">
         <object>objects\class_button</object>
         <object>objects\gui_pause_button</object>
         <object>objects\gui_map_button</object>
         <object>objects\gui_inv_button</object>
-        <objects name="Moves">
-          <object>objects\class_move</object>
-          <object>objects\stab_attack</object>
-          <object>objects\bandage_heal</object>
-        </objects>
       </objects>
     </objects>
   </objects>
@@ -264,9 +235,6 @@
     <room>rooms\rm_inventory</room>
     <room>rooms\rm_map</room>
     <room>rooms\rm_combat</room>
-    <rooms name="Flan's House">
-      <room>rooms\rm_flan_bedroom</room>
-    </rooms>
     <rooms name="Area 1">
       <room>rooms\rm_level_1</room>
       <room>rooms\rm_level_2</room>

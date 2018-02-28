@@ -1,28 +1,20 @@
-///init_combat(backdrop, enemy object ID, enemy 2, enemy 3...)
+///init_combat(enemy id)
 
-//what background to use
-var backdrop = argument[0];
-switch (backdrop) {
-    case "forest":
-        
-        break;
-    case "desert":
-        
-        break;
-    default: break;
+with (argument0) { //makes sure the enemy makes it to the battle screen
+    persistent = true;
 }
 
-//sets variables in controller_combat to be used later
-with (controller_combat) {
-    original = argument[1];    
-    for (var i = 2; i < argument_count; i++) {
-        add_enemy[i - 2] = argument[i];
-    }
-}
-
-//go to the combat room
+//actually transition to combat stage
 global.combat = true;
-with (class_player) allowMovement = false;
-with (gui_camera) instance_destroy();
+global.prev_enemy_x = x;
+global.prev_enemy_y = y;
 pause_game();
-room_goto(rm_combat);
+
+with (class_player) { //repos player
+    x = 128;
+    y = 352;
+}
+with (argument0) { //repos the enemey
+    x = 1012;
+    y = 352;   
+}

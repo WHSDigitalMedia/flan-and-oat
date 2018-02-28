@@ -25,15 +25,26 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited();
+            <string>///Initialize Variables
 
-action = combat_toggle_select;
+//General Button Stuff
+event_inherited();
+spr = spr_move;
+//this script is kinda inefficient in that it only sets selection_mode to true
+//but it has to be done this way for class_move to fully utilize all of 
+//class_button's properties
+action = toggle_selection_mode; 
+target = noone;
+
+//Move-specific things
+type = move_types.heal;
+amount = 0; //amount of (turns, health points, etc.) the move applies
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="64">
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -50,19 +61,10 @@ action = combat_toggle_select;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self();
-if (mouse_check_over(self)) {
-    ini_open("move_data.ini");
-    
-    var desc = ini_read_string("class_player", name + "_desc", "");
-    
-    with (controller_combat) {
-        draw_text_transformed(desc_box_left_corner[0] + text_padding, 
-        desc_box_left_corner[1] + text_padding, desc, global.textScale, global.textScale, 0);
-    }
-    
-    ini_close();
-}
+            <string>event_inherited();
+if !instance_exists(global.charSelect) || global.charSelect.object_index == class_enemy instance_destroy();
+
+if global.selection_mode select_target();
 </string>
           </argument>
         </arguments>

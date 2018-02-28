@@ -215,7 +215,11 @@ if global.pause {
             }
             with (gui_camera) instance_destroy();
             room_goto(rm_inventory);
-        } else if !global.combat {
+        } else if global.combat {
+            with (class_player) allowMovement = false;
+            with (gui_camera) instance_destroy();
+            room_goto(rm_combat);
+        } else {
             with (class_player) {
                 allowMovement = false;
                 visible = false;
